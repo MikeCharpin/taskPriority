@@ -20,11 +20,14 @@ export default function ComplexCard() {
                 <AccordionItem value="item-1">
                     <AccordionTrigger>tasks</AccordionTrigger>
                     <AccordionContent>
-                        <TaskCard />
-                        <TaskCard />
-                        <TaskCard />
-                        <TaskCard />
-                        <TaskCard />
+                        <div className="pb-4"><Button variant={"secondary"}>add project</Button></div>
+                        <section className="flex flex-col gap-4">
+                            <TaskCard />
+                            <TaskCard />
+                            <TaskCard />
+                            <TaskCard />
+                            <TaskCard />
+                        </section>
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
@@ -38,9 +41,9 @@ function TaskCard() {
         <div className="flex flex-col gap-2 border-2 border-gray-400 rounded-md p-4">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione, vitae!
                 <div className="flex justify-center items-center gap-2">
-                    <Button variant={"ghost"} className="text-lg rotate-180"> <div className="translate-y-1">^</div> </Button>
+                    <Button variant={"ghost"} className="text-lg rotate-180"> <span className="translate-y-1">^</span> </Button>
                     <Button variant={"outline"} className="text-sm"> edit </Button>
-                    <Button variant={"ghost"} className="text-lg"><div className="translate-y-1">^</div> </Button>
+                    <Button variant={"ghost"} className="text-lg"><span className="translate-y-1">^</span> </Button>
                 </div>
         </div>
     )
