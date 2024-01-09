@@ -9,22 +9,22 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <nav className=" w-full flex items-center justify-between p-8 bg-black">
-          <h1>Task Prioritizer</h1>
-          <ModeToggle />
-        </nav>
-        <main className="flex w-full justify-center items-center p-4 ">
-          <div className="flex flex-grow border-2 border-green-950">
-            <ResultsSection />
-          </div>
-          {/* <div className="flex w-2/3 justify-center items-center border-2 border-white gap-2">
-            <GoalSection />
-            <ProjectSection />
-          </div> */}
-        </main>
-        <footer className="w-full h-[4rem] flex flex-none justify-center items-center bg-black">
-          <div>by Mike Charpin</div>
-        </footer>
+        <div className="min-h-dvh flex flex-col">
+          <nav className=" w-full flex items-center justify-between bg-secondary p-8">
+            <h1>Task Prioritizer</h1>
+            <ModeToggle />
+          </nav>
+          <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">
+              <ResultsSection />
+            <div className="flex w-2/3 min-h-[80dvh] justify-center items-center border-2 border-white gap-2">
+              <GoalSection />
+              <ProjectSection />
+            </div>
+          </main>
+          <footer className="w-full h-16 flex flex-none justify-center items-center bg-black">
+            <div>by Mike Charpin</div>
+          </footer>
+        </div>
     </ThemeProvider>
   )
 }
