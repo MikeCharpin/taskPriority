@@ -16,7 +16,7 @@ function App() {
           </nav>
           <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">
               <ResultsSection />
-            <div className="flex w-2/3 min-h-[80dvh] justify-center items-center border-2 border-white gap-2">
+            <div className="flex w-2/3 justify-center items-start border-2 border-grey-100 gap-2 px-4">
               <GoalSection />
               <ProjectSection />
             </div>
