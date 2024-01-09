@@ -4,8 +4,11 @@ import "./styles/globals.css"
 import { ModeToggle } from "./components/mode-toggle"
 import ProjectSection from "./components/ProjectSection"
 import ResultsSection from "./components/ResultsSection"
+import { fakeData } from "./data/fakeData"
+import { useState } from "react"
 
 function App() {
+  const [data, setData] = useState(fakeData)
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -17,8 +20,10 @@ function App() {
           <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">
               <ResultsSection />
             <div className="flex w-2/3 justify-center items-start border-2 border-grey-100 gap-2 px-4">
-              <GoalSection />
-              <ProjectSection />
+              <GoalSection
+              data={data} />
+              <ProjectSection
+              data={data} />
             </div>
           </main>
           <footer className="w-full h-16 flex flex-none justify-center items-center bg-black">
