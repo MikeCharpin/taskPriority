@@ -10,9 +10,11 @@ import { useState } from "react"
 function App() {
   const [data, setData] = useState(fakeData)
 
+
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="min-h-dvh flex flex-col">
+        <div className="flex flex-col">
           <nav className=" w-full flex items-center justify-between bg-secondary p-8">
             <h1>Task Prioritizer</h1>
             <ModeToggle />
@@ -21,7 +23,9 @@ function App() {
               <ResultsSection />
             <div className="flex w-2/3 justify-center items-start border-2 border-grey-100 gap-2 px-4">
               <GoalSection
-              data={data} />
+                data={data}
+                setData={setData}
+              />
               <ProjectSection
               data={data} />
             </div>
