@@ -6,20 +6,11 @@ import { GoalData } from "@/data/fakeData";
 export function GoalSection({ data, setData }: {data: GoalData[], setData: React.Dispatch<React.SetStateAction<GoalData[]>>}) {
 
     const moveGoal = (currentIndex: number, direction: number) => {
-
-        // console.log("Moving goal at index:", currentIndex, "Direction:", direction)
         const newIndex = Math.max(0, Math.min(data.length - 1, currentIndex + direction)) 
-        // console.log("Generating newIndex:", newIndex)
-
         const updatedData: GoalData[] = [...data]
-        console.log("Original data:", updatedData)
-
         const tempGoal = updatedData[currentIndex]
         updatedData[currentIndex] = updatedData[newIndex]
         updatedData[newIndex] = tempGoal
-        
-        console.log("New data:", updatedData)
-
         setData(updatedData)
     }
 
@@ -34,7 +25,6 @@ export function GoalSection({ data, setData }: {data: GoalData[], setData: React
                     <SimpleCard 
                     key={goal.goalId}
                     desc={goal.goalDesc}
-                    index={index}
                     onMoveUp={() => moveGoal(index, -1)}
                     onMoveDown={() => moveGoal(index, 1)}
                     />

@@ -1,6 +1,13 @@
 import { Button } from "./ui/button";
 
-export default function SimpleCard({ desc, index, onMoveUp, onMoveDown }) {
+interface SimpleCardProps {
+    desc: string,
+    onMoveUp: () => void,
+    onMoveDown: () => void,
+
+}
+
+const SimpleCard: React.FC<SimpleCardProps> = ({ desc, onMoveUp, onMoveDown }) => {
     return (
         <div className="border-2 border-primary rounded-md px-8 py-4">
             <h1 className="pb-4">{ desc }</h1>
@@ -12,3 +19,5 @@ export default function SimpleCard({ desc, index, onMoveUp, onMoveDown }) {
         </div>
     )
 }
+
+export default SimpleCard
