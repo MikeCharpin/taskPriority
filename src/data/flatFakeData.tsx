@@ -51,7 +51,7 @@ export const flatFakeData = {
             goalTargetDate: "2024-02-17",
         },
         {
-            goalId: 4,
+            goalId: 3,
             goalDesc: "This is goal #3",
             goalStatus: "active",
             goalScore: 0,
