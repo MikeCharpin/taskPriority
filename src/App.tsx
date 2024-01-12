@@ -27,7 +27,9 @@ function App() {
                 setData={setData}
               />
               <ProjectSection
-              data={data} />
+                data={data} 
+                setData={setData}
+              />
             </div>
           </main>
           <footer className="w-full h-16 flex flex-none justify-center items-center bg-black">
