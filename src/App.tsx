@@ -4,11 +4,13 @@ import "./styles/globals.css"
 import { ModeToggle } from "./components/mode-toggle"
 import ProjectSection from "./components/ProjectSection"
 import ResultsSection from "./components/ResultsSection"
-import { fakeData } from "./data/fakeData"
+// import { fakeData } from "./data/fakeData"
 import { useState } from "react"
+import { flatFakeData } from "./data/flatFakeData"
 
 function App() {
-  const [data, setData] = useState(fakeData)
+  const [goalDataState, setGoalDataState] = useState(flatFakeData.goalData)
+  const [ projectDataState, setProjectDataState ] = useState(flatFakeData.projectData)
 
 
 
@@ -23,12 +25,12 @@ function App() {
               <ResultsSection />
             <div className="flex w-2/3 justify-center items-start border-2 border-grey-100 gap-2 px-4">
               <GoalSection
-                data={data}
-                setData={setData}
+                goalDataState={goalDataState}
+                setGoalDataState={setGoalDataState}
               />
               <ProjectSection
-                data={data} 
-                setData={setData}
+                projectDataState={projectDataState} 
+                setProjectDataState={setProjectDataState}
               />
             </div>
           </main>
@@ -41,3 +43,4 @@ function App() {
 }
 
 export default App
+
