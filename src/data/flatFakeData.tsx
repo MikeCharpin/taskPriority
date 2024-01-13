@@ -24,7 +24,7 @@ export type TaskData = {
     taskDesc: string,
 }
 
-export type flatFakeData = {
+export type FlatFakeDataType = {
     goalData: GoalData[]
     projectData: ProjectData[]
     taskData: TaskData[]

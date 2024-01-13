@@ -1,18 +1,20 @@
+import { GoalData } from "@/data/flatFakeData";
 import SimpleCard from "./SimpleCard";
 import { Button } from "./ui/button";
-import { GoalData } from "@/data/fakeData";
 
 
-export function GoalSection({ data, setData }: {data: GoalData[], setData: React.Dispatch<React.SetStateAction<GoalData[]>>}) {
+export function GoalSection({ goalDataState, setGoalDataState }: {goalDataState: GoalData[], setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>}) {
+
 
     const moveGoal = (currentIndex: number, direction: number) => {
-        const newIndex = Math.max(0, Math.min(data.length - 1, currentIndex + direction)) 
-        const updatedData: GoalData[] = [...data]
+        const newIndex = Math.max(0,Math.min(goalDataState.length - 1, currentIndex + direction))
+        const updatedData = [...goalDataState]
         const tempGoal = updatedData[currentIndex]
         updatedData[currentIndex] = updatedData[newIndex]
         updatedData[newIndex] = tempGoal
-        setData(updatedData)
+        setGoalDataState(updatedData)
     }
+
 
     return (
         <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
@@ -21,12 +23,12 @@ export function GoalSection({ data, setData }: {data: GoalData[], setData: React
                 <Button variant={"secondary"}>add goal</Button>
             </div>
             <section className="flex flex-col gap-4">
-                {data.map((goal, index) => (
+                {goalDataState.map((goal, index) => (
                     <SimpleCard 
                     key={goal.goalId}
                     desc={goal.goalDesc}
                     onMoveUp={() => moveGoal(index, -1)}
-                    onMoveDown={() => moveGoal(index, 1)}
+                    onMoveDown={() => moveGoal(index, 1) }
                     />
                 ))}
             </section>
