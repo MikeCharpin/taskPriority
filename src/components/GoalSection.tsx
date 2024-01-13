@@ -1,6 +1,8 @@
 import { GoalData } from "@/data/flatFakeData";
 import SimpleCard from "./SimpleCard";
-import { Button } from "./ui/button";
+
+import AddGoalForm from "./addGoalForm";
+
 
 
 export function GoalSection({ goalDataState, setGoalDataState }: {goalDataState: GoalData[], setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>}) {
@@ -19,9 +21,8 @@ export function GoalSection({ goalDataState, setGoalDataState }: {goalDataState:
     return (
         <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
             <h1 className="text-xl font-bold">Goal Section</h1>
-            <div>
-                <Button variant={"secondary"}>add goal</Button>
-            </div>
+            <AddGoalForm />
+
             <section className="flex flex-col gap-4">
                 {goalDataState.map((goal, index) => (
                     <SimpleCard 
