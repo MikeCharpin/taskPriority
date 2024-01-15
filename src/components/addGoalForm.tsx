@@ -23,28 +23,58 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Textarea } from "@/components/ui/textarea"
+import { v4 as uuidv4 } from 'uuid';
+import { GoalData } from "@/data/flatFakeData"
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+    goalId: z.string(),
+    goalDesc: z.string().min(10, {
+        message: "Goal must be at least 10 characters.",
+    }).max(120, {
+        message: "120 character limit."
+    }),
+    goalStatus: z.string(),
+    goalMotivation: z.string(),
+    goalComplexity: z.enum(["low", "medium", "high"], {
+        required_error: "What are the complexity vibes of this goal?"
+    }),
+    goalExcitement: z.enum(["low", "medium", "high"], {
+        required_error: "How pumped are you to achieve this goal?"
+    }),
 })
 
-export default function AddGoalForm() {
 
-      // 1. Define your form.
+
+export default function AddGoalForm({ goalDataState, setGoalDataState}: {goalDataState: GoalData[], setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>}) {
+
+    const addGoal = (newGoal) => {
+        const updatedGoalState = [...goalDataState]
+        updatedGoalState.push(newGoal)
+        setGoalDataState(updatedGoalState)
+        reset()
+    }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+        goalId: "",
+        goalMotivation: "",
+        goalStatus: "active",
+        goalDesc: "",
+        goalComplexity: "medium",
+        goalExcitement: "medium"
     },
   })
- 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+
+    const { reset } = form
+
+  function onSubmit(newGoal: z.infer<typeof formSchema>) {
+    newGoal.goalId = uuidv4()
+    addGoal(newGoal)
+
+
   }
   return (
     <Dialog>
@@ -62,24 +92,127 @@ export default function AddGoalForm() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
                     control={form.control}
-                    name="username"
+                    name="goalDesc"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Username</FormLabel>
+                        <FormLabel>What are you trying to accomplish?</FormLabel>
+                        
                         <FormControl>
-                            <Input placeholder="shadcn" {...field} />
+                            <Input placeholder="Get hired in the tech industry ASAP." {...field} />
                         </FormControl>
                         <FormDescription>
-                            This is your public display name.
+                            What are you working towards for the next 6 months?
                         </FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}
                     />
-                    <DialogFooter><DialogClose asChild><Button type="submit">Submit</Button></DialogClose></DialogFooter>
+                    <FormField
+                    control={form.control}
+                    name="goalMotivation"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Why? What is your motivation?</FormLabel>
+                        
+                        <FormControl>
+                            <Textarea placeholder="I enjoy the challange of the problem selving and building products that people will use. I also need to pay rent." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    
+                    <FormField
+                        control={form.control}
+                        name="goalComplexity"
+                        render={({ field }) => (
+                            <FormItem className="space-y-3">
+                            <FormLabel>complexity</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="flex flex-col justify-between items-startspace-y-1 gap-2"
+                                >
+                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                    <FormControl>
+                                    <RadioGroupItem value="low" />
+                                    </FormControl>
+                                    <FormLabel className="flex items-center text-md">
+                                        small &nbsp; <span className="text-3xl">🍰</span>
+                                    </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                    <FormControl>
+                                    <RadioGroupItem value="medium" />
+                                    </FormControl>
+                                    <FormLabel className="flex items-center text-2xl ">
+                                        medium &nbsp; <span className="text-3xl">🔨</span>
+                                    </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                    <FormControl>
+                                    <RadioGroupItem value="high" />
+                                    </FormControl>
+                                    <FormLabel className="flex items-center text-4xl">
+                                        large &nbsp; <span className="text-3xl">🚀</span>
+                                    </FormLabel>
+                                </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="goalExcitement"
+                        render={({ field }) => (
+                            <FormItem className="space-y-3">
+                            <FormLabel>excitement</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="flex flex-col justify-between space-y-1 "
+                                >
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                    <RadioGroupItem value="low" />
+                                    </FormControl>
+                                    <FormLabel className="text-4xl">
+                                    😟
+                                    </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                    <RadioGroupItem value="medium" />
+                                    </FormControl>
+                                    <FormLabel className="text-4xl">
+                                    😏
+                                    </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                    <RadioGroupItem value="high" />
+                                    </FormControl>
+                                    <FormLabel className="text-4xl">
+                                        😄
+                                    </FormLabel>
+                                </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button type="submit">add</Button>
+                        </DialogClose>
+                    </DialogFooter>
                 </form>
             </Form>
-
         </DialogContent>
     </Dialog>
     

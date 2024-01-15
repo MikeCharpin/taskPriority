@@ -10,7 +10,12 @@ interface ProjectSectionProps {
 
 export default function ProjectSection({ projectDataState, setProjectDataState }: ProjectSectionProps) {
 
+ const todaysDate = new Date()
 
+    const addMonthToDate = (months: number) => {
+        todaysDate.setMonth(todaysDate.getMonth() + months)
+        return todaysDate.toDateString()
+    }
     
     const moveProject = (currentIndex: number, direction: number) => {
         const newIndex = Math.max(0, Math.min(projectDataState.length - 1, currentIndex + direction))
