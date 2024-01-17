@@ -1,5 +1,5 @@
 
-export type GoalData = {
+export interface GoalData {
     // Change to string when reverting back to using uuid.
     goalId: string, 
     goalDesc: string,
@@ -7,10 +7,10 @@ export type GoalData = {
     goalScore: number,
     goalComplexity: string,
     goalExcitement: string,
-    goalTargetDate: string,
+    goalMotivation: string,
 }
 
-export type ProjectData = {
+export interface ProjectData {
     projectId: string,
     projectDesc: string,
     projectGoal: string,
@@ -18,19 +18,24 @@ export type ProjectData = {
     projectScore: number,
     projectComplexity: string,
     projectExcitement: string,
-    projectTargetDate: string,
-    projectTasks: TaskData[]
+    projectTimeframe: TimeframeType,
+    projectTasks: TaskData[],
 }
 
-export type TaskData = {
+export interface TaskData {
     taskId: string,
     taskProject: string,
     taskDesc: string,
 }
 
-export type FlatFakeDataType = {
+export interface FlatFakeDataType {
     goalData: GoalData[]
     projectData: ProjectData[]
+}
+
+export interface TimeframeType {
+    from: Date,
+    to: Date,
 }
 
 export const flatFakeData = {
@@ -42,16 +47,17 @@ export const flatFakeData = {
             goalScore: 0,
             goalComplexity: "high",
             goalExcitement: "high",
-            goalTargetDate: "2024-02-17",
+            goalMotivation: "",
        },
         {
             goalId: "2",
             goalDesc: "This is goal #2",
             goalStatus: "active",
             goalScore: 0,
-            goalComplexity: "high",
-            goalExcitement: "high",
-            goalTargetDate: "2024-02-17",
+            goalComplexity: "low",
+            goalExcitement: "low",
+            goalMotivation: "",
+
         },
         {
             goalId: "3",
@@ -60,7 +66,7 @@ export const flatFakeData = {
             goalScore: 0,
             goalComplexity: "high",
             goalExcitement: "high",
-            goalTargetDate: "2024-02-17",
+            goalMotivation: "",
         },
     ],
     projectData: [
@@ -72,7 +78,10 @@ export const flatFakeData = {
             projectScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTargetDate: "2024-02-10",
+            projectTimeframe: {
+                from: new Date("2022-01-01T05:00:00.000Z"),
+                to: new Date("2022-01-31T05:00:00.000Z")
+            },
             projectTasks: [
                 {
                     taskId: "111",
@@ -104,7 +113,10 @@ export const flatFakeData = {
             projectScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTargetDate: "2024-02-10",
+            projectTimeframe: {
+                from: new Date("2022-01-01T05:00:00.000Z"),
+                to: new Date("2022-01-31T05:00:00.000Z")
+            },
             projectTasks: [
 
             ]
@@ -117,7 +129,10 @@ export const flatFakeData = {
             projectScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTargetDate: "2024-02-10",
+            projectTimeframe: {
+                from: new Date("2022-01-01T05:00:00.000Z"),
+                to: new Date("2022-01-31T05:00:00.000Z")
+            },
             projectTasks: [
 
             ]
@@ -131,7 +146,10 @@ export const flatFakeData = {
             projectScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTargetDate: "2024-02-10",
+            projectTimeframe: {
+                from: new Date("2022-01-01T05:00:00.000Z"),
+                to: new Date("2022-01-31T05:00:00.000Z")
+            },
             projectTasks: [
                 {
                     taskId: "211",
@@ -148,41 +166,12 @@ export const flatFakeData = {
             projectScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTargetDate: "2024-02-10",
+             projectTimeframe: {
+                from: new Date("2022-01-01T05:00:00.000Z"),
+                to: new Date("2022-01-31T05:00:00.000Z")
+            },
             projectTasks: [
 
-            ]
-        },
-        {
-            projectId: "31",
-            projectDesc: "This is project #6",
-            projectGoal: "3",
-            projectStatus: "active",
-            projectScore: 0,
-            projectComplexity: "high",
-            projectExcitement: "high",
-            projectTargetDate: "2024-02-10",
-            projectTasks: [
-                {
-                    taskId: "311",
-                    taskProject: "31",
-                    taskDesc: "This is a task - 311"
-                },
-                {
-                    taskId: "312",
-                    taskProject: "31",
-                    taskDesc: "This is a task - 312"
-                },
-                {
-                    taskId: "313",
-                    taskProject: "31",
-                    taskDesc: "This is a task - 313"
-                },
-                {
-                    taskId: "314",
-                    taskProject: "31",
-                    taskDesc: "This is a task - 314"
-                }
             ]
         },
     ]

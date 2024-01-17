@@ -42,6 +42,7 @@ import React from "react"
 
 const formSchema = z.object({
     projectId: z.string(),
+    projectScore: z.number(),
     projectGoal: z.string(),
     projectDesc: z.string().min(10, {
         message: "Goal must be at least 10 characters.",
@@ -59,52 +60,57 @@ const formSchema = z.object({
     projectTimeframe: z.object({
         from: z.date(),
         to: z.date()
-    })
+    }),
+    projectTasks: z.array(z.object({
+        taskId: z.string(),
+        taskProject: z.string(),
+        taskDesc: z.string(),
+    }))
 })
 
 interface AddProjectFormProps {
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
-    goalDataState: GoalData[]
+    goalDataState: GoalData[],
+    calcProjectScore: (project: ProjectData) => number,
 }
 
 
-export default function AddProjectForm({ projectDataState, setProjectDataState, goalDataState}: AddProjectFormProps ) {
+export default function AddProjectForm({ projectDataState, setProjectDataState, goalDataState, calcProjectScore}: AddProjectFormProps ) {
 
-    console.log(goalDataState)
-   
-    const addProject = (newProject) => {
+    const addProject = (newProject: ProjectData) => {
         const updatedGoalState = [...projectDataState]
         updatedGoalState.push(newProject)
         setProjectDataState(updatedGoalState)
         reset()
     }
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-        projectId: "",
-        projectGoal: "",
-        projectMotivation: "",
-        projectStatus: "active",
-        projectDesc: "",
-        projectComplexity: "medium",
-        projectExcitement: "medium",
-        projectTimeframe: {
-            from: new Date(),
-            to: new Date(),
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            projectId: "",
+            projectScore: 0,
+            projectGoal: "",
+            projectMotivation: "",
+            projectStatus: "active",
+            projectDesc: "",
+            projectComplexity: "medium",
+            projectExcitement: "medium",
+            projectTimeframe: {
+                from: new Date(),
+                to: new Date(),
+            },
+            projectTasks: [],
         },
-    },
-  })
+    })
 
     const { reset } = form
 
-  function onSubmit(newProject: z.infer<typeof formSchema>) {
-    newProject.projectId = uuidv4()
-    addProject(newProject)
-
-
-  }
+    function onSubmit(newProject: z.infer<typeof formSchema>) {
+        newProject.projectId = uuidv4()
+        calcProjectScore(newProject)
+        addProject(newProject)
+    }
 
   return (
     <Dialog>

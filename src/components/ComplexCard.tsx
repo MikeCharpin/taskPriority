@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion"
 
 interface ComplexCardProps {
-    key: number,
+    key: string,
     projectDesc: string,
     projectTasks: TaskData[],
     projectDataState: ProjectData[],
@@ -27,7 +27,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ projectDesc, projectTasks, pr
         updatedTaskData[newIndex] = tempTask
         const taskId = updatedTaskData[0].taskId
 
-        const findProjectIndexByTask = (taskId: number) => {
+        const findProjectIndexByTask = (taskId: string) => {
             const projectIndex = projectDataState.findIndex(project => 
                 project.projectTasks.some(task => task.taskId === taskId)
             )
@@ -72,7 +72,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ projectDesc, projectTasks, pr
 }
 
 interface TaskCardProps {
-    key: number,
+    key: string,
     taskDesc: string,
     onTaskMoveUp: () => void,
     onTaskMoveDown: () => void,

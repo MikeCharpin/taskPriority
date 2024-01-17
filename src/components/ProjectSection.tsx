@@ -7,9 +7,10 @@ interface ProjectSectionProps {
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     goalDataState: GoalData[],
+    calcProjectScore: (project: ProjectData) => number,
 }
 
-export default function ProjectSection({ projectDataState, setProjectDataState, goalDataState }: ProjectSectionProps) {
+export default function ProjectSection({ projectDataState, setProjectDataState, goalDataState, calcProjectScore }: ProjectSectionProps) {
     
     const moveProject = (currentIndex: number, direction: number) => {
         const newIndex = Math.max(0, Math.min(projectDataState.length - 1, currentIndex + direction))
@@ -28,6 +29,7 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
                 projectDataState={projectDataState}
                 setProjectDataState={setProjectDataState}
                 goalDataState={goalDataState}
+                calcProjectScore={calcProjectScore}
             />
 
             <section className="flex flex-col gap-4">

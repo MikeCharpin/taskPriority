@@ -30,6 +30,7 @@ import { GoalData } from "@/data/flatFakeData"
 
 const formSchema = z.object({
     goalId: z.string(),
+    goalScore: z.number(),
     goalDesc: z.string().min(10, {
         message: "Goal must be at least 10 characters.",
     }).max(120, {
@@ -45,11 +46,15 @@ const formSchema = z.object({
     }),
 })
 
+interface AddGoalFormProps {
+    goalDataState: GoalData[],
+    setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>,
+    calcGoalScore: (goal: GoalData) => number,
+}
 
+export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalScore }: AddGoalFormProps ) {
 
-export default function AddGoalForm({ goalDataState, setGoalDataState}: {goalDataState: GoalData[], setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>}) {
-
-    const addGoal = (newGoal) => {
+    const addGoal = (newGoal: GoalData) => {
         const updatedGoalState = [...goalDataState]
         updatedGoalState.push(newGoal)
         setGoalDataState(updatedGoalState)
@@ -60,6 +65,7 @@ export default function AddGoalForm({ goalDataState, setGoalDataState}: {goalDat
     resolver: zodResolver(formSchema),
     defaultValues: {
         goalId: "",
+        goalScore: 0,
         goalMotivation: "",
         goalStatus: "active",
         goalDesc: "",
@@ -72,9 +78,10 @@ export default function AddGoalForm({ goalDataState, setGoalDataState}: {goalDat
 
   function onSubmit(newGoal: z.infer<typeof formSchema>) {
     newGoal.goalId = uuidv4()
+    console.log(newGoal)
+    calcGoalScore(newGoal)
+    console.log(newGoal)
     addGoal(newGoal)
-
-
   }
   return (
     <Dialog>

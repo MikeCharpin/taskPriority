@@ -4,13 +4,51 @@ import "./styles/globals.css"
 import { ModeToggle } from "./components/mode-toggle"
 import ProjectSection from "./components/ProjectSection"
 import ResultsSection from "./components/ResultsSection"
-// import { fakeData } from "./data/fakeData"
 import { useState } from "react"
-import { flatFakeData } from "./data/flatFakeData"
+import { GoalData, ProjectData, flatFakeData } from "./data/flatFakeData"
 
 function App() {
   const [goalDataState, setGoalDataState] = useState(flatFakeData.goalData)
   const [ projectDataState, setProjectDataState ] = useState(flatFakeData.projectData)
+
+
+  const processValue = (value: string) => {
+    if(value === "low"){
+      return 1
+    }
+    if(value === "medium") {
+      return 2
+    }
+    if(value === "high") {
+      return 3
+    }
+    else {
+      return 2
+    }
+  }
+
+
+  const calcGoalScore = (goal: GoalData) => {
+      let score = 0
+      const goalComplexityScore = processValue(goal.goalComplexity)
+      const goalExcitementScore = processValue(goal.goalExcitement)
+      const goalImportanceScore = goalDataState.length - goalDataState.indexOf(goal)
+
+      score += goalComplexityScore + goalExcitementScore + goalImportanceScore
+
+      return goal.goalScore = score
+  }
+
+  const calcProjectScore = (project: ProjectData) => {
+      let score = 0
+      const projectComplexityScore = processValue(project.projectComplexity)
+      const projectExcitementScore = processValue(project.projectExcitement)
+      const projectImportanceScore = projectDataState.length - projectDataState.indexOf(project)
+
+      score += projectComplexityScore + projectExcitementScore + projectImportanceScore
+
+      return project.projectScore = score
+  }
 
 
 
@@ -22,16 +60,21 @@ function App() {
             <ModeToggle />
           </nav>
           <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">
-              <ResultsSection />
+              <ResultsSection
+                goalDataState={goalDataState}
+                projectDataState={projectDataState}
+              />
             <div className="flex w-2/3 justify-center items-start border-2 border-grey-100 gap-2 px-4">
               <GoalSection
                 goalDataState={goalDataState}
                 setGoalDataState={setGoalDataState}
+                calcGoalScore={calcGoalScore}
               />
               <ProjectSection
                 projectDataState={projectDataState} 
                 setProjectDataState={setProjectDataState}
                 goalDataState={goalDataState}
+                calcProjectScore={calcProjectScore}
               />
             </div>
           </main>

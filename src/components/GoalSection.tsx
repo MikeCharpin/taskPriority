@@ -3,9 +3,14 @@ import SimpleCard from "./SimpleCard";
 
 import AddGoalForm from "./addGoalForm";
 
+interface GoalSectionProps  {
+    goalDataState: GoalData[], 
+    setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>
+    calcGoalScore: (goal: GoalData) => number;
+}
 
 
-export function GoalSection({ goalDataState, setGoalDataState }: {goalDataState: GoalData[], setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>}) {
+export function GoalSection({ goalDataState, setGoalDataState, calcGoalScore }: GoalSectionProps ) {
 
 
     const moveGoal = (currentIndex: number, direction: number) => {
@@ -24,6 +29,7 @@ export function GoalSection({ goalDataState, setGoalDataState }: {goalDataState:
             <AddGoalForm
                 goalDataState={goalDataState}
                 setGoalDataState={setGoalDataState}
+                calcGoalScore={calcGoalScore}
             />
 
             <section className="flex flex-col gap-4">
