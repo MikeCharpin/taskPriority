@@ -31,6 +31,7 @@ function App() {
               <ProjectSection
                 projectDataState={projectDataState} 
                 setProjectDataState={setProjectDataState}
+                goalDataState={goalDataState}
               />
             </div>
           </main>

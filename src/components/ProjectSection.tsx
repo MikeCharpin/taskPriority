@@ -1,20 +1,15 @@
-import { ProjectData } from "@/data/flatFakeData";
+import { GoalData, ProjectData } from "@/data/flatFakeData";
 import ComplexCard from "./ComplexCard";
-import { Button } from "./ui/button";
 import AddProjectForm from "./addProjectForm";
-import DatePickerWithRange from "./PracticeDatePicker";
 
 
 interface ProjectSectionProps {
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
+    goalDataState: GoalData[],
 }
 
-export default function ProjectSection({ projectDataState, setProjectDataState }: ProjectSectionProps) {
-
- const todaysDate = new Date()
-
-    
+export default function ProjectSection({ projectDataState, setProjectDataState, goalDataState }: ProjectSectionProps) {
     
     const moveProject = (currentIndex: number, direction: number) => {
         const newIndex = Math.max(0, Math.min(projectDataState.length - 1, currentIndex + direction))
@@ -26,16 +21,14 @@ export default function ProjectSection({ projectDataState, setProjectDataState }
         setProjectDataState(updatedData)
     }
 
-
     return (
         <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
             <h1 className="text-xl font-bold">Project Section</h1>
             <AddProjectForm
                 projectDataState={projectDataState}
                 setProjectDataState={setProjectDataState}
+                goalDataState={goalDataState}
             />
-
-            
 
             <section className="flex flex-col gap-4">
                 {projectDataState.map((project, index) => (

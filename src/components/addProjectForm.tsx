@@ -23,10 +23,17 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { v4 as uuidv4 } from 'uuid';
-import { ProjectData } from "@/data/flatFakeData"
+import { GoalData, ProjectData } from "@/data/flatFakeData"
 
 import DatePickerWithRange from "./PracticeDatePicker"
 
@@ -35,6 +42,7 @@ import React from "react"
 
 const formSchema = z.object({
     projectId: z.string(),
+    projectGoal: z.string(),
     projectDesc: z.string().min(10, {
         message: "Goal must be at least 10 characters.",
     }).max(120, {
@@ -54,9 +62,16 @@ const formSchema = z.object({
     })
 })
 
+interface AddProjectFormProps {
+    projectDataState: ProjectData[],
+    setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
+    goalDataState: GoalData[]
+}
 
 
-export default function AddProjectForm({ projectDataState, setProjectDataState}: {projectDataState: ProjectData[], setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>}) {
+export default function AddProjectForm({ projectDataState, setProjectDataState, goalDataState}: AddProjectFormProps ) {
+
+    console.log(goalDataState)
    
     const addProject = (newProject) => {
         const updatedGoalState = [...projectDataState]
@@ -69,6 +84,7 @@ export default function AddProjectForm({ projectDataState, setProjectDataState}:
     resolver: zodResolver(formSchema),
     defaultValues: {
         projectId: "",
+        projectGoal: "",
         projectMotivation: "",
         projectStatus: "active",
         projectDesc: "",
@@ -104,6 +120,32 @@ export default function AddProjectForm({ projectDataState, setProjectDataState}:
             </DialogHeader>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                        control={form.control}
+                        name="projectGoal"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>goal</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Which goal are you working towards?" />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {/* <SelectItem value="This is the goal value" key={uuidv4()}>This is a goal</SelectItem> */}
+                                    {goalDataState && goalDataState.map((goal) => (
+                                        <SelectItem value={goal.goalId} key={goal.goalId}>{goal.goalDesc}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <FormDescription>
+                                This is the form description.
+                            </FormDescription>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
                     <FormField
                     control={form.control}
                     name="projectDesc"
