@@ -85,12 +85,11 @@ export default function AddProjectForm({ projectDataState, setProjectDataState}:
 
   function onSubmit(newProject: z.infer<typeof formSchema>) {
     newProject.projectId = uuidv4()
-    console.log(newProject)
-    // addProject(newProject)
+    addProject(newProject)
 
 
   }
-  
+
   return (
     <Dialog>
         <DialogTrigger asChild>
