@@ -1,6 +1,8 @@
 import { ProjectData } from "@/data/flatFakeData";
 import ComplexCard from "./ComplexCard";
 import { Button } from "./ui/button";
+import AddProjectForm from "./addProjectForm";
+import DatePickerWithRange from "./PracticeDatePicker";
 
 
 interface ProjectSectionProps {
@@ -12,10 +14,7 @@ export default function ProjectSection({ projectDataState, setProjectDataState }
 
  const todaysDate = new Date()
 
-    const addMonthToDate = (months: number) => {
-        todaysDate.setMonth(todaysDate.getMonth() + months)
-        return todaysDate.toDateString()
-    }
+    
     
     const moveProject = (currentIndex: number, direction: number) => {
         const newIndex = Math.max(0, Math.min(projectDataState.length - 1, currentIndex + direction))
@@ -31,7 +30,12 @@ export default function ProjectSection({ projectDataState, setProjectDataState }
     return (
         <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
             <h1 className="text-xl font-bold">Project Section</h1>
-            <Button variant={"secondary"}>add project</Button>
+            <AddProjectForm
+                projectDataState={projectDataState}
+                setProjectDataState={setProjectDataState}
+            />
+
+            
 
             <section className="flex flex-col gap-4">
                 {projectDataState.map((project, index) => (
