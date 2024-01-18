@@ -36,10 +36,12 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
                 {projectDataState.map((project, index) => (
                     <ComplexCard
                             key={project.projectId}
-                            projectDesc={project.projectDesc}
-                            projectTasks={project.projectTasks}
+                            index={index}
+                            project={project}
+                            goalDataState={goalDataState}
                             projectDataState={projectDataState}
                             setProjectDataState={setProjectDataState}
+                            calcProjectScore={calcProjectScore}
                             onMoveUp={() => moveProject(index, -1)}
                             onMoveDown={() => moveProject(index, 1)}
                         />

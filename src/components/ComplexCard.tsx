@@ -1,4 +1,4 @@
-import { ProjectData, TaskData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData";
 import { Button } from "./ui/button";
 import {
   Accordion,
@@ -6,22 +6,25 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import EditProjectForm from "./EditProjectForm";
 
 interface ComplexCardProps {
     key: string,
-    projectDesc: string,
-    projectTasks: TaskData[],
+    index: number,
+    project: ProjectData,
+    goalDataState: GoalData[],
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
+    calcProjectScore: (project: ProjectData) => number,
     onMoveUp: () => void,
     onMoveDown: () => void,
 }
 
-const ComplexCard: React.FC<ComplexCardProps> = ({ projectDesc, projectTasks, projectDataState, setProjectDataState, onMoveUp, onMoveDown }) => {
+const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState, projectDataState, setProjectDataState, calcProjectScore, onMoveUp, onMoveDown }) => {
 
     const moveTask = (currentIndex: number, direction: number) => {
-        const newIndex = Math.max(0, Math.min(projectTasks.length - 1, currentIndex + direction))
-        const updatedTaskData: TaskData[] = [...projectTasks]
+        const newIndex = Math.max(0, Math.min(project.projectTasks.length - 1, currentIndex + direction))
+        const updatedTaskData: TaskData[] = [...project.projectTasks]
         const tempTask = updatedTaskData[currentIndex]
         updatedTaskData[currentIndex] = updatedTaskData[newIndex]
         updatedTaskData[newIndex] = tempTask
@@ -42,10 +45,17 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ projectDesc, projectTasks, pr
 
     return (
         <div className="border-2 border-primary rounded-md px-8 py-4">
-            <h1 className="pb-4">{ projectDesc }</h1>
+            <h1 className="pb-4">{ project.projectDesc }</h1>
             <nav className="flex justify-between items-center gap-2">
                 <Button variant={"ghost"} className="text-3xl rotate-180 -translate-y-1" onClick={onMoveDown}> ^ </Button>
-                <Button variant={"outline"} className="text-lg"> edit </Button>
+                <EditProjectForm 
+                    project={project}
+                    index={index}
+                    goalDataState={goalDataState}
+                    calcProjectScore={calcProjectScore}
+                    projectDataState={projectDataState}
+                    setProjectDataState={setProjectDataState}
+                />
                 <Button variant={"ghost"} className="text-3xl translate-y-1" onClick={onMoveUp}> ^ </Button>
             </nav>
             <Accordion type="single" collapsible>
@@ -54,7 +64,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ projectDesc, projectTasks, pr
                     <AccordionContent>
                         <div className="pb-4"><Button variant={"secondary"}>add task</Button></div>
                         <section className="flex flex-col gap-4">
-                            {projectTasks && projectTasks.map((task, index) => (
+                            {project.projectTasks && project.projectTasks.map((task, index) => (
                                 <TaskCard
                                     key={task.taskId}
                                     taskDesc={task.taskDesc}
