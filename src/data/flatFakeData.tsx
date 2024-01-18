@@ -76,8 +76,8 @@ export const flatFakeData = {
             projectGoal: "1",
             projectStatus: "active",
             projectScore: 0,
-            projectComplexity: "high",
-            projectExcitement: "high",
+            projectComplexity: "low",
+            projectExcitement: "low",
             projectTimeframe: {
                 from: new Date("2022-01-01T05:00:00.000Z"),
                 to: new Date("2022-01-31T05:00:00.000Z")
@@ -164,8 +164,8 @@ export const flatFakeData = {
             projectGoal: "2",
             projectStatus: "active",
             projectScore: 0,
-            projectComplexity: "high",
-            projectExcitement: "high",
+            projectComplexity: "low",
+            projectExcitement: "low",
              projectTimeframe: {
                 from: new Date("2022-01-01T05:00:00.000Z"),
                 to: new Date("2022-01-31T05:00:00.000Z")

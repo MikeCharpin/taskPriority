@@ -27,7 +27,6 @@ function App() {
     }
   }
 
-
   const calcGoalScore = (goal: GoalData) => {
       let score = 0
       const goalComplexityScore = processValue(goal.goalComplexity)
@@ -50,7 +49,25 @@ function App() {
       return project.projectScore = score
   }
 
+// 
 
+
+  const calcAllScores = (projectDataState, goalDataState) => {
+    const updatedProjectDataState = [...projectDataState]
+    const updatedGoalDataState = [...goalDataState]
+    updatedGoalDataState.map((goal) => calcGoalScore(goal))
+    updatedProjectDataState.map((project) => calcProjectScore(project))
+    updatedProjectDataState.map((project) => {
+      const projectGoal = updatedGoalDataState.find((goal) => goal.goalId === project.projectGoal)
+      const projectPriorityScore = project.projectScore += projectGoal.goalScore
+      project.projectPriorityScore = projectPriorityScore
+      return
+    })
+    return updatedProjectDataState.sort((a,b) => b.projectPriorityScore - a.projectPriorityScore)
+  }
+
+  const sortedProjectState = (calcAllScores(projectDataState, goalDataState))
+  console.log(calcAllScores(projectDataState, goalDataState))
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -61,8 +78,7 @@ function App() {
           </nav>
           <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">
               <ResultsSection
-                goalDataState={goalDataState}
-                projectDataState={projectDataState}
+                sortedProjectState={sortedProjectState}
               />
             <div className="flex w-2/3 justify-center items-start border-2 border-grey-100 gap-2 px-4">
               <GoalSection
