@@ -16,6 +16,7 @@ export interface ProjectData {
     projectGoal: string,
     projectStatus: string,
     projectScore: number,
+    projectPriorityScore: number,
     projectComplexity: string,
     projectExcitement: string,
     projectTimeframe: TimeframeType,
@@ -76,6 +77,7 @@ export const flatFakeData = {
             projectGoal: "1",
             projectStatus: "active",
             projectScore: 0,
+            projectPriorityScore: 0,
             projectComplexity: "low",
             projectExcitement: "low",
             projectTimeframe: {
@@ -111,6 +113,7 @@ export const flatFakeData = {
             projectGoal: "1",
             projectStatus: "active",
             projectScore: 0,
+            projectPriorityScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
             projectTimeframe: {
@@ -127,6 +130,7 @@ export const flatFakeData = {
             projectGoal: "1",
             projectStatus: "active",
             projectScore: 0,
+            projectPriorityScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
             projectTimeframe: {
@@ -143,6 +147,7 @@ export const flatFakeData = {
             projectDesc: "This is project #4",
             projectGoal: "2",
             projectStatus: "active",
+            projectPriorityScore: 0,
             projectScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
@@ -163,6 +168,7 @@ export const flatFakeData = {
             projectDesc: "This is project #5",
             projectGoal: "2",
             projectStatus: "active",
+            projectPriorityScore: 0,
             projectScore: 0,
             projectComplexity: "low",
             projectExcitement: "low",
