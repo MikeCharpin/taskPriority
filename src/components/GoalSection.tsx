@@ -36,9 +36,14 @@ export function GoalSection({ goalDataState, setGoalDataState, calcGoalScore }: 
                 {goalDataState.map((goal, index) => (
                     <SimpleCard 
                     key={goal.goalId}
-                    desc={goal.goalDesc}
+                    goal={goal}
+                    index={index}
                     onMoveUp={() => moveGoal(index, -1)}
-                    onMoveDown={() => moveGoal(index, 1) }
+                    onMoveDown={() => moveGoal(index, 1)}
+                    goalDataState={goalDataState}
+                    calcGoalScore={calcGoalScore}
+                    setGoalDataState={setGoalDataState}
+
                     />
                 ))}
             </section>
