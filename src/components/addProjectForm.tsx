@@ -43,6 +43,7 @@ import React from "react"
 const formSchema = z.object({
     projectId: z.string(),
     projectScore: z.number(),
+    projectPriorityScore: z.number(),
     projectGoal: z.string(),
     projectDesc: z.string().min(10, {
         message: "Goal must be at least 10 characters.",
@@ -90,6 +91,7 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
         defaultValues: {
             projectId: "",
             projectScore: 0,
+            projectPriorityScore: 0,
             projectGoal: "",
             projectMotivation: "",
             projectStatus: "active",
