@@ -13,8 +13,11 @@ import {
 } from "@/components/ui/popover"
 
 const DatePickerWithRange = React.forwardRef<
-HTMLDivElement,
-{ className?: string; onChange?: (date: DateRange | undefined) => void }
+  HTMLDivElement,
+  { 
+    className?: string; 
+    onChange?: (date: DateRange | undefined) => void 
+  }
 >(({ className, onChange }, ref) => {
 
   const [date, setDate] = React.useState<DateRange | undefined>({
