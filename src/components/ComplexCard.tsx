@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import EditProjectForm from "./EditProjectForm";
+import AddTaskForm from "./addTaskForm";
 
 interface ComplexCardProps {
     key: string,
@@ -62,12 +63,18 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                 <AccordionItem value="item-1">
                     <AccordionTrigger>tasks</AccordionTrigger>
                     <AccordionContent>
-                        <div className="pb-4"><Button variant={"secondary"}>add task</Button></div>
+                        <AddTaskForm
+                            project={project}
+                            projectDataState={projectDataState}
+                            setProjectDataState={setProjectDataState}
+                        />
                         <section className="flex flex-col gap-4">
                             {project.projectTasks && project.projectTasks.map((task, index) => (
                                 <TaskCard
                                     key={task.taskId}
-                                    taskDesc={task.taskDesc}
+                                    index={index}
+                                    task={task}
+                                    setProjectDataState={setProjectDataState}
                                     onTaskMoveUp={() => moveTask(index, -1)}
                                     onTaskMoveDown={() => moveTask(index, 1)}
                                 />
@@ -88,14 +95,14 @@ interface TaskCardProps {
     onTaskMoveDown: () => void,
 }
 
-function TaskCard({ taskDesc, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
+function TaskCard({ task, index, setProjectDataState, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
 
     return (
         <div className="flex flex-col gap-2 border-2 border-gray-400 rounded-md p-4">
-            <span>{taskDesc}</span>
+            <span>{task.taskDesc}</span>
                 <div className="flex justify-center items-center gap-2">
                     <Button variant={"ghost"} className="text-lg rotate-180" onClick={onTaskMoveDown}> <span className="translate-y-1">^</span> </Button>
-                    <Button variant={"outline"} className="text-sm"> edit </Button>
+                    {/* <EditTaskForm /> */}
                     <Button variant={"ghost"} className="text-lg" onClick={onTaskMoveUp}><span className="translate-y-1">^</span> </Button>
                 </div>
         </div>
