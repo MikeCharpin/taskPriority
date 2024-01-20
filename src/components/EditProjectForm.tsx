@@ -58,9 +58,18 @@ const formSchema = z.object({
         to: z.date()
     }),
     projectTasks: z.array(z.object({
-        taskId: z.string(),
-        taskProject: z.string(),
-        taskDesc: z.string(),
+       taskId: z.string(),
+    taskScore: z.number(),
+    taskDesc: z.string().min(10, {
+        message: "Goal must be at least 10 characters.",
+    }).max(120, {
+        message: "120 character limit."
+    }),
+    taskStatus: z.string(),
+    taskDuration: z.number().default(1),
+    taskComplexity: z.string(),
+    taskExcitement: z.string(),
+    taskProject:z.string(),
     }))
 })
 
