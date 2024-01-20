@@ -1,6 +1,5 @@
 
 export interface GoalData {
-    // Change to string when reverting back to using uuid.
     goalId: string, 
     goalDesc: string,
     goalStatus: string,
@@ -26,8 +25,13 @@ export interface ProjectData {
 
 export interface TaskData {
     taskId: string,
+    taskScore: number,
+    taskDuration: number,
     taskProject: string,
     taskDesc: string,
+    taskComplexity: string,
+    taskExcitement: string,
+    taskStatus: string,
 }
 
 export interface FlatFakeDataType {
@@ -89,6 +93,11 @@ export const flatFakeData = {
             projectTasks: [
                 {
                     taskId: "111",
+                    taskScore: 0,
+                    taskStatus: "active",
+                    taskDuration: 20,
+                    taskComplexity: "low",
+                    taskExcitement: "high",
                     taskProject: "11",
                     taskDesc: "This is a task - 111"
                 },

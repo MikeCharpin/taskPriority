@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion"
 import EditProjectForm from "./EditProjectForm";
 import AddTaskForm from "./addTaskForm";
+import EditTaskForm from "./EditTaskForm";
 
 interface ComplexCardProps {
     key: string,
@@ -74,6 +75,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                                     key={task.taskId}
                                     index={index}
                                     task={task}
+                                    projectDataState={projectDataState}
                                     setProjectDataState={setProjectDataState}
                                     onTaskMoveUp={() => moveTask(index, -1)}
                                     onTaskMoveDown={() => moveTask(index, 1)}
@@ -90,19 +92,27 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
 
 interface TaskCardProps {
     key: string,
-    taskDesc: string,
+    index: number,
+    task: TaskData,
+    projectDataState: ProjectData[],
+    setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     onTaskMoveUp: () => void,
     onTaskMoveDown: () => void,
 }
 
-function TaskCard({ task, index, setProjectDataState, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
+function TaskCard({ task, index, projectDataState, setProjectDataState, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
 
     return (
         <div className="flex flex-col gap-2 border-2 border-gray-400 rounded-md p-4">
             <span>{task.taskDesc}</span>
                 <div className="flex justify-center items-center gap-2">
                     <Button variant={"ghost"} className="text-lg rotate-180" onClick={onTaskMoveDown}> <span className="translate-y-1">^</span> </Button>
-                    {/* <EditTaskForm /> */}
+                    <EditTaskForm 
+                        task={task}
+                        index={index}
+                        projectDataState={projectDataState}
+                        setProjectDataState={setProjectDataState}
+                    />
                     <Button variant={"ghost"} className="text-lg" onClick={onTaskMoveUp}><span className="translate-y-1">^</span> </Button>
                 </div>
         </div>
