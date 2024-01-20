@@ -7,6 +7,7 @@ export interface GoalData {
     goalComplexity: string,
     goalExcitement: string,
     goalMotivation: string,
+    goalColor: string,
 }
 
 export interface ProjectData {
@@ -54,6 +55,7 @@ export const flatFakeData = {
             goalComplexity: "high",
             goalExcitement: "high",
             goalMotivation: "",
+            goalColor: "bg-[#3B82F6]"
        },
         {
             goalId: "2",
@@ -63,6 +65,7 @@ export const flatFakeData = {
             goalComplexity: "low",
             goalExcitement: "low",
             goalMotivation: "",
+            goalColor: "bg-[#A21CAF]"
 
         },
         {
@@ -73,6 +76,7 @@ export const flatFakeData = {
             goalComplexity: "high",
             goalExcitement: "high",
             goalMotivation: "",
+            goalColor: "bg-[#991B1B]"
         },
     ],
     projectData: [
@@ -101,21 +105,7 @@ export const flatFakeData = {
                     taskProject: "11",
                     taskDesc: "This is a task - 111"
                 },
-                {
-                    taskId: "112",
-                    taskProject: "11",
-                    taskDesc: "This is a task - 112"
-                },
-                {
-                    taskId: "113",
-                    taskProject: "11",
-                    taskDesc: "This is a task - 111"
-                },
-                {
-                    taskId: "114",
-                    taskProject: "11",
-                    taskDesc: "This is a task - 112"
-                },
+                
             ]
         },
         {
@@ -170,11 +160,6 @@ export const flatFakeData = {
                 to: new Date("2022-01-31T05:00:00.000Z")
             },
             projectTasks: [
-                {
-                    taskId: "211",
-                    taskProject: "21",
-                    taskDesc: "This is a task - 211"
-                },
             ]
         },
         {

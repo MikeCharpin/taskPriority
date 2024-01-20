@@ -27,6 +27,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { v4 as uuidv4 } from 'uuid';
 import { GoalData } from "@/data/flatFakeData"
+import { GradientPicker } from "./ui/GradientPicker"
+import { useState } from "react"
 
 const formSchema = z.object({
     goalId: z.string(),
@@ -44,6 +46,7 @@ const formSchema = z.object({
     goalExcitement: z.enum(["low", "medium", "high"], {
         required_error: "How pumped are you to achieve this goal?"
     }),
+    goalColor: z.string(),
 })
 
 interface AddGoalFormProps {
@@ -53,6 +56,7 @@ interface AddGoalFormProps {
 }
 
 export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalScore }: AddGoalFormProps ) {
+    const [background, setBackground] = useState('#B4D455')
 
     const addGoal = (newGoal: GoalData) => {
         const updatedGoalState = [...goalDataState]
@@ -70,7 +74,8 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
         goalStatus: "active",
         goalDesc: "",
         goalComplexity: "medium",
-        goalExcitement: "medium"
+        goalExcitement: "medium",
+        goalColor: "bg-[#115E59]"
     },
   })
 
@@ -78,6 +83,7 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
 
   function onSubmit(newGoal: z.infer<typeof formSchema>) {
     newGoal.goalId = uuidv4()
+    newGoal.goalColor = background
     console.log(newGoal)
     calcGoalScore(newGoal)
     console.log(newGoal)
@@ -88,7 +94,7 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
         <DialogTrigger asChild>
             <Button variant="secondary">add goal</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
             <DialogTitle>add a goal</DialogTitle>
             <DialogDescription>
@@ -213,6 +219,10 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
                             </FormItem>
                         )}
                     />
+                    <GradientPicker
+                                    background={background}
+                                    setBackground={setBackground}
+                                />
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button type="submit">add</Button>

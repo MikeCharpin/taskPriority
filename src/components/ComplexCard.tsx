@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import EditProjectForm from "./EditProjectForm";
-import AddTaskForm from "./addTaskForm";
+import AddTaskForm from "./AddTaskForm";
 import EditTaskForm from "./EditTaskForm";
 
 interface ComplexCardProps {

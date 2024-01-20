@@ -64,8 +64,17 @@ const formSchema = z.object({
     }),
     projectTasks: z.array(z.object({
         taskId: z.string(),
-        taskProject: z.string(),
-        taskDesc: z.string(),
+    taskScore: z.number(),
+    taskDesc: z.string().min(10, {
+        message: "Goal must be at least 10 characters.",
+    }).max(120, {
+        message: "120 character limit."
+    }),
+    taskStatus: z.string(),
+    taskDuration: z.number().default(1),
+    taskComplexity: z.string(),
+    taskExcitement: z.string(),
+    taskProject:z.string(),
     }))
 })
 
@@ -80,6 +89,8 @@ interface AddProjectFormProps {
 export default function AddProjectForm({ projectDataState, setProjectDataState, goalDataState, calcProjectScore}: AddProjectFormProps ) {
 
     const addProject = (newProject: ProjectData) => {
+        newProject.projectId = uuidv4()
+        calcProjectScore(newProject)
         const updatedGoalState = [...projectDataState]
         updatedGoalState.push(newProject)
         setProjectDataState(updatedGoalState)
@@ -109,8 +120,6 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
     const { reset } = form
 
     function onSubmit(newProject: z.infer<typeof formSchema>) {
-        newProject.projectId = uuidv4()
-        calcProjectScore(newProject)
         addProject(newProject)
     }
 
@@ -141,7 +150,6 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {/* <SelectItem value="This is the goal value" key={uuidv4()}>This is a goal</SelectItem> */}
                                     {goalDataState && goalDataState.map((goal) => (
                                         <SelectItem value={goal.goalId} key={goal.goalId}>{goal.goalDesc}</SelectItem>
                                     ))}

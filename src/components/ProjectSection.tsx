@@ -1,6 +1,6 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
 import ComplexCard from "./ComplexCard";
-import AddProjectForm from "./addProjectForm";
+import AddProjectForm from "./AddProjectForm";
 
 
 interface ProjectSectionProps {

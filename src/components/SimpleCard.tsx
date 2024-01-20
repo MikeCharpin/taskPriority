@@ -4,6 +4,7 @@ import EditGoalForm from "./EditGoalForm";
 
 interface SimpleCardProps {
     goal: GoalData,
+    background: string,
     index: number,
     onMoveUp: () => void,
     onMoveDown: () => void,
@@ -12,10 +13,12 @@ interface SimpleCardProps {
     setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>,
 }
 
-const SimpleCard: React.FC<SimpleCardProps> = ({ goal, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState }) => {
+const SimpleCard: React.FC<SimpleCardProps> = ({ goal, background, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState }) => {
+
+    
 
     return (
-        <div className="border-2 border-primary rounded-md px-8 py-4">
+        <div className="border-2 border-primary rounded-md px-8 py-4" style={{ background }}>
             <h1 className="pb-4">{ goal.goalDesc }</h1>
             <nav className="flex justify-between items-center gap-2">
                 <Button variant={"ghost"} className="text-3xl rotate-180" onClick={onMoveDown}> <span className="translate-y-1">^</span> </Button>

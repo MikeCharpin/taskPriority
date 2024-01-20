@@ -1,7 +1,7 @@
 import { GoalData } from "@/data/flatFakeData";
 import SimpleCard from "./SimpleCard";
 
-import AddGoalForm from "./addGoalForm";
+import AddGoalForm from "./AddGoalForm";
 
 interface GoalSectionProps  {
     goalDataState: GoalData[], 
@@ -37,6 +37,7 @@ export function GoalSection({ goalDataState, setGoalDataState, calcGoalScore }: 
                     <SimpleCard 
                     key={goal.goalId}
                     goal={goal}
+                    background={goal.goalColor}
                     index={index}
                     onMoveUp={() => moveGoal(index, -1)}
                     onMoveDown={() => moveGoal(index, 1)}
