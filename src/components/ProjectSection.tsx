@@ -18,7 +18,6 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
         const tempProject = updatedData[currentIndex]
         updatedData[currentIndex] = updatedData[newIndex]
         updatedData[newIndex] = tempProject
-        console.log(updatedData)
         setProjectDataState(updatedData)
     }
 

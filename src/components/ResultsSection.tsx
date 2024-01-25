@@ -14,6 +14,7 @@ export default function ResultsSection({ sortedProjectState }: ResultsSectionPro
                 <PriorityCard
                     key={project.projectId}
                     projectDesc={project.projectDesc}
+                    background={project.projectColor}
                 />
             )}
             
@@ -24,12 +25,14 @@ export default function ResultsSection({ sortedProjectState }: ResultsSectionPro
 
 interface PriortityCardProps {
     projectDesc: string,
+    background: string | undefined,
     key: string
 }
 
-function PriorityCard({ projectDesc }: PriortityCardProps) {
+function PriorityCard({ projectDesc, background }: PriortityCardProps) {
+
     return (
-        <div className=" max-w-[40dvh] border-2 border-primary rounded-md px-8 py-4">
+        <div className=" max-w-[40dvh] min-w-[24rem] rounded-2xl px-8 py-4" style={{ background }}>
             {projectDesc}
         </div>
     )

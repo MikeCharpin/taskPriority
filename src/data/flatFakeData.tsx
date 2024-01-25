@@ -12,6 +12,7 @@ export interface GoalData {
 
 export interface ProjectData {
     projectId: string,
+    projectColor: string | undefined,
     projectDesc: string,
     projectGoal: string,
     projectMotivation: string,
@@ -55,7 +56,7 @@ export const flatFakeData = {
             goalComplexity: "high",
             goalExcitement: "high",
             goalMotivation: "",
-            goalColor: "bg-[#3B82F6]"
+            goalColor: "#3B82F6"
        },
         {
             goalId: "2",
@@ -65,7 +66,7 @@ export const flatFakeData = {
             goalComplexity: "low",
             goalExcitement: "low",
             goalMotivation: "",
-            goalColor: "bg-[#A21CAF]"
+            goalColor: "#A21CAF"
 
         },
         {
@@ -76,12 +77,13 @@ export const flatFakeData = {
             goalComplexity: "high",
             goalExcitement: "high",
             goalMotivation: "",
-            goalColor: "bg-[#991B1B]"
+            goalColor: "#991B1B"
         },
     ],
     projectData: [
         {
             projectId: "11",
+            projectColor: "",
             projectDesc: "This is project #1",
             projectGoal: "1",
             projectMotivation:"",
@@ -110,6 +112,7 @@ export const flatFakeData = {
         },
         {
             projectId: "12",
+            projectColor: "",
             projectDesc: "This is project #2",
             projectGoal: "1",
             projectMotivation:"",
@@ -128,6 +131,7 @@ export const flatFakeData = {
         },
             {
             projectId: "13",
+            projectColor: "",
             projectDesc: "This is project #3",
             projectGoal: "1",
             projectMotivation:"",
@@ -147,6 +151,7 @@ export const flatFakeData = {
         },
         {
             projectId: "21",
+            projectColor: "",
             projectDesc: "This is project #4",
             projectGoal: "2",
             projectMotivation:"",
@@ -164,6 +169,7 @@ export const flatFakeData = {
         },
         {
             projectId: "22",
+            projectColor: "",
             projectDesc: "This is project #5",
             projectGoal: "2",
             projectMotivation:"",

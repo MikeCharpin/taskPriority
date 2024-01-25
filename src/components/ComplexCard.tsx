@@ -45,8 +45,12 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
         setProjectDataState(updatedProjectData)
     }
 
+    const projectGoalColor = goalDataState.find((goal)  => (goal.goalId === project.projectGoal))?.goalColor
+
+    const background = projectGoalColor
+
     return (
-        <div className="border-2 border-primary rounded-md px-8 py-4">
+        <div className="border-2 border-primary rounded-md px-8 py-4" style={{ background }}>
             <h1 className="pb-4">{ project.projectDesc }</h1>
             <nav className="flex justify-between items-center gap-2">
                 <Button variant={"ghost"} className="text-3xl rotate-180 -translate-y-1" onClick={onMoveDown}> ^ </Button>

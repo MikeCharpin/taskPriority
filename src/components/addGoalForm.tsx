@@ -56,7 +56,7 @@ interface AddGoalFormProps {
 }
 
 export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalScore }: AddGoalFormProps ) {
-    const [background, setBackground] = useState('#B4D455')
+    const [background, setBackground] = useState('#075985')
 
     const addGoal = (newGoal: GoalData) => {
         const updatedGoalState = [...goalDataState]
