@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -43,7 +43,6 @@ import React from "react"
 const formSchema = z.object({
     projectId: z.string(),
     projectScore: z.number(),
-    projectColor: z.string(),
     projectPriorityScore: z.number(),
     projectGoal: z.string(),
     projectDesc: z.string().min(10, {
@@ -98,12 +97,11 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
         reset()
     }
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             projectId: "",
             projectScore: 0,
-            projectColor: "",
             projectPriorityScore: 0,
             projectGoal: "",
             projectMotivation: "",
@@ -119,9 +117,10 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
         },
     })
 
-    const { reset } = form
+    const { reset, formState } = form
+    const { isValid } = formState
 
-    function onSubmit(newProject: z.infer<typeof formSchema>) {
+    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (newProject: z.infer<typeof formSchema>) => {
         addProject(newProject)
     }
 
@@ -145,12 +144,7 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
                         render={({ field }) => (
                             <FormItem>
                             <FormLabel>goal</FormLabel>
-                            <Select onValueChange={(selectedGoal) => {
-                                const selectedGoalObj = goalDataState.find((goal) => goal.goalId === selectedGoal)
-                                field.onChange(selectedGoal)
-                                form.setValue('projectColor', selectedGoalObj ? selectedGoalObj.goalColor : '')
-                            }}
-                            defaultValue="field.value">
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Which goal are you working towards?" />
@@ -302,7 +296,7 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
                     />
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button type="submit">add</Button>
+                            <Button type="submit" disabled={!isValid}>add</Button>
                         </DialogClose>
                     </DialogFooter>
                 </form>

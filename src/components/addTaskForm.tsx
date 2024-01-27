@@ -80,7 +80,8 @@ export default function AddTaskForm({ project, projectDataState, setProjectDataS
     },
   })
 
-    const { reset } = form
+    const { reset, formState } = form
+    const { isValid } = formState
 
   function onSubmit(newTask: z.infer<typeof formSchema>) {
     newTask.taskId = uuidv4()
@@ -229,7 +230,7 @@ export default function AddTaskForm({ project, projectDataState, setProjectDataS
                     />
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button type="submit">add</Button>
+                            <Button type="submit" disabled={!isValid}>add</Button>
                         </DialogClose>
                     </DialogFooter>
                 </form>

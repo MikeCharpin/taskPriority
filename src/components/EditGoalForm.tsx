@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -26,6 +26,8 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { GoalData } from "@/data/flatFakeData"
+import { GradientPicker } from "./ui/GradientPicker"
+import { useState } from "react"
 
 const formSchema = z.object({
     goalId: z.string(),
@@ -39,6 +41,7 @@ const formSchema = z.object({
     goalMotivation: z.string(),
     goalComplexity: z.string(),
     goalExcitement: z.string(),
+    goalColor: z.string(),
 })
 
 interface EditGoalFormProps {
@@ -50,7 +53,7 @@ interface EditGoalFormProps {
 }
 
 const EditGoalForm = ({ goal, index, calcGoalScore, goalDataState, setGoalDataState }: EditGoalFormProps ) => {
-
+    const [background, setBackground] = useState(goal.goalColor)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,11 +63,16 @@ const EditGoalForm = ({ goal, index, calcGoalScore, goalDataState, setGoalDataSt
         goalStatus: goal.goalMotivation,
         goalDesc: goal.goalDesc,
         goalComplexity: goal.goalComplexity,
-        goalExcitement: goal.goalExcitement
+        goalExcitement: goal.goalExcitement,
+        goalColor: goal.goalColor,
     },
   })
 
-  function onSubmit(editedGoal: GoalData) {
+  const { formState } = form
+  const { isValid } = formState
+
+  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (editedGoal: GoalData) => {
+    editedGoal.goalColor = background
     calcGoalScore(editedGoal)
     const updatedGoalState = [...goalDataState]
     updatedGoalState[index] = editedGoal
@@ -79,7 +87,7 @@ const EditGoalForm = ({ goal, index, calcGoalScore, goalDataState, setGoalDataSt
         <DialogTrigger asChild>
             <Button variant="secondary">edit goal</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
             <DialogTitle>edit a goal</DialogTitle>
             <DialogDescription>
@@ -204,9 +212,13 @@ const EditGoalForm = ({ goal, index, calcGoalScore, goalDataState, setGoalDataSt
                             </FormItem>
                         )}
                     />
+                    <GradientPicker
+                                    background={background}
+                                    setBackground={setBackground}
+                                />
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button type="submit">save</Button>
+                            <Button type="submit" disabled={!isValid}>save</Button>
                         </DialogClose>
                     </DialogFooter>
                 </form>

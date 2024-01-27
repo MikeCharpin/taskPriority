@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -57,6 +57,7 @@ interface AddGoalFormProps {
 
 export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalScore }: AddGoalFormProps ) {
     const [background, setBackground] = useState('#075985')
+    
 
     const addGoal = (newGoal: GoalData) => {
         const updatedGoalState = [...goalDataState]
@@ -65,7 +66,7 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
         reset()
     }
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>> ({
     resolver: zodResolver(formSchema),
     defaultValues: {
         goalId: "",
@@ -79,9 +80,10 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
     },
   })
 
-    const { reset } = form
+    const { reset, formState } = form
+    const { isValid } = formState
 
-  function onSubmit(newGoal: z.infer<typeof formSchema>) {
+  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (newGoal: GoalData) => {
     newGoal.goalId = uuidv4()
     newGoal.goalColor = background
     console.log(newGoal)
@@ -225,7 +227,7 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
                                 />
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button type="submit">add</Button>
+                            <Button type="submit" disabled={!isValid}>add</Button>
                         </DialogClose>
                     </DialogFooter>
                 </form>

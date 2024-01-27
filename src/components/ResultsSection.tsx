@@ -1,10 +1,11 @@
-import { ProjectData } from "@/data/flatFakeData"
+import { GoalData, ProjectData } from "@/data/flatFakeData"
 
 interface ResultsSectionProps {
     sortedProjectState: ProjectData[],
+    goalDataState: GoalData[]
 }
 
-export default function ResultsSection({ sortedProjectState }: ResultsSectionProps) {
+export default function ResultsSection({ sortedProjectState, goalDataState }: ResultsSectionProps) {
 
 
     return (
@@ -13,8 +14,8 @@ export default function ResultsSection({ sortedProjectState }: ResultsSectionPro
             {sortedProjectState.map((project) => 
                 <PriorityCard
                     key={project.projectId}
-                    projectDesc={project.projectDesc}
-                    background={project.projectColor}
+                    project={project}
+                    goalDataState={goalDataState}
                 />
             )}
             
@@ -24,16 +25,20 @@ export default function ResultsSection({ sortedProjectState }: ResultsSectionPro
 }
 
 interface PriortityCardProps {
-    projectDesc: string,
-    background: string | undefined,
+    project: ProjectData
+    goalDataState: GoalData[]
     key: string
 }
 
-function PriorityCard({ projectDesc, background }: PriortityCardProps) {
+function PriorityCard({ project, goalDataState }: PriortityCardProps) {
+
+    const projectColor = goalDataState.find((goal) => (goal.goalId === project.projectGoal))?.goalColor
+
+    const background = projectColor
 
     return (
         <div className=" max-w-[40dvh] min-w-[24rem] rounded-2xl px-8 py-4" style={{ background }}>
-            {projectDesc}
+            { project.projectDesc }
         </div>
     )
 }

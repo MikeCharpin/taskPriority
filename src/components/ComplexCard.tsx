@@ -45,7 +45,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
         setProjectDataState(updatedProjectData)
     }
 
-    const projectGoalColor = goalDataState.find((goal)  => (goal.goalId === project.projectGoal))?.goalColor
+    const projectGoalColor = goalDataState.find((goal) => (goal.goalId === project.projectGoal))?.goalColor
 
     const background = projectGoalColor
 

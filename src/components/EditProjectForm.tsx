@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -105,7 +105,7 @@ export default function EditProjectForm({ project, index, projectDataState, setP
     })
 
 
-    function onSubmit(editedProject: ProjectData) {
+    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (editedProject: ProjectData) => {
         calcProjectScore(editedProject)
         const updatedProjectState = [...projectDataState]
         updatedProjectState[index] = editedProject
