@@ -43,6 +43,7 @@ import React from "react"
 const formSchema = z.object({
     projectId: z.string(),
     projectScore: z.number(),
+    projectColor: z.string(),
     projectPriorityScore: z.number(),
     projectGoal: z.string(),
     projectDesc: z.string().min(10, {
@@ -102,6 +103,7 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
         defaultValues: {
             projectId: "",
             projectScore: 0,
+            projectColor: "",
             projectPriorityScore: 0,
             projectGoal: "",
             projectMotivation: "",
@@ -143,7 +145,12 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
                         render={({ field }) => (
                             <FormItem>
                             <FormLabel>goal</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={(selectedGoal) => {
+                                const selectedGoalObj = goalDataState.find((goal) => goal.goalId === selectedGoal)
+                                field.onChange(selectedGoal)
+                                form.setValue('projectColor', selectedGoalObj ? selectedGoalObj.goalColor : '')
+                            }}
+                            defaultValue="field.value">
                                 <FormControl>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Which goal are you working towards?" />

@@ -12,7 +12,7 @@ export interface GoalData {
 
 export interface ProjectData {
     projectId: string,
-    projectColor: string | undefined,
+    projectColor: string,
     projectDesc: string,
     projectGoal: string,
     projectMotivation: string,
@@ -83,7 +83,7 @@ export const flatFakeData = {
     projectData: [
         {
             projectId: "11",
-            projectColor: "",
+            projectColor: "#3B82F6",
             projectDesc: "This is project #1",
             projectGoal: "1",
             projectMotivation:"",
@@ -112,7 +112,7 @@ export const flatFakeData = {
         },
         {
             projectId: "12",
-            projectColor: "",
+            projectColor: "#3B82F6",
             projectDesc: "This is project #2",
             projectGoal: "1",
             projectMotivation:"",
@@ -131,7 +131,7 @@ export const flatFakeData = {
         },
             {
             projectId: "13",
-            projectColor: "",
+            projectColor: "#3B82F6",
             projectDesc: "This is project #3",
             projectGoal: "1",
             projectMotivation:"",
@@ -151,7 +151,7 @@ export const flatFakeData = {
         },
         {
             projectId: "21",
-            projectColor: "",
+            projectColor: "#A21CAF",
             projectDesc: "This is project #4",
             projectGoal: "2",
             projectMotivation:"",
@@ -169,7 +169,7 @@ export const flatFakeData = {
         },
         {
             projectId: "22",
-            projectColor: "",
+            projectColor: "#A21CAF",
             projectDesc: "This is project #5",
             projectGoal: "2",
             projectMotivation:"",

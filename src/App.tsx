@@ -66,7 +66,7 @@ function App() {
       return
     })
 
-    updatedProjectDataState.map((project) => project.projectColor = updatedGoalDataState.find((goal)  => (goal.goalId === project.projectGoal))?.goalColor)
+    
     
     return updatedProjectDataState.sort((a,b) => b.projectPriorityScore - a.projectPriorityScore)
   }
