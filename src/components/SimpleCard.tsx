@@ -18,7 +18,7 @@ const SimpleCard: React.FC<SimpleCardProps> = ({ goal, background, index, onMove
     
 
     return (
-        <div className="border-2 border-primary rounded-md px-8 py-4" style={{ background }}>
+        <div className=" rounded-2xl px-8 py-4" style={{ background }}>
             <h1 className="pb-4">{ goal.goalDesc }</h1>
             <nav className="flex justify-between items-center gap-2">
                 <Button variant={"ghost"} className="text-3xl rotate-180" onClick={onMoveDown}> <span className="translate-y-1">^</span> </Button>
