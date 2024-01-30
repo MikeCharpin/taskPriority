@@ -7,8 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import EditProjectForm from "./EditProjectForm";
-import AddTaskForm from "./AddTaskForm";
-import EditTaskForm from "./EditTaskForm";
+import TaskForm from "./TaskForm";
 
 interface ComplexCardProps {
     key: string,
@@ -68,7 +67,8 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                 <AccordionItem value="item-1">
                     <AccordionTrigger>tasks</AccordionTrigger>
                     <AccordionContent>
-                        <AddTaskForm
+                        <TaskForm
+                            mode={"add"}
                             project={project}
                             projectDataState={projectDataState}
                             setProjectDataState={setProjectDataState}
@@ -111,7 +111,9 @@ function TaskCard({ task, index, projectDataState, setProjectDataState, onTaskMo
             <span>{task.taskDesc}</span>
                 <div className="flex justify-center items-center gap-2">
                     <Button variant={"ghost"} className="text-lg rotate-180" onClick={onTaskMoveDown}> <span className="translate-y-1">^</span> </Button>
-                    <EditTaskForm 
+                    <TaskForm 
+                        mode={"edit"}
+                        project={projectDataState[index]}
                         task={task}
                         index={index}
                         projectDataState={projectDataState}
