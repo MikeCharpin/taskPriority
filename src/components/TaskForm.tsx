@@ -51,7 +51,8 @@ interface TaskFormProps {
     projectDataState: ProjectData[]
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>
     task?: TaskData
-    index?: number | undefined    
+    index?: number | undefined 
+    background?: string | undefined   
 }
 
 export default function TaskForm({
@@ -61,6 +62,7 @@ export default function TaskForm({
     setProjectDataState,
     task,
     index,
+    background,
 }: TaskFormProps) {
     const addTask = (newTask: TaskData) => {
         const updatedProjectState = [...projectDataState]
@@ -148,7 +150,7 @@ export default function TaskForm({
         <DialogTrigger asChild>
             <Button variant="secondary">{mode === "add" ? "add task" : "edit task"}</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
             <DialogTitle>edit a task</DialogTitle>
             <DialogDescription>

@@ -49,7 +49,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
     const background = projectGoalColor
 
     return (
-        <div className="border-2 border-primary rounded-md px-8 py-4" style={{ background }}>
+        <div className=" rounded-2xl px-8 py-4" style={{ background }}>
             <h1 className="pb-4">{ project.projectDesc }</h1>
             <nav className="flex justify-between items-center gap-2">
                 <Button variant={"ghost"} className="text-3xl rotate-180 -translate-y-1" onClick={onMoveDown}> ^ </Button>
@@ -70,6 +70,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                         <TaskForm
                             mode={"add"}
                             project={project}
+                            background={projectGoalColor}
                             projectDataState={projectDataState}
                             setProjectDataState={setProjectDataState}
                         />
@@ -80,6 +81,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                                     index={index}
                                     task={task}
                                     projectDataState={projectDataState}
+                                    background={projectGoalColor}
                                     setProjectDataState={setProjectDataState}
                                     onTaskMoveUp={() => moveTask(index, -1)}
                                     onTaskMoveDown={() => moveTask(index, 1)}
@@ -99,15 +101,16 @@ interface TaskCardProps {
     index: number,
     task: TaskData,
     projectDataState: ProjectData[],
+    background: string | undefined,
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     onTaskMoveUp: () => void,
     onTaskMoveDown: () => void,
 }
 
-function TaskCard({ task, index, projectDataState, setProjectDataState, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
+function TaskCard({ task, index, projectDataState, background, setProjectDataState, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
 
     return (
-        <div className="flex flex-col gap-2 border-2 border-gray-400 rounded-md p-4">
+        <div className="flex flex-col gap-2 border-2 border-gray-400 rounded-2xl p-4" style={{ background }}>
             <span>{task.taskDesc}</span>
                 <div className="flex justify-center items-center gap-2">
                     <Button variant={"ghost"} className="text-lg rotate-180" onClick={onTaskMoveDown}> <span className="translate-y-1">^</span> </Button>
@@ -116,6 +119,7 @@ function TaskCard({ task, index, projectDataState, setProjectDataState, onTaskMo
                         project={projectDataState[index]}
                         task={task}
                         index={index}
+                        background={background}
                         projectDataState={projectDataState}
                         setProjectDataState={setProjectDataState}
                     />
