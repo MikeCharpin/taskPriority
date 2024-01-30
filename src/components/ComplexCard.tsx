@@ -9,6 +9,7 @@ import {
 import EditProjectForm from "./EditProjectForm";
 import TaskForm from "./TaskForm";
 import TaskCard from "./TaskCard";
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 
 interface ComplexCardProps {
     key: string,
@@ -53,7 +54,7 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
         <div className=" rounded-2xl px-8 py-4" style={{ background }}>
             <h1 className="pb-4">{ project.projectDesc }</h1>
             <nav className="flex justify-between items-center gap-2">
-                <Button variant={"ghost"} className="text-3xl rotate-180 -translate-y-1" onClick={onMoveDown}> ^ </Button>
+                <Button variant={"ghost"}  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
                 <EditProjectForm 
                     project={project}
                     index={index}
@@ -62,19 +63,21 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                     projectDataState={projectDataState}
                     setProjectDataState={setProjectDataState}
                 />
-                <Button variant={"ghost"} className="text-3xl translate-y-1" onClick={onMoveUp}> ^ </Button>
+                <Button variant={"ghost"}  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
             </nav>
             <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
                     <AccordionTrigger>tasks</AccordionTrigger>
                     <AccordionContent>
-                        <TaskForm
-                            mode={"add"}
-                            project={project}
-                            background={projectGoalColor}
-                            projectDataState={projectDataState}
-                            setProjectDataState={setProjectDataState}
-                        />
+                        <div className="flex justify-center p-2">
+                            <TaskForm
+                                mode={"add"}
+                                project={project}
+                                background={projectGoalColor}
+                                projectDataState={projectDataState}
+                                setProjectDataState={setProjectDataState}
+                            />
+                        </div>
                         <section className="flex flex-col gap-4">
                             {project.projectTasks && project.projectTasks.map((task, index) => (
                                 <TaskCard

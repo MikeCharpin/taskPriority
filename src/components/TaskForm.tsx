@@ -26,6 +26,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { v4 as uuidv4 } from "uuid";
 import { ProjectData, TaskData } from "@/data/flatFakeData";
+import { PencilIcon, PlusIcon } from "lucide-react";
 
 const formSchema = z.object({
   taskId: z.string(),
@@ -148,7 +149,7 @@ export default function TaskForm({
     return (
         <Dialog>
         <DialogTrigger asChild>
-            <Button variant="secondary">{mode === "add" ? "add task" : "edit task"}</Button>
+            <Button variant="ghost" className="w-8 h-8 p-0">{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
