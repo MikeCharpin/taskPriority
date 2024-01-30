@@ -33,7 +33,6 @@ interface PriortityCardProps {
 function PriorityCard({ project, goalDataState }: PriortityCardProps) {
 
     const projectColor = goalDataState.find((goal) => (goal.goalId === project.projectGoal))?.goalColor
-
     const background = projectColor
 
     return (

@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
+//   FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+//   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -36,7 +36,7 @@ import { GoalData, ProjectData } from "@/data/flatFakeData"
 
 import DatePickerWithRange from "./PracticeDatePicker"
 
-import React from "react"
+import React, { useState } from "react"
 
 
 const formSchema = z.object({
@@ -58,7 +58,7 @@ const formSchema = z.object({
         to: z.date()
     }),
     projectTasks: z.array(z.object({
-       taskId: z.string(),
+        taskId: z.string(),
     taskScore: z.number(),
     taskDesc: z.string().min(10, {
         message: "Goal must be at least 10 characters.",
@@ -75,7 +75,7 @@ const formSchema = z.object({
 
 interface EditProjectFormProps {
     project: ProjectData,
-    index: number,
+    index: number, 
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     goalDataState: GoalData[],
@@ -85,11 +85,18 @@ interface EditProjectFormProps {
 
 export default function EditProjectForm({ project, index, projectDataState, setProjectDataState, goalDataState, calcProjectScore}: EditProjectFormProps ) {
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const [selectedGoalId, setSelectedGoalId] = useState<string | null>(project.projectGoal)
+    const handleGoalChange = (value: string) => {
+        setSelectedGoalId(value)
+    }
+    const background = selectedGoalId ? goalDataState.find((goal) => (goal.goalId === selectedGoalId))?.goalColor: undefined
+
+    const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             projectId: project.projectId,
             projectScore: project.projectScore,
+            projectPriorityScore: project.projectPriorityScore,
             projectGoal: project.projectGoal,
             projectMotivation: project.projectMotivation,
             projectStatus: project.projectStatus,
@@ -104,13 +111,19 @@ export default function EditProjectForm({ project, index, projectDataState, setP
         },
     })
 
+    const { formState } = form
+    const { isValid } = formState
 
-    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (editedProject: ProjectData) => {
+
+
+    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (editedProject: z.infer<typeof formSchema>) => {
+        console.log("edited project submitted.")
         calcProjectScore(editedProject)
         const updatedProjectState = [...projectDataState]
         updatedProjectState[index] = editedProject
         setProjectDataState(updatedProjectState)
         console.log(updatedProjectState)
+        
     }
 
   return (
@@ -118,12 +131,9 @@ export default function EditProjectForm({ project, index, projectDataState, setP
         <DialogTrigger asChild>
             <Button variant="secondary">edit project</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
-            <DialogTitle>add a project</DialogTitle>
-            <DialogDescription>
-                Should be specific with metrics for success.
-            </DialogDescription>
+            <DialogTitle>edit a project</DialogTitle>
             </DialogHeader>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -132,23 +142,19 @@ export default function EditProjectForm({ project, index, projectDataState, setP
                         name="projectGoal"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>goal</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormLabel>project goal</FormLabel>
+                            <Select onValueChange={(value) => {field.onChange(value); handleGoalChange(value); }} defaultValue={field.value}>
                                 <FormControl>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Which goal are you working towards?" />
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {/* <SelectItem value="This is the goal value" key={uuidv4()}>This is a goal</SelectItem> */}
                                     {goalDataState && goalDataState.map((goal) => (
                                         <SelectItem value={goal.goalId} key={goal.goalId}>{goal.goalDesc}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <FormDescription>
-                                This is the form description.
-                            </FormDescription>
                             <FormMessage />
                             </FormItem>
                         )}
@@ -158,14 +164,11 @@ export default function EditProjectForm({ project, index, projectDataState, setP
                     name="projectDesc"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>What are you trying to accomplish?</FormLabel>
+                        <FormLabel>what are you trying to accomplish in a month timeframe?</FormLabel>
                         
                         <FormControl>
                             <Input placeholder="Get hired in the tech industry ASAP." {...field} />
                         </FormControl>
-                        <FormDescription>
-                            What are you working towards for the next month?
-                        </FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}
@@ -175,8 +178,7 @@ export default function EditProjectForm({ project, index, projectDataState, setP
                     name="projectMotivation"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Why? What is your motivation?</FormLabel>
-                        
+                        <FormLabel>why this project?</FormLabel>
                         <FormControl>
                             <Textarea placeholder="I enjoy the challange of the problem selving and building products that people will use. I also need to pay rent." {...field} />
                         </FormControl>
@@ -189,104 +191,104 @@ export default function EditProjectForm({ project, index, projectDataState, setP
                     name="projectTimeframe"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>When do you aim to start and complete your project?</FormLabel>
+                        <FormLabel>when do you aim to start and complete your project?</FormLabel>
                         <FormControl>
                             <DatePickerWithRange {...field} />
                         </FormControl>
-                        <FormDescription>
-                            What are you working towards for the next month?
-                        </FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="projectComplexity"
-                        render={({ field }) => (
-                            <FormItem className="space-y-3">
-                            <FormLabel>complexity</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col justify-between items-startspace-y-1 gap-2"
-                                >
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="low" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-md">
-                                        small &nbsp; <span className="text-3xl">🍰</span>
-                                    </FormLabel>
+                    <div className="flex justify-center gap-16">
+                        <FormField
+                            control={form.control}
+                            name="projectComplexity"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormLabel>complexity</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col justify-between items-startspace-y-1 gap-2"
+                                    >
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="low" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-md">
+                                            small &nbsp; <span className="text-3xl">🍰</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="medium" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-2xl ">
+                                            medium &nbsp; <span className="text-3xl">🔨</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="high" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-4xl">
+                                            large &nbsp; <span className="text-3xl">🚀</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
                                 </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="medium" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-2xl ">
-                                        medium &nbsp; <span className="text-3xl">🔨</span>
-                                    </FormLabel>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="projectExcitement"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormLabel>excitement</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col justify-between space-y-1 "
+                                    >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="high" />
+                                        </FormControl>
+                                        <FormLabel className="text-4xl">
+                                            😄
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="medium" />
+                                        </FormControl>
+                                        <FormLabel className="text-4xl">
+                                            😏
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="low" />
+                                        </FormControl>
+                                        <FormLabel className="text-4xl">
+                                            😟
+                                        </FormLabel>
+                                    </FormItem>
+                        
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
                                 </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="high" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-4xl">
-                                        large &nbsp; <span className="text-3xl">🚀</span>
-                                    </FormLabel>
-                                </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="projectExcitement"
-                        render={({ field }) => (
-                            <FormItem className="space-y-3">
-                            <FormLabel>excitement</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col justify-between space-y-1 "
-                                >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="low" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                    😟
-                                    </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="medium" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                    😏
-                                    </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="high" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                        😄
-                                    </FormLabel>
-                                </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                            )}
+                        />
+                    </div>
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button type="submit">add</Button>
+                            <Button type="submit" disabled={!isValid}>edit</Button>
                         </DialogClose>
                     </DialogFooter>
                 </form>

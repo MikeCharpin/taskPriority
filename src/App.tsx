@@ -83,18 +83,21 @@ function App() {
                 sortedProjectState={calcAllScores(projectDataState, goalDataState)}
                 goalDataState={goalDataState}
               />
-            <div className="flex w-2/3 justify-center items-start border-2 border-grey-100 gap-2 px-4">
-              <GoalSection
-                goalDataState={goalDataState}
-                setGoalDataState={setGoalDataState}
-                calcGoalScore={calcGoalScore}
-              />
-              <ProjectSection
-                projectDataState={projectDataState} 
-                setProjectDataState={setProjectDataState}
-                goalDataState={goalDataState}
-                calcProjectScore={calcProjectScore}
-              />
+            <div className="flex flex-col justify-center items-center border-2 border-grey-100 px-4">
+              <h1 className="py-2 text-2xl font-semibold">Control Panel</h1>
+              <div className="flex w-2/3 justify-center items-start  gap-2 ">
+                <GoalSection
+                  goalDataState={goalDataState}
+                  setGoalDataState={setGoalDataState}
+                  calcGoalScore={calcGoalScore}
+                />
+                <ProjectSection
+                  projectDataState={projectDataState}
+                  setProjectDataState={setProjectDataState}
+                  goalDataState={goalDataState}
+                  calcProjectScore={calcProjectScore}
+                />
+              </div>
             </div>
           </main>
           <footer className="w-full h-16 flex flex-none justify-center items-center bg-black">

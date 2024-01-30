@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -99,10 +98,11 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
             <DialogTitle>add a goal</DialogTitle>
-            <DialogDescription>
-                Should be specific with metrics for success.
-            </DialogDescription>
             </DialogHeader>
+            <GradientPicker
+                        background={background}
+                        setBackground={setBackground}
+                    />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
@@ -110,13 +110,13 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
                     name="goalDesc"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>What are you trying to accomplish?</FormLabel>
+                        <FormLabel>what are you trying to accomplish in the next 6 months?</FormLabel>
                         
                         <FormControl>
                             <Input placeholder="Get hired in the tech industry ASAP." {...field} />
                         </FormControl>
                         <FormDescription>
-                            What are you working towards for the next 6 months?
+                            
                         </FormDescription>
                         <FormMessage />
                         </FormItem>
@@ -127,7 +127,7 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
                     name="goalMotivation"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Why? What is your motivation?</FormLabel>
+                        <FormLabel>why? how will this improve your life?</FormLabel>
                         
                         <FormControl>
                             <Textarea placeholder="I enjoy the challange of the problem selving and building products that people will use. I also need to pay rent." {...field} />
@@ -137,94 +137,94 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
                     )}
                     />
                     
-                    <FormField
-                        control={form.control}
-                        name="goalComplexity"
-                        render={({ field }) => (
-                            <FormItem className="space-y-3">
-                            <FormLabel>complexity</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col justify-between items-startspace-y-1 gap-2"
-                                >
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="low" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-md">
-                                        small &nbsp; <span className="text-3xl">🍰</span>
-                                    </FormLabel>
+                    <div className="flex justify-center gap-16">
+                        <FormField
+                            control={form.control}
+                            name="goalComplexity"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormLabel>complexity</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col justify-between items-startspace-y-1 gap-2"
+                                    >
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="low" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-md">
+                                            small &nbsp; <span className="text-3xl">🍰</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="medium" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-2xl ">
+                                            medium &nbsp; <span className="text-3xl">🔨</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="high" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-4xl">
+                                            large &nbsp; <span className="text-3xl">🚀</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
                                 </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="medium" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-2xl ">
-                                        medium &nbsp; <span className="text-3xl">🔨</span>
-                                    </FormLabel>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="goalExcitement"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormLabel>excitement</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col justify-between space-y-1 "
+                                    >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="high" />
+                                        </FormControl>
+                                        <FormLabel className="text-4xl">
+                                            😄
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="medium" />
+                                        </FormControl>
+                                        <FormLabel className="text-4xl">
+                                        😏
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="low" />
+                                        </FormControl>
+                                        <FormLabel className="text-4xl">
+                                        😟
+                                        </FormLabel>
+                                    </FormItem>
+                                    
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
                                 </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="high" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-4xl">
-                                        large &nbsp; <span className="text-3xl">🚀</span>
-                                    </FormLabel>
-                                </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="goalExcitement"
-                        render={({ field }) => (
-                            <FormItem className="space-y-3">
-                            <FormLabel>excitement</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col justify-between space-y-1 "
-                                >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="low" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                    😟
-                                    </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="medium" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                    😏
-                                    </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="high" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                        😄
-                                    </FormLabel>
-                                </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <GradientPicker
-                                    background={background}
-                                    setBackground={setBackground}
-                                />
+                            )}
+                        />
+                    </div>
+                    
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button type="submit" disabled={!isValid}>add</Button>
