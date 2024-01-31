@@ -23,13 +23,15 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
 
     return (
         <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
-            <h1 className="text-xl font-bold">Project Section</h1>
-            <AddProjectForm
-                projectDataState={projectDataState}
-                setProjectDataState={setProjectDataState}
-                goalDataState={goalDataState}
-                calcProjectScore={calcProjectScore}
-            />
+            <div className="flex justify-between">
+                <h1 className="text-xl font-bold">Project Section</h1>
+                <AddProjectForm
+                    projectDataState={projectDataState}
+                    setProjectDataState={setProjectDataState}
+                    goalDataState={goalDataState}
+                    calcProjectScore={calcProjectScore}
+                />
+            </div>
 
             <section className="flex flex-col gap-4">
                 {projectDataState.map((project, index) => (

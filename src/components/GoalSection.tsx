@@ -24,13 +24,15 @@ export function GoalSection({ goalDataState, setGoalDataState, calcGoalScore }: 
 
 
     return (
-        <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
-            <h1 className="text-xl font-bold">Goal Section</h1>
-            <AddGoalForm
-                goalDataState={goalDataState}
-                setGoalDataState={setGoalDataState}
-                calcGoalScore={calcGoalScore}
-            />
+        <div className="flex flex-col justify-center items-center p-4 border-2 border-blue-300 rounded-md">
+            <div className="flex justify-between items-center pb-4">
+                <h1 className="text-xl font-bold">Goal Section</h1>
+                <AddGoalForm
+                    goalDataState={goalDataState}
+                    setGoalDataState={setGoalDataState}
+                    calcGoalScore={calcGoalScore}
+                />
+            </div>
 
             <section className="flex flex-col gap-4">
                 {goalDataState.map((goal, index) => (

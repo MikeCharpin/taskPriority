@@ -19,21 +19,23 @@ const SimpleCard: React.FC<SimpleCardProps> = ({ goal, background, index, onMove
     
 
     return (
-        <div className=" rounded-2xl px-8 py-4" style={{ background }}>
-            <h1 className="pb-4">{ goal.goalDesc }</h1>
-            <nav className="flex justify-between items-center gap-2">
-                <Button variant={"ghost"}  onClick={onMoveDown}><ArrowDownIcon/></Button>
-                 <EditGoalForm
-                    goal={goal}
-                    index={index}
-                    calcGoalScore={calcGoalScore}
-                    goalDataState={goalDataState}
-                    setGoalDataState={setGoalDataState}
-                />
-                <Button variant={"ghost"} onClick={onMoveUp}><ArrowUpIcon/></Button>
+        <div className="w-64 rounded-2xl px-4 py-4" style={{ background }}>
+            <div className="flex justify-between items-start">
+                <span>{ goal.goalDesc }</span>
+                
+                <nav className="flex flex-col justify-end items-end">
+                <Button variant={"ghost"} className="p-0" onClick={onMoveUp}><ArrowUpIcon/></Button>
+                <Button variant={"ghost"} className="p-0" onClick={onMoveDown}><ArrowDownIcon/></Button>
             </nav>
+            </div>
+            <EditGoalForm
+                goal={goal}
+                index={index}
+                calcGoalScore={calcGoalScore}
+                goalDataState={goalDataState}
+                setGoalDataState={setGoalDataState}
+            />
             
-           
         </div>
     )
 }

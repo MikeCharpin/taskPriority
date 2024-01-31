@@ -28,6 +28,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { GoalData } from "@/data/flatFakeData"
 import { GradientPicker } from "./ui/GradientPicker"
 import { useState } from "react"
+import { PlusIcon } from "lucide-react"
 
 const formSchema = z.object({
     goalId: z.string(),
@@ -93,7 +94,7 @@ export default function AddGoalForm({ goalDataState, setGoalDataState, calcGoalS
   return (
     <Dialog>
         <DialogTrigger asChild>
-            <Button variant="secondary">add goal</Button>
+            <Button variant="ghost"><PlusIcon/></Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>

@@ -37,6 +37,7 @@ import { GoalData, ProjectData } from "@/data/flatFakeData"
 import DatePickerWithRange from "./PracticeDatePicker"
 
 import React, { useState } from "react"
+import { PencilIcon } from "lucide-react"
 
 
 const formSchema = z.object({
@@ -129,7 +130,7 @@ export default function EditProjectForm({ project, index, projectDataState, setP
   return (
     <Dialog>
         <DialogTrigger asChild>
-            <Button variant="secondary">edit project</Button>
+            <Button variant="ghost" className="p-0"><PencilIcon/></Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>

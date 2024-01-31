@@ -51,11 +51,15 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
     const background = projectGoalColor
 
     return (
-        <div className=" rounded-2xl px-8 py-4" style={{ background }}>
-            <h1 className="pb-4">{ project.projectDesc }</h1>
-            <nav className="flex justify-between items-center gap-2">
-                <Button variant={"ghost"}  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
-                <EditProjectForm 
+        <div className="w-64 rounded-2xl px-4 py-4" style={{ background }}>
+            <div className="flex justify-between items-start">
+                <h1 className="pb-4">{ project.projectDesc }</h1>
+                <nav className="flex flex-col justify-between items-center gap-2">
+                    <Button variant={"ghost"}  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
+                    <Button variant={"ghost"}  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
+                </nav>
+            </div>
+            <EditProjectForm 
                     project={project}
                     index={index}
                     goalDataState={goalDataState}
@@ -63,8 +67,6 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                     projectDataState={projectDataState}
                     setProjectDataState={setProjectDataState}
                 />
-                <Button variant={"ghost"}  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
-            </nav>
             <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
                     <AccordionTrigger>tasks</AccordionTrigger>

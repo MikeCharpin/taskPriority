@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { GoalData } from "@/data/flatFakeData"
 import { GradientPicker } from "./ui/GradientPicker"
 import { useState } from "react"
+import { PencilIcon } from "lucide-react"
 
 const formSchema = z.object({
     goalId: z.string(),
@@ -83,7 +84,7 @@ const EditGoalForm = ({ goal, index, calcGoalScore, goalDataState, setGoalDataSt
   return (
     <Dialog>
         <DialogTrigger asChild>
-            <Button variant="secondary">edit goal</Button>
+            <Button variant="ghost" className="w-8 h-8 p-0"><PencilIcon/></Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>

@@ -38,6 +38,7 @@ import { GoalData, ProjectData } from "@/data/flatFakeData"
 import DatePickerWithRange from "./PracticeDatePicker"
 
 import React, { useState } from "react"
+import { PlusIcon } from "lucide-react"
 
 
 const formSchema = z.object({
@@ -136,7 +137,7 @@ export default function AddProjectForm({ projectDataState, setProjectDataState, 
   return (
     <Dialog>
         <DialogTrigger asChild>
-            <Button variant="secondary">add project</Button>
+            <Button variant="ghost"><PlusIcon/></Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
