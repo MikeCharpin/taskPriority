@@ -23,6 +23,13 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { v4 as uuidv4 } from "uuid";
 import { ProjectData, TaskData } from "@/data/flatFakeData";
@@ -149,7 +156,18 @@ export default function TaskForm({
     return (
         <Dialog>
         <DialogTrigger asChild>
-            <Button variant="ghost" className="w-8 h-8 p-0">{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Button variant="ghost" size={"icon"}>{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                    <p>{mode === "add" ? "📝 add a new task 📝" : "✏️ edit this task ✏️ "}</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+
+            
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>

@@ -55,8 +55,8 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
             <div className="flex justify-between items-start">
                 <h1 className="pb-4">{ project.projectDesc }</h1>
                 <nav className="flex flex-col justify-between items-center gap-2">
-                    <Button variant={"ghost"}  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
-                    <Button variant={"ghost"}  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
+                    <Button variant={"ghost"} className="p-0"  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
+                    <Button variant={"ghost"} className="p-0"  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
                 </nav>
             </div>
             <EditProjectForm 
