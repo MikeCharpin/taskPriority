@@ -74,18 +74,22 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                         <div className="flex justify-center p-2">
                             <TaskForm
                                 mode={"add"}
-                                project={project}
+                                taskProject={project.projectId}
                                 background={projectGoalColor}
                                 projectDataState={projectDataState}
                                 setProjectDataState={setProjectDataState}
                             />
                         </div>
                         <section className="flex flex-col gap-4">
-                            {project.projectTasks && project.projectTasks.map((task, index) => (
+                            <span>active</span>
+                            {project.projectTasks && project.projectTasks
+                            .filter(task => task.taskStatus === "active")
+                            .map((task, index) => (
                                 <TaskCard
                                     key={task.taskId}
                                     index={index}
                                     task={task}
+                                    taskProject={project.projectId}
                                     projectDataState={projectDataState}
                                     background={projectGoalColor}
                                     setProjectDataState={setProjectDataState}
@@ -94,6 +98,25 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                                 />
                             ))}
                         </section>
+                        <section className="flex flex-col gap-4 py-4">
+                            <span className="text-xl font-bold ">🎉 completed 🎉</span>
+                            {project.projectTasks && project.projectTasks
+                            .filter(task => task.taskStatus === "completed")
+                            .map((task, index) => (
+                                <TaskCard
+                                    key={task.taskId}
+                                    index={index}
+                                    task={task}
+                                    taskProject={project.projectId}
+                                    projectDataState={projectDataState}
+                                    background={projectGoalColor}
+                                    setProjectDataState={setProjectDataState}
+                                    onTaskMoveUp={() => moveTask(index, -1)}
+                                    onTaskMoveDown={() => moveTask(index, 1)}
+                                />
+                            ))}
+                        </section>
+                        
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>

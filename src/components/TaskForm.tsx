@@ -23,12 +23,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { v4 as uuidv4 } from "uuid";
@@ -55,7 +50,7 @@ const formSchema = z.object({
 
 interface TaskFormProps {
     mode: "add" | "edit"
-    project: ProjectData
+    taskProject: string
     projectDataState: ProjectData[]
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>
     task?: TaskData
@@ -65,7 +60,7 @@ interface TaskFormProps {
 
 export default function TaskForm({
     mode,
-    project,
+    taskProject,
     projectDataState,
     setProjectDataState,
     task,
@@ -139,7 +134,7 @@ export default function TaskForm({
             const newTask: TaskData = {
                 ...formData,
                 taskId: uuidv4(),
-                taskProject: project.projectId
+                taskProject: taskProject
             }
             addTask(newTask)
         } else if (mode === "edit" && task && index !== undefined) {
@@ -156,18 +151,7 @@ export default function TaskForm({
     return (
         <Dialog>
         <DialogTrigger asChild>
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Button variant="ghost" size={"icon"}>{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                    <p>{mode === "add" ? "📝 add a new task 📝" : "✏️ edit this task ✏️ "}</p>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
-
-            
+            <Button variant="ghost" size={"icon"}>{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
