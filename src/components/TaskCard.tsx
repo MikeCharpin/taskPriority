@@ -1,9 +1,9 @@
 import { ProjectData, TaskData } from "@/data/flatFakeData";
 import { Button } from "./ui/button";
 
-
 import TaskForm from "./TaskForm";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import React from "react";
 
 interface TaskCardProps {
     key: string,
@@ -20,7 +20,7 @@ interface TaskCardProps {
 
 
 export default function TaskCard({ task, taskProjectId, projectDataState, background, setProjectDataState, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
-    
+
     const taskProject = projectDataState.find((project) => project.projectId === taskProjectId)
     const taskIndex = taskProject?.projectTasks.findIndex((projectTask) => projectTask.taskId === task.taskId)
 
@@ -39,9 +39,7 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
         }
         const editedTask = updatedProject.projectTasks.find((projectTask) => task.taskId === projectTask.taskId)
         if(editedTask) {
-            console.log(editedTask)
             editedTask.taskStatus = "active"
-            console.log(taskIndex)
             updatedProject.projectTasks[taskIndex] = editedTask
         } else {
             console.error("Task not found:", editedTask)
@@ -66,17 +64,34 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
         }
         const editedTask = updatedProject.projectTasks.find((projectTask) => task.taskId === projectTask.taskId)
         if(editedTask) {
-            console.log(editedTask)
             editedTask.taskStatus = "completed"
-            console.log(taskIndex)
             updatedProject.projectTasks[taskIndex] = editedTask
         } else {
             console.error("Task not found:", editedTask)
         }
         updatedProjectData[projectIndex] = updatedProject
-        console.log(updatedProject)
-        setProjectDataState(updatedProjectData)
+        setProjectDataState(updatedProjectData)        
     }   
+
+    const deleteTask = () => {
+        const updatedProjectData = [...projectDataState]
+        const updatedProject = updatedProjectData.find((project) => project.projectId === taskProjectId)
+        const taskIndex = updatedProject?.projectTasks.findIndex((projectTask) => projectTask.taskId ===  task.taskId)
+        if(!updatedProject || taskIndex === undefined){
+            console.error("Project or index is undefined.")
+            return
+        }
+        const projectIndex = updatedProjectData.findIndex((project) => project.projectId === taskProjectId)
+        if(projectIndex === -1){
+            console.error("Project index not found.")
+            return
+        }
+        updatedProject.projectTasks.splice(taskIndex, 1)
+        setProjectDataState(updatedProjectData)        
+
+        
+
+    }
 
 
     return (
@@ -86,6 +101,7 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
                 <div className="flex justify-between">
                     <div className="flex flex-col gap-2 w-full">
                         <Button onClick={setStatusComplete}><CheckCircleIcon/></Button>
+                        
                         <div className="flex justify-between items-center gap-2">
                             <TaskForm
                                 mode={"edit"}
@@ -96,10 +112,7 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
                                 projectDataState={projectDataState}
                                 setProjectDataState={setProjectDataState}
                             />
-                            
-                        
-                            <Button variant={"destructive"} size={"icon"} className="p-2"><Trash2Icon/></Button>
-                                    
+                            <Button variant={"destructive"} size={"icon"} className="p-2" onClick={deleteTask}><Trash2Icon/></Button>    
                         </div>
                     </div>
                     <div className="flex flex-col justify-between items-end p-0">
@@ -109,13 +122,11 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
                 </div>
             :
                 <div className="flex justify-between items-center gap-2">
-        
                     <Button variant={"ghost"} size={"icon"} onClick={setStatusActive} ><RefreshCwIcon/></Button>
-                
-                    <Button variant={"destructive"} size={"icon"} className="p-2"><Trash2Icon/></Button>
-                                    
+                    <Button variant={"destructive"} size={"icon"} className="p-2" onClick={deleteTask}><Trash2Icon/></Button>          
                 </div>
             }
         </div>
+        
     )
 }

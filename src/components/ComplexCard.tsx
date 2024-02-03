@@ -50,6 +50,9 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
 
     const background = projectGoalColor
 
+    const activeTasks = project.projectTasks.filter((task) => task.taskStatus === "active").length
+    const completedTasks = project.projectTasks.filter((task) => task.taskStatus === "completed").length
+
     return (
         <div className="w-64 rounded-2xl px-4 py-4" style={{ background }}>
             <div className="flex justify-between items-start">
@@ -71,48 +74,56 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                 <AccordionItem value="item-1">
                     <AccordionTrigger>tasks</AccordionTrigger>
                     <AccordionContent>
-                        <div className="flex justify-center p-2">
-                            <TaskForm
-                                mode={"add"}
-                                taskProject={project.projectId}
-                                background={projectGoalColor}
-                                projectDataState={projectDataState}
-                                setProjectDataState={setProjectDataState}
-                            />
-                        </div>
+                        
                         <section className="flex flex-col gap-4">
-                            <span>active</span>
-                            {project.projectTasks && project.projectTasks
-                            .filter(task => task.taskStatus === "active")
-                            .map((task, index) => (
-                                <TaskCard
-                                    key={task.taskId}
-                                    task={task}
-                                    taskProjectId={project.projectId}
-                                    projectDataState={projectDataState}
+                            <div className="flex justify-end items-center relative">
+                                <TaskForm
+                                    mode={"add"}
+                                    taskProject={project.projectId}
                                     background={projectGoalColor}
+                                    projectDataState={projectDataState}
                                     setProjectDataState={setProjectDataState}
-                                    onTaskMoveUp={() => moveTask(index, -1)}
-                                    onTaskMoveDown={() => moveTask(index, 1)}
                                 />
-                            ))}
+                                <span className="text-xl font-bold text-center flex-grow w-full z-10 absolute">⚡ active ⚡</span>
+                            </div>
+                            {activeTasks > 0 ? 
+                                project.projectTasks && project.projectTasks.filter(task => task.taskStatus === "active").map((task, index) => (
+                                    <TaskCard
+                                        key={task.taskId}
+                                        task={task}
+                                        taskProjectId={project.projectId}
+                                        projectDataState={projectDataState}
+                                        background={projectGoalColor}
+                                        setProjectDataState={setProjectDataState}
+                                        onTaskMoveUp={() => moveTask(index, -1)}
+                                        onTaskMoveDown={() => moveTask(index, 1)}
+                                    />
+                                ))
+                            : 
+                                <span className="border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active tasks</span>
+                            }
+                            
                         </section>
                         <section className="flex flex-col gap-4 py-4">
-                            <span className="text-xl font-bold ">🎉 completed 🎉</span>
-                            {project.projectTasks && project.projectTasks
-                            .filter(task => task.taskStatus === "completed")
-                            .map((task, index) => (
-                                <TaskCard
-                                    key={task.taskId}
-                                    task={task}
-                                    taskProjectId={project.projectId}
-                                    projectDataState={projectDataState}
-                                    background={projectGoalColor}
-                                    setProjectDataState={setProjectDataState}
-                                    onTaskMoveUp={() => moveTask(index, -1)}
-                                    onTaskMoveDown={() => moveTask(index, 1)}
-                                />
-                            ))}
+                            {completedTasks > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
+                            {completedTasks > 0 ?
+                                project.projectTasks && project.projectTasks
+                                .filter(task => task.taskStatus === "completed")
+                                .map((task, index) => (
+                                    <TaskCard
+                                        key={task.taskId}
+                                        task={task}
+                                        taskProjectId={project.projectId}
+                                        projectDataState={projectDataState}
+                                        background={projectGoalColor}
+                                        setProjectDataState={setProjectDataState}
+                                        onTaskMoveUp={() => moveTask(index, -1)}
+                                        onTaskMoveDown={() => moveTask(index, 1)}
+                                    />
+                                ))
+                            :
+                            ""
+                            }
                         </section>
                         
                     </AccordionContent>

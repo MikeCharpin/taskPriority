@@ -151,11 +151,11 @@ export default function TaskForm({
     return (
         <Dialog>
         <DialogTrigger asChild>
-            <Button variant="ghost" size={"icon"}>{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
+            <Button variant="ghost" size={"icon"} className="z-20">{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" style={{ background }}>
             <DialogHeader>
-            <DialogTitle>edit a task</DialogTitle>
+            <DialogTitle>{mode === "add" ? "add a task" : "edit this task"}</DialogTitle>
             <DialogDescription>
                 Should be specific with metrics for success.
             </DialogDescription>
