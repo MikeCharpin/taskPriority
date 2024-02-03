@@ -87,9 +87,8 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                             .map((task, index) => (
                                 <TaskCard
                                     key={task.taskId}
-                                    index={index}
                                     task={task}
-                                    taskProject={project.projectId}
+                                    taskProjectId={project.projectId}
                                     projectDataState={projectDataState}
                                     background={projectGoalColor}
                                     setProjectDataState={setProjectDataState}
@@ -105,9 +104,8 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                             .map((task, index) => (
                                 <TaskCard
                                     key={task.taskId}
-                                    index={index}
                                     task={task}
-                                    taskProject={project.projectId}
+                                    taskProjectId={project.projectId}
                                     projectDataState={projectDataState}
                                     background={projectGoalColor}
                                     setProjectDataState={setProjectDataState}

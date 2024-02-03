@@ -113,17 +113,7 @@ export const flatFakeData = {
                     taskComplexity: "low",
                     taskExcitement: "high",
                     taskProject: "11",
-                    taskDesc: "This is a task - 111"
-                },
-                {
-                    taskId: "114",
-                    taskScore: 0,
-                    taskStatus: "deleted",
-                    taskDuration: 20,
-                    taskComplexity: "low",
-                    taskExcitement: "high",
-                    taskProject: "11",
-                    taskDesc: "This is a task - 111"
+                    taskDesc: "This is a task - 113"
                 },
             ]
         },
