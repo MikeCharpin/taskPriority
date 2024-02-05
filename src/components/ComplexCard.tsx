@@ -6,10 +6,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import EditProjectForm from "./EditProjectForm";
 import TaskForm from "./TaskForm";
 import TaskCard from "./TaskCard";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import ProjectForm from "./ProjectForm";
 
 interface ComplexCardProps {
     key: string,
@@ -81,7 +81,8 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
                     <div className="flex flex-col w-full justify-between">
                         <Button onClick={() => setProjectStatus("completed")}><CheckCircleIcon/></Button>
                         <div className="flex justify-between">
-                            <EditProjectForm
+                            <ProjectForm
+                                mode={"edit"}
                                 project={project}
                                 index={index}
                                 goalDataState={goalDataState}

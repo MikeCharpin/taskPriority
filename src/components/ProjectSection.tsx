@@ -1,6 +1,6 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
 import ComplexCard from "./ComplexCard";
-import AddProjectForm from "./AddProjectForm";
+import ProjectForm from "./ProjectForm";
 
 
 interface ProjectSectionProps {
@@ -28,7 +28,8 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
         <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
             <div className="flex justify-between">
                 <h1 className="text-xl font-bold">Project Section</h1>
-                <AddProjectForm
+                <ProjectForm
+                    mode={"add"}
                     projectDataState={projectDataState}
                     setProjectDataState={setProjectDataState}
                     goalDataState={goalDataState}
