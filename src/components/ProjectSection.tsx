@@ -12,6 +12,9 @@ interface ProjectSectionProps {
 
 export default function ProjectSection({ projectDataState, setProjectDataState, goalDataState, calcProjectScore }: ProjectSectionProps) {
     
+    const activeProjects = projectDataState.filter((projects) => projects.projectStatus === "active").length
+    const completedProjects = projectDataState.filter((projects) => projects.projectStatus === "completed").length
+
     const moveProject = (currentIndex: number, direction: number) => {
         const newIndex = Math.max(0, Math.min(projectDataState.length - 1, currentIndex + direction))
         const updatedData: ProjectData[] = [...projectDataState]
@@ -34,8 +37,9 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
             </div>
 
             <section className="flex flex-col gap-4">
-                {projectDataState.map((project, index) => (
-                    <ComplexCard
+                {activeProjects > 0 ?
+                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project, index) => (
+                        <ComplexCard
                             key={project.projectId}
                             index={index}
                             project={project}
@@ -46,7 +50,30 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
                             onMoveUp={() => moveProject(index, -1)}
                             onMoveDown={() => moveProject(index, 1)}
                         />
-                ))}
+                    ))
+                : 
+                    <span className="border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active projects</span>
+                }
+            </section>
+             <section className="flex flex-col gap-4">
+                {completedProjects> 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
+                {completedProjects > 0 ?
+                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project, index) => (
+                        <ComplexCard
+                            key={project.projectId}
+                            index={index}
+                            project={project}
+                            goalDataState={goalDataState}
+                            projectDataState={projectDataState}
+                            setProjectDataState={setProjectDataState}
+                            calcProjectScore={calcProjectScore}
+                            onMoveUp={() => moveProject(index, -1)}
+                            onMoveDown={() => moveProject(index, 1)}
+                        />
+                    ))
+                : 
+                    ""
+                }
             </section>
             
         </div>

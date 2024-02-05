@@ -24,7 +24,7 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
     const taskProject = projectDataState.find((project) => project.projectId === taskProjectId)
     const taskIndex = taskProject?.projectTasks.findIndex((projectTask) => projectTask.taskId === task.taskId)
 
-    const setStatusActive = () => {
+    const setTaskStatus = (status: string) => {
         const updatedProjectData = [...projectDataState]
         const updatedProject = updatedProjectData.find((project) => project.projectId === taskProjectId)
         const taskIndex = updatedProject?.projectTasks.findIndex((projectTask) => projectTask.taskId ===  task.taskId)
@@ -39,39 +39,14 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
         }
         const editedTask = updatedProject.projectTasks.find((projectTask) => task.taskId === projectTask.taskId)
         if(editedTask) {
-            editedTask.taskStatus = "active"
+            editedTask.taskStatus = status
             updatedProject.projectTasks[taskIndex] = editedTask
         } else {
             console.error("Task not found:", editedTask)
         }
         updatedProjectData[projectIndex] = updatedProject
-        setProjectDataState(updatedProjectData)
-    }   
-
-
-    const setStatusComplete = () => {
-        const updatedProjectData = [...projectDataState]
-        const updatedProject = updatedProjectData.find((project) => project.projectId === taskProjectId)
-        const taskIndex = updatedProject?.projectTasks.findIndex((projectTask) => projectTask.taskId ===  task.taskId)
-        if(!updatedProject || taskIndex === undefined){
-            console.error("Project or index is undefined.")
-            return
-        }
-        const projectIndex = updatedProjectData.findIndex((project) => project.projectId === taskProjectId)
-        if(projectIndex === -1){
-            console.error("Project index not found.")
-            return
-        }
-        const editedTask = updatedProject.projectTasks.find((projectTask) => task.taskId === projectTask.taskId)
-        if(editedTask) {
-            editedTask.taskStatus = "completed"
-            updatedProject.projectTasks[taskIndex] = editedTask
-        } else {
-            console.error("Task not found:", editedTask)
-        }
-        updatedProjectData[projectIndex] = updatedProject
-        setProjectDataState(updatedProjectData)        
-    }   
+        setProjectDataState(updatedProjectData) 
+    }
 
     const deleteTask = () => {
         const updatedProjectData = [...projectDataState]
@@ -100,7 +75,7 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
            {task.taskStatus === "active" ? 
                 <div className="flex justify-between">
                     <div className="flex flex-col gap-2 w-full">
-                        <Button onClick={setStatusComplete}><CheckCircleIcon/></Button>
+                        <Button onClick={() => setTaskStatus("completed")}><CheckCircleIcon/></Button>
                         
                         <div className="flex justify-between items-center gap-2">
                             <TaskForm
@@ -122,7 +97,7 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
                 </div>
             :
                 <div className="flex justify-between items-center gap-2">
-                    <Button variant={"ghost"} size={"icon"} onClick={setStatusActive} ><RefreshCwIcon/></Button>
+                    <Button variant={"ghost"} size={"icon"} onClick={() => setTaskStatus("active")} ><RefreshCwIcon/></Button>
                     <Button variant={"destructive"} size={"icon"} className="p-2" onClick={deleteTask}><Trash2Icon/></Button>          
                 </div>
             }
