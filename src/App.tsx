@@ -68,7 +68,7 @@ function App() {
 
     
     
-    return updatedProjectDataState.sort((a,b) => b.projectPriorityScore - a.projectPriorityScore)
+    return updatedProjectDataState.sort((a,b) => b.projectPriorityScore - a.projectPriorityScore).filter((project) => project.projectStatus === "active")
   }
 
   return (
