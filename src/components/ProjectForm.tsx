@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
-
+import { format } from "date-fns"
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,6 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { GoalData, ProjectData } from "@/data/flatFakeData";
@@ -35,8 +41,10 @@ import { GoalData, ProjectData } from "@/data/flatFakeData";
 import DatePickerWithRange from "./PracticeDatePicker";
 
 import React, { useState } from "react";
-import { PlusIcon, PencilIcon } from "lucide-react";
+import { PlusIcon, PencilIcon, CalendarIcon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
+import { cn } from "@/lib/utils";
+import DatePickerWithPresets from "./ui/datePickerWithPresets";
 
 interface ProjectFormProps {
   mode: "add" | "edit";
@@ -69,10 +77,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setPro
         projectMotivation: z.string(),
         projectComplexity: z.string(),
         projectExcitement: z.string(),
-        projectTimeframe: z.object({
-            from: z.date(),
-            to: z.date()
-        }),
+        projectTimeframe: z.date(),
         projectTasks: z.array(z.object({
             taskId: z.string(),
         taskScore: z.number(),
@@ -94,33 +99,34 @@ const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setPro
     >({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        projectId: "",
-            projectScore: project?.projectScore || 0,
-            projectPriorityScore: project?.projectPriorityScore || 0,
-            projectGoal: project?. projectGoal || "",
-            projectMotivation: project?.projectMotivation || "",
-            projectStatus: project?.projectStatus || "active",
-            projectDesc: project?.projectDesc || "",
-            projectComplexity: project?. projectComplexity || "medium",
-            projectExcitement: project?.projectExcitement || "medium",
-            projectTimeframe: project?.projectTimeframe || { from: new Date(), to: new Date() },
-            projectTasks: project?.projectTasks || [],
+        projectId: project?.projectId || "",
+        projectScore: project?.projectScore || 0,
+        projectPriorityScore: project?.projectPriorityScore || 0,
+        projectGoal: project?. projectGoal || "",
+        projectMotivation: project?.projectMotivation || "",
+        projectStatus: project?.projectStatus || "active",
+        projectDesc: project?.projectDesc || "",
+        projectComplexity: project?. projectComplexity || "medium",
+        projectExcitement: project?.projectExcitement || "medium",
+        projectTimeframe: project?.projectTimeframe || undefined,
+        projectTasks: project?.projectTasks || [],
     },
     });
 
     const { reset, formState } = form;
     const { isValid } = formState;
 
-    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (formData) => {
+    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (projectData) => {
         const updatedProjectState = [...projectDataState];
         if (mode === "add") {
-            const newProject = { ...formData, projectId: uuidv4() };
+            const newProject = { ...projectData, projectId: uuidv4() };
             calcProjectScore(newProject);
             updatedProjectState.push(newProject);
         } else if (mode === "edit" && index !== undefined) {
-            calcProjectScore(formData);
-            updatedProjectState[index] = formData;
+            calcProjectScore(projectData);
+            updatedProjectState[index] = projectData;
         }
+        console.log(updatedProjectState)
         setProjectDataState(updatedProjectState);
         reset();
     };
@@ -190,17 +196,20 @@ const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setPro
                         )}
                         />
                         <FormField
-                        control={form.control}
-                        name="projectTimeframe"
-                        render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>when do you aim to start and complete your project?</FormLabel>
-                            <FormControl>
-                                <DatePickerWithRange {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
+                            control={form.control}
+                            name="projectTimeframe"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Project Timeframe</FormLabel>
+                                    <FormControl>
+                                        <DatePickerWithPresets 
+                                            {...field} 
+                                            initialValue={project?.projectTimeframe || undefined}
+                                            onChange={(date) => field.onChange(date)}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
                         />
                         <div className="flex justify-center gap-16">
                             <FormField

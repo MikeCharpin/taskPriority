@@ -20,7 +20,7 @@ export interface ProjectData {
     projectPriorityScore: number,
     projectComplexity: string,
     projectExcitement: string,
-    projectTimeframe: TimeframeType,
+    projectTimeframe: Date,
     projectTasks: TaskData[],
 }
 
@@ -40,10 +40,7 @@ export interface FlatFakeDataType {
     projectData: ProjectData[]
 }
 
-export interface TimeframeType {
-    from: Date,
-    to: Date,
-}
+
 
 export const flatFakeData = {
     goalData: [
@@ -90,10 +87,7 @@ export const flatFakeData = {
             projectPriorityScore: 0,
             projectComplexity: "low",
             projectExcitement: "low",
-            projectTimeframe: {
-                from: new Date("2022-01-01T05:00:00.000Z"),
-                to: new Date("2022-01-31T05:00:00.000Z")
-            },
+            projectTimeframe: new Date("2024-01-01T05:00:00.000Z"),
             projectTasks: [
                 {
                     taskId: "111",
@@ -127,10 +121,7 @@ export const flatFakeData = {
             projectPriorityScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTimeframe: {
-                from: new Date("2022-01-01T05:00:00.000Z"),
-                to: new Date("2022-01-31T05:00:00.000Z")
-            },
+            projectTimeframe: new Date("2024-01-01T05:00:00.000Z"),
             projectTasks: [
 
             ]
@@ -145,10 +136,7 @@ export const flatFakeData = {
             projectPriorityScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTimeframe: {
-                from: new Date("2022-01-01T05:00:00.000Z"),
-                to: new Date("2022-01-31T05:00:00.000Z")
-            },
+            projectTimeframe: new Date("2024-01-01T05:00:00.000Z"),
             projectTasks: [
 
             ]
@@ -164,10 +152,7 @@ export const flatFakeData = {
             projectScore: 0,
             projectComplexity: "high",
             projectExcitement: "high",
-            projectTimeframe: {
-                from: new Date("2022-01-01T05:00:00.000Z"),
-                to: new Date("2022-01-31T05:00:00.000Z")
-            },
+            projectTimeframe: new Date("2024-01-01T05:00:00.000Z"),
             projectTasks: [
             ]
         },
@@ -181,10 +166,7 @@ export const flatFakeData = {
             projectScore: 0,
             projectComplexity: "low",
             projectExcitement: "low",
-             projectTimeframe: {
-                from: new Date("2022-01-01T05:00:00.000Z"),
-                to: new Date("2022-01-31T05:00:00.000Z")
-            },
+            projectTimeframe: new Date("2024-01-01T05:00:00.000Z"),
             projectTasks: [
 
             ]
