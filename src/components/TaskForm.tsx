@@ -122,7 +122,7 @@ export default function TaskForm({
       taskScore: task?.taskScore || 0,
       taskStatus: task?.taskStatus || "active",
       taskDesc: task?.taskDesc || "",
-      taskDuration: task?.taskDuration || 1,
+      taskDuration: task?.taskDuration || 15,
       taskComplexity: task?.taskComplexity || "medium",
       taskExcitement: task?.taskExcitement || "medium",
       taskProject: task?.taskProject || "",
@@ -184,13 +184,21 @@ export default function TaskForm({
                     name="taskDuration"
                     render={({ field: {value, onChange} }) => (
                         <FormItem>
-                        <FormLabel>How long do you think this will take? {value}</FormLabel>
+                        <FormLabel>
+                            How long do you think this will take?{" "}
+                            {value % 60 === 0
+                                ? `${Math.floor(value / 60)} hours`
+                                : value < 60
+                                ? `${value} minutes`
+                                : `${Math.floor(value / 60)} hours & ${value % 60} minutes`
+                            }
+                        </FormLabel>
                         
                         <FormControl>
                             <Slider 
-                                min={1}
-                                max={100} 
-                                step={10} 
+                                min={15}
+                                max={480} 
+                                step={15} 
                                 defaultValue={[form.getValues("taskDuration")]} 
                                 onValueChange={(vals) => {
                                     onChange(vals[0])
