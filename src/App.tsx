@@ -89,6 +89,8 @@ function App() {
                 <GoalSection
                   goalDataState={goalDataState}
                   setGoalDataState={setGoalDataState}
+                  projectDataState={projectDataState}
+                  setProjectDataState={setProjectDataState}
                   calcGoalScore={calcGoalScore}
                 />
                 <ProjectSection
