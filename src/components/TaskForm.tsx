@@ -211,90 +211,92 @@ export default function TaskForm({
                     )}
                     />
                     
-                    <FormField
-                        control={form.control}
-                        name="taskComplexity"
-                        render={({ field }) => (
-                            <FormItem className="space-y-3">
-                            <FormLabel>complexity</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col justify-between items-startspace-y-1 gap-2"
-                                >
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="low" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-md">
-                                        small &nbsp; <span className="text-3xl">🍰</span>
-                                    </FormLabel>
+                    <div className="flex justify-center gap-16">
+                        <FormField
+                            control={form.control}
+                            name="taskComplexity"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormLabel>complexity</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col justify-between items-startspace-y-1 gap-2"
+                                    >
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="low" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-md">
+                                            small &nbsp; <span className="text-3xl">🍰</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="medium" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-2xl ">
+                                            medium &nbsp; <span className="text-3xl">🔨</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
+                                        <FormControl>
+                                        <RadioGroupItem value="high" />
+                                        </FormControl>
+                                        <FormLabel className="flex items-center text-4xl">
+                                            large &nbsp; <span className="text-3xl">🚀</span>
+                                        </FormLabel>
+                                    </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
                                 </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="medium" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-2xl ">
-                                        medium &nbsp; <span className="text-3xl">🔨</span>
-                                    </FormLabel>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="taskExcitement"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                <FormLabel>excitement</FormLabel>
+                                <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col justify-between space-y-1 "
+                                    >
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="high" />
+                                            </FormControl>
+                                            <FormLabel className="text-4xl">
+                                                😄
+                                            </FormLabel>
+                                        </FormItem>
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="medium" />
+                                            </FormControl>
+                                            <FormLabel className="text-4xl">
+                                            😏
+                                            </FormLabel>
+                                        </FormItem>
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="low" />
+                                            </FormControl>
+                                            <FormLabel className="text-4xl">
+                                            😟
+                                            </FormLabel>
+                                        </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
                                 </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0 gap-2">
-                                    <FormControl>
-                                    <RadioGroupItem value="high" />
-                                    </FormControl>
-                                    <FormLabel className="flex items-center text-4xl">
-                                        large &nbsp; <span className="text-3xl">🚀</span>
-                                    </FormLabel>
-                                </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="taskExcitement"
-                        render={({ field }) => (
-                            <FormItem className="space-y-3">
-                            <FormLabel>excitement</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col justify-between space-y-1 "
-                                >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="low" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                    😟
-                                    </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="medium" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                    😏
-                                    </FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="high" />
-                                    </FormControl>
-                                    <FormLabel className="text-4xl">
-                                        😄
-                                    </FormLabel>
-                                </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                            )}
+                        />
+                    </div>
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button type="submit">{mode === "add" ? "add" : "save"}</Button>
