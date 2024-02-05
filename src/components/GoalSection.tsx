@@ -1,5 +1,5 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
-import SimpleCard from "./SimpleCard";
+import GoalCard from "./GoalCard";
 import GoalForm from "./GoalForm";
 
 interface GoalSectionProps  {
@@ -38,7 +38,7 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
             </div>
             {activeGoals > 0 ? 
              goalDataState && goalDataState.filter(goals => goals.goalStatus === "active").map((goal, index) => (
-                <SimpleCard
+                <GoalCard
                         key={goal.goalId}
                         goal={goal}
                         background={goal.goalColor}
@@ -58,7 +58,7 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
             {completedGoals > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
             {completedGoals > 0 ?
                 goalDataState && goalDataState.filter(goals => goals.goalStatus === "completed").map((goal, index) => (
-                    <SimpleCard
+                    <GoalCard
                         key={goal.goalId}
                         goal={goal}
                         background={goal.goalColor}

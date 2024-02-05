@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import GoalForm from "./GoalForm";
 
-interface SimpleCardProps {
+interface GoalCardProps {
     goal: GoalData,
     background: string,
     index: number,
@@ -16,7 +16,7 @@ interface SimpleCardProps {
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
 }
 
-const SimpleCard: React.FC<SimpleCardProps> = ({ goal, background, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState, projectDataState, setProjectDataState }) => {
+const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState, projectDataState, setProjectDataState }) => {
     const goalIndex = goalDataState.findIndex((stateGoal) => stateGoal.goalId === goal.goalId)
 
     const setGoalStatus = (status: string) => {
@@ -94,4 +94,4 @@ const SimpleCard: React.FC<SimpleCardProps> = ({ goal, background, index, onMove
     )
 }
 
-export default SimpleCard
+export default GoalCard

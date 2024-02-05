@@ -11,7 +11,7 @@ import TaskCard from "./TaskCard";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import ProjectForm from "./ProjectForm";
 
-interface ComplexCardProps {
+interface ProjectCardProps {
     key: string,
     index: number,
     project: ProjectData,
@@ -23,7 +23,7 @@ interface ComplexCardProps {
     onMoveDown: () => void,
 }
 
-const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState, projectDataState, setProjectDataState, calcProjectScore, onMoveUp, onMoveDown }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, goalDataState, projectDataState, setProjectDataState, calcProjectScore, onMoveUp, onMoveDown }) => {
     const projectGoalColor = goalDataState.find((goal) => (goal.goalId === project.projectGoal))?.goalColor
     const background = projectGoalColor
 
@@ -173,4 +173,4 @@ const ComplexCard: React.FC<ComplexCardProps> = ({ project, index, goalDataState
 
 
 
-export default ComplexCard
+export default ProjectCard

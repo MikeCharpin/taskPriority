@@ -1,5 +1,5 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
-import ComplexCard from "./ComplexCard";
+import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
 
 
@@ -40,7 +40,7 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
             <section className="flex flex-col gap-4">
                 {activeProjects > 0 ?
                     projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project, index) => (
-                        <ComplexCard
+                        <ProjectCard
                             key={project.projectId}
                             index={index}
                             project={project}
@@ -60,7 +60,7 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
                 {completedProjects> 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
                 {completedProjects > 0 ?
                     projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project, index) => (
-                        <ComplexCard
+                        <ProjectCard
                             key={project.projectId}
                             index={index}
                             project={project}
