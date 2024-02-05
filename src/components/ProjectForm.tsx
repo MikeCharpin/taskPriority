@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
-import { format } from "date-fns"
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,22 +27,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { GoalData, ProjectData } from "@/data/flatFakeData";
-
-import DatePickerWithRange from "./PracticeDatePicker";
-
 import React, { useState } from "react";
-import { PlusIcon, PencilIcon, CalendarIcon } from "lucide-react";
+import { PlusIcon, PencilIcon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
-import { cn } from "@/lib/utils";
 import DatePickerWithPresets from "./ui/datePickerWithPresets";
 
 interface ProjectFormProps {
