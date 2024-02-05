@@ -1,4 +1,5 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData"
+import { format } from "date-fns"
 
 interface ResultsSectionProps {
     sortedProjectState: ProjectData[],
@@ -34,10 +35,42 @@ function PriorityCard({ project, goalDataState }: PriortityCardProps) {
 
     const projectColor = goalDataState.find((goal) => (goal.goalId === project.projectGoal))?.goalColor
     const background = projectColor
+    const daysUntil = (targetDate: Date): number => {
+        const targetDateTime = new Date(targetDate)
+        const currentDate = new Date()
+        const timeDifference = targetDateTime.getTime() - currentDate.getTime()
+        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
+        return daysDifference
+    }
+
+    const businessDaysUntil = (targetDate: Date): number => {
+        const targetDateTime = new Date(targetDate)
+        const currentDate = new Date()
+        const timeDifference = targetDateTime.getTime() - currentDate.getTime()
+        const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
+        const weekends = Math.floor((currentDate.getDay() + daysDifference) / 7) * 2
+        const businessDays = daysDifference - weekends
+        return businessDays
+    }
+    
+    const daysRemaining = daysUntil(project.projectTimeframe)
+    const businessDaysRemaining = businessDaysUntil(project.projectTimeframe)
+    const targetDate = format(project.projectTimeframe, "PPP") 
 
     return (
-        <div className=" max-w-[40dvh] min-w-[24rem] rounded-2xl px-8 py-4" style={{ background }}>
-            { project.projectDesc }
-        </div>
+        
+            <div className="flex flex-col max-w-[40dvh] min-w-[24rem] rounded-2xl px-8 py-4" style={{ background }}>
+                <span> { project.projectDesc }</span>
+                {daysRemaining > -7 ?
+                    <div className="flex flex-col">
+                        <span>{`${daysRemaining} days until ${targetDate}`}</span>
+                        <span>{`${businessDaysRemaining} business days until ${targetDate}`}</span>
+                    </div>
+                :
+                    ""
+                }
+                
+            </div>
+        
     )
 }
