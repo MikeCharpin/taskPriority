@@ -1,7 +1,7 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
 import { Button } from "./ui/button";
-import EditGoalForm from "./EditGoalForm";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import GoalForm from "./GoalForm";
 
 interface SimpleCardProps {
     goal: GoalData,
@@ -61,7 +61,8 @@ const SimpleCard: React.FC<SimpleCardProps> = ({ goal, background, index, onMove
                         <div className="flex flex-col w-full justify-between">
                             <Button onClick={() => setGoalStatus("completed")}><CheckCircleIcon/></Button>
                             <div className="flex justify-between">
-                                <EditGoalForm
+                                <GoalForm
+                                    mode={"edit"}
                                     goal={goal}
                                     index={index}
                                     calcGoalScore={calcGoalScore}

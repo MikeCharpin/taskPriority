@@ -1,7 +1,6 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
 import SimpleCard from "./SimpleCard";
-
-import AddGoalForm from "./AddGoalForm";
+import GoalForm from "./GoalForm";
 
 interface GoalSectionProps  {
     goalDataState: GoalData[], 
@@ -30,7 +29,8 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
         <div className="flex flex-col justify-center items-center p-4 border-2 border-blue-300 rounded-md gap-2">
             <div className="flex justify-between items-center pb-4">
                 <h1 className="text-xl font-bold">Goal Section</h1>
-                <AddGoalForm
+                <GoalForm
+                    mode={"add"}
                     goalDataState={goalDataState}
                     setGoalDataState={setGoalDataState}
                     calcGoalScore={calcGoalScore}
