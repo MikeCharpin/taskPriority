@@ -190,7 +190,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setPro
                             name="projectTimeframe"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Project Timeframe</FormLabel>
+                                    <FormLabel>target date</FormLabel>
                                     <FormControl>
                                         <DatePickerWithPresets 
                                             {...field} 
