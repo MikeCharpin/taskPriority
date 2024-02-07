@@ -1,15 +1,31 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import { GoalSection } from "./components/GoalSection"
 import "./styles/globals.css"
-import { ModeToggle } from "./components/mode-toggle"
 import ProjectSection from "./components/ProjectSection"
 import ResultsSection from "./components/ResultsSection"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { GoalData, ProjectData, flatFakeData } from "./data/flatFakeData"
+import NavBar from "./components/NavBar"
+import Login from "./components/Login"
 
 function App() {
-  const [goalDataState, setGoalDataState] = useState(flatFakeData.goalData)
-  const [ projectDataState, setProjectDataState ] = useState(flatFakeData.projectData)
+  const [openLogin, setOpenLogin] = useState(false)
+  const [goalDataState, setGoalDataState] = useState(() => {
+    const storedGoalData = localStorage.getItem('goalDataState')
+    return storedGoalData ? JSON.parse(storedGoalData) : flatFakeData.goalData
+  })
+  const [ projectDataState, setProjectDataState ] = useState(() => {
+    const storedProjectData = localStorage.getItem('projectDataState')
+    return storedProjectData ? JSON.parse(storedProjectData) : flatFakeData.projectData
+  })
+
+  useEffect(() => {
+    localStorage.setItem('goalDataState', JSON.stringify(goalDataState))
+  }, [goalDataState])
+
+  useEffect(() => {
+    localStorage.setItem('projectDataState', JSON.stringify(projectDataState))
+  }, [projectDataState])
 
 
   const processValue = (value: string) => {
@@ -74,10 +90,10 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <div className="flex flex-col">
-          <nav className=" w-full flex items-center justify-between bg-secondary p-8">
-            <h1>Task Prioritizer</h1>
-            <ModeToggle />
-          </nav>
+          <NavBar
+            setOpenLogin={setOpenLogin}
+          />
+          
           <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">
               <ResultsSection
                 sortedProjectState={calcAllScores(projectDataState, goalDataState)}
@@ -99,6 +115,10 @@ function App() {
                   goalDataState={goalDataState}
                   calcProjectScore={calcProjectScore}
                 />
+                <Login 
+                  open={openLogin}
+                  setOpen={setOpenLogin}
+              />
               </div>
             </div>
           </main>
