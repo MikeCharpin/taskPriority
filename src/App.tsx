@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 import { GoalData, ProjectData } from "./data/flatFakeData"
 import NavBar from "./components/NavBar"
 import Login from "./components/Login"
-import { supabase } from '@/supabaseClient.js'
+import { supabase } from 'src/supabaseClient'
 import { Session } from '@supabase/supabase-js'
 import Account from "./components/Account"
 
