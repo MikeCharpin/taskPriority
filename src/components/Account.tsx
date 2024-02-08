@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "./ui/label"
 import { useEffect, useState } from "react"
 import { Loader2Icon } from "lucide-react"
-import { supabase } from '@/supabaseClient'
+import { supabase } from '@/supabaseClient.ts'
 import { Session } from "@supabase/supabase-js"
 
 interface AccountProps {
