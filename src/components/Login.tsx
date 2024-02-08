@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "./ui/label"
 import { useState } from "react"
 import { Loader2Icon } from "lucide-react"
+import { supabase } from "@/supabaseClient"
 
 interface LoginProps {
     open: boolean,
@@ -70,10 +71,17 @@ const Login = ({ open, setOpen }: LoginProps) => {
 function LoginForm({ className }: React.ComponentProps<"form">) {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        setLoading(true)        
-        console.log(email)
+        console.log("sending login")
+        setLoading(true)
+        const { error } = await supabase.auth.signInWithOtp({ email })
+        if (error) {
+          alert(error.message)
+        } else {
+          alert('check your email for the login link!')
+        }
+        setLoading(false)
   }
   return (
     <form className={cn("grid items-start gap-4", className)} onSubmit={handleLogin}>

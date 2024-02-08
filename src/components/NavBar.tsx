@@ -8,6 +8,7 @@ import {
   MoonIcon,
   SquareUserRoundIcon,
   MessageCircleHeartIcon,
+  UserCircle2Icon,
 } from "lucide-react"
  
 import { Button } from "@/components/ui/button"
@@ -25,22 +26,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/components/theme-provider"
+import { Session } from "@supabase/supabase-js"
 
 
 interface NavBarProps {
     setOpenLogin: React.Dispatch<React.SetStateAction<boolean>>
+    setOpenAccount: React.Dispatch<React.SetStateAction<boolean>>
+    session: Session | null
 }
 
-const NavBar = ({ setOpenLogin }: NavBarProps) => {
+const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
     const { setTheme } = useTheme()
-    const user = true;
     
 
     return (
        <nav className=" w-full flex items-center justify-between bg-secondary p-8">
             <h1>Task Prioritizer</h1>
             <div className="flex gap-4">
-                {user ?
+                {session ?
                     <div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -58,6 +61,10 @@ const NavBar = ({ setOpenLogin }: NavBarProps) => {
                                     <span><a href="https://forms.gle/dxb7BCeih1A6ZdaCA" target="_blank">send feedback 💌</a></span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <UserCircle2Icon className="mr-2 h-4 w-4" />
+                                    <span>Profile</span>
+                                </DropdownMenuItem>
                                 <DropdownMenuGroup>
                                     <DropdownMenuSub>
                                         <DropdownMenuSubTrigger>

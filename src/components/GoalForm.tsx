@@ -62,7 +62,7 @@
         goalId: goal?.goalId || "",
         goalScore: goal?.goalScore || 0,
         goalMotivation: goal?.goalMotivation || "",
-        goalStatus: goal?.goalStatus || "",
+        goalStatus: goal?.goalStatus || "active",
         goalDesc: goal?.goalDesc || "",
         goalComplexity: goal?.goalComplexity || "",
         goalExcitement: goal?.goalExcitement || "",
