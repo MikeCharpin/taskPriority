@@ -94,14 +94,14 @@ function AccountForm({ className, session }: AccountFormProps) {
       const { data, error } = await supabase
         .from('profiles')
         .select(`username`)
-        .eq('id', user?.id)
+        .eq('id', user?.id ?? "")
         .single()
 
       if (!ignore) {
         if (error) {
           console.warn(error)
         } else if (data) {
-          setUsername(data.username)
+          setUsername(data.username || "")
         }
       }
 
@@ -122,9 +122,9 @@ function AccountForm({ className, session }: AccountFormProps) {
     const user = session ? session.user : null
 
     const updates = {
-      id: user?.id,
+      id: user?.id ?? "",
       username,
-      updated_at: new Date(),
+      updated_at: new Date().toISOString(),
     }
 
     const { error } = await supabase.from('profiles').upsert(updates)
