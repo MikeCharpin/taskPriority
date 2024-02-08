@@ -71,27 +71,33 @@ const Login = ({ open, setOpen }: LoginProps) => {
 function LoginForm({ className }: React.ComponentProps<"form">) {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
+
     const getURL = () => {
       let url =
-        process.env.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
-        'http://localhost:3000/'
+        process.env.NEXT_PUBLIC_SITE_URL ??
+        process.env.NEXT_PUBLIC_VERCEL_URL ??
+        'http://localhost:5173/'
 
       // Make sure to include `https://` when not localhost.
       url = url.includes('http') ? url : `https://${url}`
       // Make sure to include a trailing `/`.
       url = url.charAt(url.length - 1) === '/' ? url : `${url}/`
+      console.log(url)
       return url
     }
+
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         console.log("sending login")
         setLoading(true)
         const { error } = await supabase.auth.signInWithOtp({
-           email,
-            options: {
-              emailRedirectTo: getURL()
-            } })
+          email: email,
+          options: {
+            shouldCreateUser: true,
+            emailRedirectTo: getURL(),
+          },
+        })
         if (error) {
           alert(error.message)
         } else {
