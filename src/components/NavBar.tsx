@@ -49,7 +49,7 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="p-0 rounded-full">
                                     <Avatar>
-                                        <AvatarImage src="@\assets\Scan173983.jpg" />
+                                        <AvatarImage src="src\assets\Scan173983.jpg" />
                                         <AvatarFallback>MC</AvatarFallback>
                                     </Avatar>
                                 </Button>
@@ -118,7 +118,7 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="p-0 rounded-full">
                                     <Avatar>
-                                        <AvatarImage src="@\assets\circle-user-round.png" />
+                                        <AvatarImage src="src\assets\circle-user-round.png" />
                                         <AvatarFallback>MC</AvatarFallback>
                                     </Avatar>
                                 </Button>
