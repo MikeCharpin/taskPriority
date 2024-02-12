@@ -12,11 +12,27 @@ import { Session } from '@supabase/supabase-js'
 import Account from "./components/Account"
 
 function App() {
+  const [loading, setLoading] = useState(false)
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(false);
   const [openAccount, setOpenAccount] = useState(false)
   const [openLogin, setOpenLogin] = useState(false)
 
+    const [goalDataState, setGoalDataState] = useState(() => {
+    const storedGoalData = localStorage.getItem('goalData')
+    return storedGoalData ? JSON.parse(storedGoalData) : []
+  })
+  const [ projectDataState, setProjectDataState ] = useState(() => {
+    const storedProjectData = localStorage.getItem('projectData')
+    return storedProjectData ? JSON.parse(storedProjectData) : []
+  })
+
+  useEffect(() => {
+    localStorage.setItem('goalData', JSON.stringify(goalDataState))
+    localStorage.setItem('projectData', JSON.stringify(projectDataState))
+  }, [goalDataState, projectDataState])
+
+  
+  
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -27,69 +43,11 @@ function App() {
     })
   }, [])
 
-
-  const [goalDataState, setGoalDataState] = useState(() => {
-    const storedGoalData = localStorage.getItem('goalData')
-    return storedGoalData ? JSON.parse(storedGoalData) : []
-  })
-  const [ projectDataState, setProjectDataState ] = useState(() => {
-    const storedProjectData = localStorage.getItem('projectData')
-    return storedProjectData ? JSON.parse(storedProjectData) : []
-  })
-
-  localStorage.setItem('goalData', JSON.stringify(goalDataState))
-  localStorage.setItem('projectData', JSON.stringify(projectDataState))
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if(!session) {
-        const localGoalData = localStorage.getItem('goalData')
-        const localProjectData = localStorage.getItem('projectData')
-        if(localGoalData && localProjectData) {
-          setGoalDataState(JSON.parse(localGoalData))
-          setProjectDataState(JSON.parse(localProjectData))
-        } else {
-          setGoalDataState([])
-          setProjectDataState([])
-        }
-        return
-      }
-
-      setLoading(true)
-      try {
-        const { data:goalDataResponse, error: goalError } = await supabase
-          .from('goals')
-          .select('*')
-        const { data: projectDataResponse, error: projectError } = await supabase
-          .from('projects')
-          .select('*')
-        
-          if( goalError || projectError) {
-            console.warn("Error fetching data:", goalError || projectError)
-          } else {
-            if (goalDataResponse && projectDataResponse) {
-              setGoalDataState(goalDataResponse)
-              setProjectDataState(projectDataResponse)
-
-              localStorage.setItem('goalData', JSON.stringify(goalDataResponse))
-              localStorage.setItem('projectData', JSON.stringify(projectDataResponse))
-            } else {
-              console.warn("Received null or undefined data.")
-            }
-          }
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [session])
+  
 
 
- 
 
-
+  
   
 
   const processValue = (value: string) => {
