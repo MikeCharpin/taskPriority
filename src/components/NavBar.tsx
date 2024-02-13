@@ -41,7 +41,13 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
 
     return (
        <nav className=" w-full flex items-center justify-between bg-secondary p-8">
-            <h1>Task Prioritizer</h1>
+            <h1 className="text-2xl font-semibold">Project Prioritizer</h1>
+            {session ? "" : 
+                <div className="flex flex-col text-xl font-semibold bg-primary/20 p-4 rounded-xl">
+                    <span> 🏡 you are working locally </span>
+                    <span>login to save your data <button onClick={() => setOpenLogin(true)} >💾</button></span>
+                </div>
+            }
             <div className="flex gap-4">
                 {session ?
                     <div>
