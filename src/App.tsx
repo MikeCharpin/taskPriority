@@ -4,7 +4,7 @@ import "./styles/globals.css"
 import ProjectSection from "./components/ProjectSection"
 import ResultsSection from "./components/ResultsSection"
 import { useEffect, useState } from "react"
-import { GoalData, ProjectData } from "./data/flatFakeData"
+import { GoalData, ProjectData, flatFakeData } from "./data/flatFakeData"
 import NavBar from "./components/NavBar"
 import Login from "./components/Login"
 import { supabase } from '@/supabaseClient.ts'
@@ -19,11 +19,11 @@ function App() {
 
     const [goalDataState, setGoalDataState] = useState(() => {
     const storedGoalData = localStorage.getItem('goalData')
-    return storedGoalData ? JSON.parse(storedGoalData) : []
+    return storedGoalData ? JSON.parse(storedGoalData) : flatFakeData.goalData
   })
   const [ projectDataState, setProjectDataState ] = useState(() => {
     const storedProjectData = localStorage.getItem('projectData')
-    return storedProjectData ? JSON.parse(storedProjectData) : []
+    return storedProjectData ? JSON.parse(storedProjectData) : flatFakeData.projectData
   })
 
   useEffect(() => {
@@ -112,7 +112,6 @@ function App() {
             session={session}
             setOpenLogin={setOpenLogin}
             setOpenAccount={setOpenAccount}
-            
           />
           {loading ? <div>Loading...</div> : ""}
           <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">  
