@@ -110,6 +110,7 @@ function App() {
         <div className="flex flex-col">
           <NavBar
             session={session}
+            supabase={supabase}
             setOpenLogin={setOpenLogin}
             setOpenAccount={setOpenAccount}
           />

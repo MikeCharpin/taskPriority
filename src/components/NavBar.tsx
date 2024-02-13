@@ -26,16 +26,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/components/theme-provider"
-import { Session } from "@supabase/supabase-js"
+import { Session, SupabaseClient } from "@supabase/supabase-js"
 
 
 interface NavBarProps {
     setOpenLogin: React.Dispatch<React.SetStateAction<boolean>>
     setOpenAccount: React.Dispatch<React.SetStateAction<boolean>>
     session: Session | null
+    supabase: SupabaseClient<any, "public", any>
 }
 
-const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
+const NavBar = ({ setOpenLogin, session, supabase }: NavBarProps) => {
     const { setTheme } = useTheme()
     
 
@@ -110,7 +111,10 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
                                     <span>support for me 😄</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => setOpenLogin(true)}>
+                                <DropdownMenuItem onClick={async () => {
+                                    const { error } = await supabase.auth.signOut()
+                                    if (error) console.log('Error logging out:', error.message)
+                                    }}>
                                         <LogInIcon className="mr-2 h-4 w-4" />
                                         <span>log out 👋</span>
                                     </DropdownMenuItem>
