@@ -34,6 +34,8 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
                     goalDataState={goalDataState}
                     setGoalDataState={setGoalDataState}
                     calcGoalScore={calcGoalScore}
+                    goal={undefined}
+                    index={undefined}
                 />
             </div>
             {activeGoals > 0 ? 

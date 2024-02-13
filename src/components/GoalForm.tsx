@@ -49,8 +49,8 @@
         goalDataState: GoalData[];
         setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>;
         calcGoalScore: (goal: GoalData) => number;
-        goal?: GoalData; 
-        index?: number; 
+        goal: GoalData | undefined; 
+        index: number | undefined; 
     }
 
     const GoalForm: React.FC<GoalFormProps> = ({ mode, goalDataState, setGoalDataState, calcGoalScore, goal, index, }) => {
@@ -59,7 +59,7 @@
     const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        goalId: goal?.goalId || "",
+        goalId: goal?.goalId || uuidv4(),
         goalScore: goal?.goalScore || 0,
         goalMotivation: goal?.goalMotivation || "",
         goalStatus: goal?.goalStatus || "active",
@@ -73,22 +73,30 @@
     const { reset, formState } = form;
     const { isValid } = formState;
 
-    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (goalData: GoalData) => {
-    goalData.goalId = goalData.goalId || uuidv4();
-    goalData.goalColor = background;
-    calcGoalScore(goalData);
+    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
+        const goalData = {
+            goalId: data.goalId,
+            goalScore: data.goalScore,
+            goalMotivation: data.goalMotivation,
+            goalStatus: data.goalStatus,
+            goalDesc: data.goalDesc,
+            goalComplexity: data.goalComplexity,
+            goalExcitement: data.goalExcitement,
+            goalColor: background,
+        }
+        calcGoalScore(goalData);
 
-    if (mode === "edit") {
-        const updatedGoalState = [...goalDataState];
-        updatedGoalState[index as number] = goalData;
-        setGoalDataState(updatedGoalState);
-    } else if (mode === "add") {
-        const updatedGoalState = [...goalDataState];
-        updatedGoalState.push(goalData);
-        setGoalDataState(updatedGoalState);
-    }
+        if (mode === "edit") {
+            const updatedGoalState = [...goalDataState];
+            updatedGoalState[index as number] = goalData;
+            setGoalDataState(updatedGoalState);
+        } else if (mode === "add") {
+            const updatedGoalState = [...goalDataState];
+            updatedGoalState.push(goalData);
+            setGoalDataState(updatedGoalState);
+        }
 
-    reset();
+        reset();
     };
 
     return (
