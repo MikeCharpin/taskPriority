@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
+import { supabase } from "@/supabaseClient";
 
 interface GoalCardProps {
     goal: GoalData,
@@ -45,13 +46,23 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
         setProjectDataState(updatedProjectData)
     }
 
-    const deleteGoal = () => {
-        const updatedGoalData = [...goalDataState]
-        updatedGoalData.splice(goalIndex, 1)
-        setGoalDataState(updatedGoalData)
-        const updatedProjectData = [...projectDataState]
-        const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
-        setProjectDataState(remainingProjects)
+    const deleteGoalFromDB = async (goalId: string) => {
+        await supabase.from('goals').delete().eq("goalId", goalId).throwOnError()
+        setGoalDataState(goalDataState.filter((goal) => goal.goalId != goalId))
+    }
+
+    const deleteGoal = (goalId: string) => {
+        if (workingOffline) {
+            const updatedGoalData = [...goalDataState]
+            updatedGoalData.splice(goalIndex, 1)
+            setGoalDataState(updatedGoalData)
+            const updatedProjectData = [...projectDataState]
+            const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
+            setProjectDataState(remainingProjects)
+        } else {
+            deleteGoalFromDB(goalId)
+        }
+        
     }
     
 
@@ -74,7 +85,7 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
                                     workingOffline={workingOffline}
                                     session={session}
                                 />
-                                <Button variant={"destructive"} onClick={deleteGoal}><Trash2Icon/></Button>
+                                <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
                             </div>
                             </div>
                             <nav className="flex flex-col justify-between items-center gap-2">
