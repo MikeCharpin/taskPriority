@@ -2,6 +2,7 @@ import { GoalData, ProjectData } from "@/data/flatFakeData";
 import GoalCard from "./GoalCard";
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
+import updateGoalInDB from "@/functions/functions";
 
 interface GoalSectionProps  {
     goalDataState: GoalData[], 
@@ -18,7 +19,6 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
     const activeGoals = goalDataState.filter((goal) => goal.goalStatus === "active").length
     const completedGoals = goalDataState.filter((goal) => goal.goalStatus === "completed").length
 
-
     const changeGoalRank = (goalId: string, direction: number) => {
         const goalIndex = goalDataState.findIndex((goal) => goal.goalId === goalId)
         if (goalIndex === -1) {
@@ -32,7 +32,17 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
         updatedGoalData.forEach((goal, index) => {
             goal.goalRank = index + 1
         })
-        setGoalDataState(updatedGoalData)
+
+        try {
+                Promise.all(updatedGoalData.map(async (updatedGoalData) => {
+                    await updateGoalInDB(updatedGoalData)
+            }))
+            setGoalDataState(updatedGoalData)
+            console.log("Goals reordered and updated in the database.")
+        } catch (error) {
+            console.error("Error updateding goals in database.")
+        }
+        
     }
 
 

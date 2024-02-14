@@ -44,6 +44,7 @@
         goalMotivation: z.string(),
         goalComplexity: z.string(),
         goalExcitement: z.string(),
+        goalRank: z.number(),
         goalColor: z.string(),
     });
 
@@ -54,11 +55,11 @@
         calcGoalScore: (goal: GoalData) => number;
         goal: GoalData | undefined; 
         index: number | undefined; 
-        workingOffline: boolean
-        session: Session | null
+        workingOffline: boolean,
+        session: Session | null,
     }
 
-    const GoalForm: React.FC<GoalFormProps> = ({ mode, goalDataState, setGoalDataState, calcGoalScore, goal, index, workingOffline, session, }) => {
+    const GoalForm: React.FC<GoalFormProps> = ({ mode, goalDataState, setGoalDataState, calcGoalScore, goal, index, workingOffline, session, updateGoalInDB }) => {
     const [background, setBackground] = useState(goal?.goalColor || '#075985');
 
     const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
@@ -93,19 +94,6 @@
         }
     }
 
-    const updateGoalInDB = async (updatedGoal: GoalData) => {
-        try {
-            if(!supabase) throw new Error("Supabase cleint is not initialized.")
-            const { data, error } = await supabase
-                .from("goals")
-                .update<GoalData>(updatedGoal)
-                .eq("goalId", updatedGoal.goalId)
-            if (error) throw error
-            console.log("Goal Updated", data)
-        } catch (error: any) {
-            console.error("Error updating goal.", error.message)
-        }
-    }
     const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
         const goalData = {
             user_id: session?.user.id,
