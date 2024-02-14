@@ -1,6 +1,7 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
 import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 
 interface ProjectSectionProps {
@@ -8,6 +9,9 @@ interface ProjectSectionProps {
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     goalDataState: GoalData[],
     calcProjectScore: (project: ProjectData) => number,
+    workingOffline: boolean,
+    supabase: SupabaseClient
+
 }
 
 export default function ProjectSection({ projectDataState, setProjectDataState, goalDataState, calcProjectScore }: ProjectSectionProps) {
