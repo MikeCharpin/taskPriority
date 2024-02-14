@@ -2,6 +2,7 @@ import { GoalData, ProjectData } from "@/data/flatFakeData";
 import { Button } from "./ui/button";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import GoalForm from "./GoalForm";
+import { Session } from "@supabase/supabase-js";
 
 interface GoalCardProps {
     goal: GoalData,
@@ -14,9 +15,11 @@ interface GoalCardProps {
     setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>,
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
+    workingOffline: boolean
+    session: Session | null
 }
 
-const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState, projectDataState, setProjectDataState }) => {
+const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState, projectDataState, setProjectDataState, workingOffline, session }) => {
     const goalIndex = goalDataState.findIndex((stateGoal) => stateGoal.goalId === goal.goalId)
 
     const setGoalStatus = (status: string) => {
@@ -68,6 +71,8 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
                                     calcGoalScore={calcGoalScore}
                                     goalDataState={goalDataState}
                                     setGoalDataState={setGoalDataState}
+                                    workingOffline={workingOffline}
+                                    session={session}
                                 />
                                 <Button variant={"destructive"} onClick={deleteGoal}><Trash2Icon/></Button>
                             </div>

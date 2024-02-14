@@ -1,6 +1,7 @@
 import { GoalData, ProjectData } from "@/data/flatFakeData";
 import GoalCard from "./GoalCard";
 import GoalForm from "./GoalForm";
+import { Session } from "@supabase/supabase-js";
 
 interface GoalSectionProps  {
     goalDataState: GoalData[], 
@@ -8,21 +9,32 @@ interface GoalSectionProps  {
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>
     calcGoalScore: (goal: GoalData) => number;
+    workingOffline: boolean,
+    session: Session | null
 }
 
 
-export function GoalSection({ goalDataState, setGoalDataState, projectDataState, setProjectDataState, calcGoalScore }: GoalSectionProps ) {
+export function GoalSection({ goalDataState, setGoalDataState, projectDataState, setProjectDataState, calcGoalScore, workingOffline, session }: GoalSectionProps ) {
     const activeGoals = goalDataState.filter((goal) => goal.goalStatus === "active").length
     const completedGoals = goalDataState.filter((goal) => goal.goalStatus === "completed").length
 
-    const moveGoal = (currentIndex: number, direction: number) => {
-        const newIndex = Math.max(0,Math.min(goalDataState.length - 1, currentIndex + direction))
-        const updatedData = [...goalDataState]
-        const tempGoal = updatedData[currentIndex]
-        updatedData[currentIndex] = updatedData[newIndex]
-        updatedData[newIndex] = tempGoal
-        setGoalDataState(updatedData)
+
+    const changeGoalRank = (goalId: string, direction: number) => {
+        const goalIndex = goalDataState.findIndex((goal) => goal.goalId === goalId)
+        if (goalIndex === -1) {
+            console.error("Could not find goal.")
+            return
+        }
+        const newIndex = Math.max(0, Math.min(goalDataState.length - 1, goalIndex + direction))
+        const updatedGoalData = [...goalDataState]
+        const [goal] = updatedGoalData.splice(goalIndex, 1)
+        updatedGoalData.splice(newIndex, 0, goal)
+        updatedGoalData.forEach((goal, index) => {
+            goal.goalRank = index + 1
+        })
+        setGoalDataState(updatedGoalData)
     }
+
 
 
     return (
@@ -36,6 +48,8 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
                     calcGoalScore={calcGoalScore}
                     goal={undefined}
                     index={undefined}
+                    workingOffline={workingOffline}
+                    session={session}
                 />
             </div>
             {activeGoals > 0 ? 
@@ -45,13 +59,15 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
                         goal={goal}
                         background={goal.goalColor}
                         index={index}
-                        onMoveUp={() => moveGoal(index, -1)}
-                        onMoveDown={() => moveGoal(index, 1)}
+                        onMoveUp={() => changeGoalRank(goal.goalId, -1)}
+                        onMoveDown={() => changeGoalRank(goal.goalId, 1)}
                         goalDataState={goalDataState}
                         calcGoalScore={calcGoalScore}
                         setGoalDataState={setGoalDataState}
                         projectDataState={projectDataState}
                         setProjectDataState={setProjectDataState}
+                        workingOffline={workingOffline}
+                        session={session}
                         />
              ))
             : 
@@ -65,13 +81,15 @@ export function GoalSection({ goalDataState, setGoalDataState, projectDataState,
                         goal={goal}
                         background={goal.goalColor}
                         index={index}
-                        onMoveUp={() => moveGoal(index, -1)}
-                        onMoveDown={() => moveGoal(index, 1)}
+                        onMoveUp={() => changeGoalRank(goal.goalId, -1)}
+                        onMoveDown={() => changeGoalRank(goal.goalId, 1)}
                         goalDataState={goalDataState}
                         calcGoalScore={calcGoalScore}
                         setGoalDataState={setGoalDataState}
                         projectDataState={projectDataState}
                         setProjectDataState={setProjectDataState}
+                        workingOffline={workingOffline}
+                        session={session}
                     />
                 ))
             :
