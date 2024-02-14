@@ -4,6 +4,7 @@ import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon 
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/supabaseClient";
+import updateGoalInDB from "@/functions/functions";
 
 interface GoalCardProps {
     goal: GoalData,
@@ -32,6 +33,7 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
             console.error("Goal not found:", editedGoal)
         }
         updatedGoalData[goalIndex] = editedGoal
+        updateGoalInDB(editedGoal)
         setGoalDataState(updatedGoalData)
         
         const updatedProjectData = [...projectDataState].map((stateProject) => {
@@ -44,6 +46,7 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
             return stateProject
         })
         setProjectDataState(updatedProjectData)
+        
     }
 
     const deleteGoalFromDB = async (goalId: string) => {
@@ -100,7 +103,7 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
                     <div className="flex bg-primary/20 p-2 rounded-xl ">
                         <div className="flex flex-col w-full justify-between">
                             <Button onClick={() => setGoalStatus("active")}><RefreshCwIcon/></Button>
-                            <Button variant={"destructive"} onClick={deleteGoal}><Trash2Icon/></Button>
+                            <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
                         </div>
                    </div>
                 </div>  
