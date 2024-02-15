@@ -89,8 +89,8 @@
                 .single()
             if (error) throw error
             console.log("New goal added to database", data)
-        } catch(error: any) {
-            console.error("Error adding goal to database.", error.message)
+        } catch(error: unknown) {
+            console.error("Error adding goal to database.", error)
         }
     }
 
