@@ -10,9 +10,10 @@ const updateGoalInDB = async (updatedGoal: GoalData) => {
                 .eq("goalId", updatedGoal.goalId)
             if (error) throw error
             console.log("Goal Updated", data)
-        } catch (error: any) {
-            console.error("Error updating goal.", error.message)
+        } catch (error: unknown) {
+            console.error("Error updating goal.", error)
         }
     }
 
 export default updateGoalInDB
+

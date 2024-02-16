@@ -4,7 +4,7 @@ import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon 
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/supabaseClient";
-import updateGoalInDB from "@/functions/functions";
+import updateGoalInDB from "@/functions/updateGoalInDB";
 
 interface GoalCardProps {
     goal: GoalData,

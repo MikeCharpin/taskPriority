@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
@@ -29,123 +29,107 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { v4 as uuidv4 } from "uuid";
 import { ProjectData, TaskData } from "@/data/flatFakeData";
 import { PencilIcon, PlusIcon } from "lucide-react";
+import { Session } from "@supabase/supabase-js";
+import { supabase } from "@/supabaseClient";
+import updateTaskInDB from "@/functions/updateTaskInDB";
 
 const formSchema = z.object({
-  taskId: z.string(),
-  taskScore: z.number(),
-  taskDesc: z
+    user_id: z.string(),
+    taskId: z.string(),
+    taskScore: z.number(),
+    taskDesc: z
     .string()
     .min(10, {
-      message: "Goal must be at least 10 characters.",
+        message: "Goal must be at least 10 characters.",
     })
     .max(120, {
-      message: "120 character limit.",
+        message: "120 character limit.",
     }),
-  taskStatus: z.string(),
-  taskDuration: z.number().default(1),
-  taskComplexity: z.string(),
-  taskExcitement: z.string(),
-  taskProject: z.string(),
+    taskStatus: z.string(),
+    taskDuration: z.number().default(1),
+    taskComplexity: z.string(),
+    taskExcitement: z.string(),
+    taskProject: z.string(),
+    taskRank: z.number(),
 });
 
 interface TaskFormProps {
     mode: "add" | "edit"
-    taskProject: string
-    projectDataState: ProjectData[]
-    setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>
+    taskDataState: TaskData[]
+    setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>
+    taskProjectId: string
     task?: TaskData
-    index?: number | undefined 
     background?: string | undefined   
+    session: Session | null
 }
 
 export default function TaskForm({
     mode,
-    taskProject,
-    projectDataState,
-    setProjectDataState,
+    taskDataState,
+    setTaskDataState,
+    taskProjectId,
     task,
-    index,
     background,
+    session,
 }: TaskFormProps) {
-    const addTask = (newTask: TaskData) => {
-        const updatedProjectState = [...projectDataState]
-        const updatedProject = updatedProjectState.find(
-            (project) => project.projectId === newTask.taskProject
-        )
 
-        if(updatedProject) {
-            const projectIndex = updatedProjectState.findIndex(
-                (project) => project.projectId === newTask.taskProject
-            )
-            updatedProject?.projectTasks.push(newTask)
-            updatedProjectState[projectIndex] = updatedProject
-            console.log(updatedProjectState)
-        } else {
-            console.error("Project not found:", newTask.taskProject)
-        }
-
-        setProjectDataState(updatedProjectState)
-    }
-
-    const editTask = (editedTask: TaskData) => {
-        const updatedProjectState = [...projectDataState]
-        const updatedProject = updatedProjectState.find(
-            (project) => project.projectId === editedTask.taskProject
-        )
-
-        if(!updatedProject || index == undefined){
-            console.error("Project or index is undefined:", editedTask.taskProject)
-            return
-        }
-
-        const projectIndex = updatedProjectState.findIndex(
-            (project) => project.projectId === editedTask.taskProject
-        )
-
-        if(projectIndex === -1) {
-            console.error("Project not found:", editedTask.taskProject)
-            return
-        }
-
-        updatedProject.projectTasks[index] = editedTask
-        updatedProjectState[projectIndex] = updatedProject
-        console.log(updatedProjectState)
-          
-
-        setProjectDataState(updatedProjectState)
-    }
 
     const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      taskId: task?.taskId || "",
-      taskScore: task?.taskScore || 0,
-      taskStatus: task?.taskStatus || "active",
-      taskDesc: task?.taskDesc || "",
-      taskDuration: task?.taskDuration || 15,
-      taskComplexity: task?.taskComplexity || "medium",
-      taskExcitement: task?.taskExcitement || "medium",
-      taskProject: task?.taskProject || "",
+        user_id: session?.user.id,
+        taskId: task?.taskId || uuidv4(),
+        taskScore: task?.taskScore || 0,
+        taskStatus: task?.taskStatus || "active",
+        taskDesc: task?.taskDesc || "",
+        taskDuration: task?.taskDuration || 15,
+        taskComplexity: task?.taskComplexity || "medium",
+        taskExcitement: task?.taskExcitement || "medium",
+        taskProject: taskProjectId,
+        taskRank: task?.taskRank || 0,
     },
   });
 
-  function onSubmit(formData: z.infer<typeof formSchema>) {
-        if(mode === "add") {
-            const newTask: TaskData = {
-                ...formData,
-                taskId: uuidv4(),
-                taskProject: taskProject
-            }
-            addTask(newTask)
-        } else if (mode === "edit" && task && index !== undefined) {
-            const editedTask: TaskData = {
-                ...formData,
-                taskId: task.taskId,
-                taskProject: task.taskProject,
-            }
-            editTask(editedTask)
+  const addTaskToDB = async (newTask: TaskData) => {
+    try {
+        const { data, error } = await supabase
+            .from('tasks')
+            .insert<TaskData>([newTask])
+            .single()
+        if (error) throw error
+        console.log("New task added to DB.", data)
+        } catch (error: unknown) {
+        console.error("Error adding task to database.", error)
+    }
+    }
+    const { reset, formState } = form;
+    const { isValid } = formState;
+
+  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (task) => {
+        const taskIndex = taskDataState.findIndex(stateTask => stateTask.taskId === task?.taskId)
+        const taskData = {
+            user_id: session?.user.id,
+            taskId: task.taskId,
+            taskScore: task.taskScore,
+            taskStatus: task.taskStatus,
+            taskDesc: task.taskDesc.trim(),
+            taskDuration: task.taskDuration,
+            taskComplexity: task.taskComplexity,
+            taskExcitement: task.taskExcitement,
+            taskProject: task.taskProject,
+            taskRank: task.taskRank,
         }
-        
+        const updatedTaskState = [...taskDataState]
+        if (mode === "add") {
+            taskData.taskId = uuidv4()
+            addTaskToDB(taskData)
+            updatedTaskState.push(taskData)
+        } else if (mode === "edit" && taskIndex !== undefined) {
+            updateTaskInDB(taskData)
+            updatedTaskState[taskIndex] = taskData
+        }
+        setTaskDataState(updatedTaskState)
+        reset()
     }
 
     return (
@@ -299,7 +283,7 @@ export default function TaskForm({
                     </div>
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button type="submit">{mode === "add" ? "add" : "save"}</Button>
+                            <Button type="submit" disabled={!isValid}>{mode === "add" ? "add" : "save"}</Button>
                         </DialogClose>
                     </DialogFooter>
                 </form>

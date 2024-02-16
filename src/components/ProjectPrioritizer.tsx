@@ -20,7 +20,6 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
 
     useEffect(() => {
         setWorkingOffline(session?.user.id === "offlineId")
-        console.log("Project Prioritizer Offline:", session?.user.id === "offlineId" )
     }, [session])
 
     const loadFromLocalStorage = () => {
@@ -33,10 +32,11 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         setTaskDataState(storedTaskData ? JSON.parse(storedTaskData) : [])
     } 
 
-    const fetchData = async (tableName: string, setDataState: React.Dispatch<any>) => {
+    const fetchData = async (tableName: string, setDataState: React.Dispatch<any>, columnName: string) => {
         const { data, error } = await supabase
             .from(tableName)
             .select('*')
+            .order(`${columnName}`, {ascending: true})
         if (error){
             console.error(`Error fetching ${tableName} data:`, error)
         } else {
@@ -54,9 +54,9 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
             setLoading(true)
             const fetchAllData = async () => {
                 await Promise.all([
-                    fetchData('goals', setGoalDataState),
-                    fetchData("projects", setProjectDataState),
-                    fetchData('tasks', setTaskDataState),
+                    fetchData('goals', setGoalDataState, "goalRank"),
+                    fetchData("projects", setProjectDataState, "projectRank"),
+                    fetchData('tasks', setTaskDataState, "taskRank"),
                 ])
             }
             fetchAllData()
@@ -156,10 +156,12 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
                 <ProjectSection
                   projectDataState={projectDataState}
                   setProjectDataState={setProjectDataState}
+                  taskDataState={taskDataState}
+                  setTaskDataState={setTaskDataState}
                   goalDataState={goalDataState}
                   calcProjectScore={calcProjectScore}
                   workingOffline={workingOffline}
-                  supabase={supabase}
+                  session={session}
                 /> 
                 </div>
             </div>

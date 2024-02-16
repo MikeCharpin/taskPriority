@@ -19,8 +19,6 @@ export default function ResultsSection({ sortedProjectState, goalDataState }: Re
                     goalDataState={goalDataState}
                 />
             )}
-            
-
         </div>
     )
 }
@@ -28,7 +26,6 @@ export default function ResultsSection({ sortedProjectState, goalDataState }: Re
 interface PriortityCardProps {
     project: ProjectData
     goalDataState: GoalData[]
-    key: string
 }
 
 function PriorityCard({ project, goalDataState }: PriortityCardProps) {

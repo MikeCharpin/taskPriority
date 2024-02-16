@@ -1,5 +1,6 @@
 
 export interface GoalData {
+    user_id: string | undefined,
     goalId: string, 
     goalDesc: string,
     goalStatus: string,
@@ -7,10 +8,12 @@ export interface GoalData {
     goalComplexity: string,
     goalExcitement: string,
     goalMotivation: string,
+    goalRank: number,
     goalColor: string,
 }
 
 export interface ProjectData {
+    user_id: string | undefined,
     projectId: string,
     projectDesc: string,
     projectGoal: string,
@@ -21,10 +24,11 @@ export interface ProjectData {
     projectComplexity: string,
     projectExcitement: string,
     projectTimeframe: Date,
-    projectTasks: TaskData[],
+    projectRank: number,
 }
 
 export interface TaskData {
+    user_id: string | undefined,
     taskId: string,
     taskScore: number,
     taskDuration: number,
@@ -33,6 +37,7 @@ export interface TaskData {
     taskComplexity: string,
     taskExcitement: string,
     taskStatus: string,
+    taskRank: number,
 }
 
 export interface FlatFakeDataType {
@@ -89,26 +94,8 @@ export const flatFakeData = {
             projectExcitement: "low",
             projectTimeframe: new Date("2024-01-01T05:00:00.000Z"),
             projectTasks: [
-                {
-                    taskId: "111",
-                    taskScore: 0,
-                    taskStatus: "active",
-                    taskDuration: 15,
-                    taskComplexity: "low",
-                    taskExcitement: "high",
-                    taskProject: "11",
-                    taskDesc: "This is a task - 111"
-                },
-                {
-                    taskId: "113",
-                    taskScore: 0,
-                    taskStatus: "completed",
-                    taskDuration: 15,
-                    taskComplexity: "low",
-                    taskExcitement: "high",
-                    taskProject: "11",
-                    taskDesc: "This is a task - 113"
-                },
+                111,
+                113,
             ]
         },
         {
@@ -170,6 +157,28 @@ export const flatFakeData = {
             projectTasks: [
 
             ]
+        },
+    ],
+    taskData: [
+        {
+            taskId: "111",
+            taskScore: 0,
+            taskStatus: "active",
+            taskDuration: 15,
+            taskComplexity: "low",
+            taskExcitement: "high",
+            taskProject: "11",
+            taskDesc: "This is a task - 111"
+        },
+        {
+            taskId: "113",
+            taskScore: 0,
+            taskStatus: "completed",
+            taskDuration: 15,
+            taskComplexity: "low",
+            taskExcitement: "high",
+            taskProject: "11",
+            taskDesc: "This is a task - 113"
         },
     ]
 }

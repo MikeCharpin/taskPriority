@@ -30,6 +30,7 @@
     import { PlusIcon, PencilIcon } from "lucide-react";
     import { GoalData } from "@/data/flatFakeData";
     import { Session } from "@supabase/supabase-js";
+import updateGoalInDB from "@/functions/updateGoalInDB";
 
     const formSchema = z.object({
         user_id: z.string(),
@@ -59,7 +60,16 @@
         session: Session | null,
     }
 
-    const GoalForm: React.FC<GoalFormProps> = ({ mode, goalDataState, setGoalDataState, calcGoalScore, goal, index, workingOffline, session, updateGoalInDB }) => {
+    const GoalForm: React.FC<GoalFormProps> = ({ 
+        mode, 
+        goalDataState, 
+        setGoalDataState, 
+        calcGoalScore, 
+        goal, 
+        index, 
+        workingOffline, 
+        session,
+     }) => {
     const [background, setBackground] = useState(goal?.goalColor || '#075985');
 
     const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
@@ -122,6 +132,7 @@
             }
            
         } else if (mode === "add") {
+            goalData.goalId = uuidv4()
             if(workingOffline) {
                 const updatedGoalState = [...goalDataState];
                 updatedGoalState.push(goalData);

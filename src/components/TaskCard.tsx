@@ -4,68 +4,96 @@ import { Button } from "./ui/button";
 import TaskForm from "./TaskForm";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import React from "react";
+import { Session } from "@supabase/supabase-js";
+import updateTaskInDB from "@/functions/updateTaskInDB";
+import { supabase } from "@/supabaseClient";
 
 interface TaskCardProps {
     key: string,
     task: TaskData,
     taskProjectId: string,
     projectDataState: ProjectData[],
-    background: string | undefined,
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
-    onTaskMoveUp: () => void,
-    onTaskMoveDown: () => void,
+    background: string | undefined,
+    taskDataState: TaskData[],
+    setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>,
+    session: Session | null
 }
 
+export default function TaskCard({ 
+    task, 
+    background, 
+    taskDataState,
+    setTaskDataState,
+    session,
+}: TaskCardProps) {
+
+    const projectTasks = taskDataState.filter(stateTask => stateTask.taskProject === task.taskProject).sort((a, b) => a.taskRank - b.taskRank)
+    const taskIndex = projectTasks.findIndex((stateTask) => stateTask.taskId === task.taskId)
 
 
-
-export default function TaskCard({ task, taskProjectId, projectDataState, background, setProjectDataState, onTaskMoveUp, onTaskMoveDown }: TaskCardProps) {
-
-    const taskProject = projectDataState.find((project) => project.projectId === taskProjectId)
-    const taskIndex = taskProject?.projectTasks.findIndex((projectTask) => projectTask.taskId === task.taskId)
-
-    const setTaskStatus = (status: string) => {
-        const updatedProjectData = [...projectDataState]
-        const updatedProject = updatedProjectData.find((project) => project.projectId === taskProjectId)
-        const taskIndex = updatedProject?.projectTasks.findIndex((projectTask) => projectTask.taskId ===  task.taskId)
-        if(!updatedProject || taskIndex === undefined){
-            console.error("Project or index is undefined.")
+    const changeTaskRank = (taskId: string, direction: number) => {
+        let updatedTaskData = [...taskDataState]
+        const taskIndex = projectTasks.findIndex((stateTask) => stateTask.taskId === taskId)
+        if (taskIndex === -1) {
+            console.error("Could not find task.")
             return
         }
-        const projectIndex = updatedProjectData.findIndex((project) => project.projectId === taskProjectId)
-        if(projectIndex === -1){
-            console.error("Project index not found.")
-            return
-        }
-        const editedTask = updatedProject.projectTasks.find((projectTask) => task.taskId === projectTask.taskId)
-        if(editedTask) {
-            editedTask.taskStatus = status
-            updatedProject.projectTasks[taskIndex] = editedTask
-        } else {
-            console.error("Task not found:", editedTask)
-        }
-        updatedProjectData[projectIndex] = updatedProject
-        setProjectDataState(updatedProjectData) 
-    }
+        const newIndex = Math.max(0, Math.min(projectTasks.length - 1, taskIndex + direction))
+        const [task] = projectTasks.splice(taskIndex, 1)
+        projectTasks.splice(newIndex, 0, task)
+        projectTasks.forEach((task, taskIndex) => {
+            task.taskRank = taskIndex + 1
+        })
 
-    const deleteTask = () => {
-        const updatedProjectData = [...projectDataState]
-        const updatedProject = updatedProjectData.find((project) => project.projectId === taskProjectId)
-        const taskIndex = updatedProject?.projectTasks.findIndex((projectTask) => projectTask.taskId ===  task.taskId)
-        if(!updatedProject || taskIndex === undefined){
-            console.error("Project or index is undefined.")
-            return
-        }
-        const projectIndex = updatedProjectData.findIndex((project) => project.projectId === taskProjectId)
-        if(projectIndex === -1){
-            console.error("Project index not found.")
-            return
-        }
-        updatedProject.projectTasks.splice(taskIndex, 1)
-        setProjectDataState(updatedProjectData)        
+        const mergeTasks = (updatedTaskData: TaskData[], projectTasks: TaskData[]) => {
+            const map: { [key: string]: TaskData} = {}
+            projectTasks.forEach(task => {
+                map[task.taskId] = task
+            })
 
+            const mergedTasks: TaskData[] = updatedTaskData.map(task => {
+                const matchingTask = map[task.taskId]
+                if(matchingTask) {
+                    return matchingTask
+                }
+                return task
+            })
+
+            return mergedTasks
+        }
+        updatedTaskData = mergeTasks(updatedTaskData, projectTasks)
         
 
+        try {
+            Promise.all(updatedTaskData.map(async (updatedTaskData) => {
+                await updateTaskInDB(updatedTaskData)
+            }))
+            setTaskDataState(updatedTaskData)
+            console.log("Tasks reordered and updated in databse.")
+        } catch (error) {
+            console.error("Error updating tasks in database.", error)
+        }
+    }
+
+    const setTaskStatus = (status: string) => {
+       const updatedTaskData = [...taskDataState]
+       const editedTask = updatedTaskData[taskIndex]
+       if (editedTask) {
+        editedTask.taskStatus = status
+       } else {
+        console.error("Task not found.", editedTask)
+       }
+       updatedTaskData[taskIndex] = editedTask
+       updateTaskInDB(editedTask)
+       setTaskDataState(updatedTaskData)
+    }
+
+
+
+    const deleteTask =  async (taskId: string) => {
+        await supabase.from('tasks').delete().eq('taskId', taskId).throwOnError()
+        setTaskDataState(taskDataState.filter((task) => task.taskId != taskId))
     }
 
 
@@ -81,27 +109,28 @@ export default function TaskCard({ task, taskProjectId, projectDataState, backgr
                             <TaskForm
                                 mode={"edit"}
                                 task={task}
-                                taskProject={taskProjectId}
-                                index={taskIndex}
+                                taskProjectId={task.taskId}
                                 background={background}
-                                projectDataState={projectDataState}
-                                setProjectDataState={setProjectDataState}
+                                taskDataState={taskDataState}
+                                setTaskDataState={setTaskDataState}
+                                session={session}
                             />
-                            <Button variant={"destructive"} size={"icon"} className="p-2" onClick={deleteTask}><Trash2Icon/></Button>    
+                            <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>    
                         </div>
                     </div>
                     <div className="flex flex-col justify-between items-end p-0">
-                        <Button variant={"ghost"} size={"icon"} className="p-0" onClick={onTaskMoveUp}> <ArrowUpIcon/> </Button>
-                        <Button variant={"ghost"} size={"icon"} className="p-0" onClick={onTaskMoveDown}> <ArrowDownIcon/> </Button>
+                        <Button variant={"ghost"} size={"icon"} className="p-0" onClick={() => changeTaskRank(task.taskId, -1)}> <ArrowUpIcon/> </Button>
+                        <Button variant={"ghost"} size={"icon"} className="p-0" onClick={() => changeTaskRank(task.taskId, 1)}> <ArrowDownIcon/> </Button>
                     </div>
                 </div>
             :
                 <div className="flex justify-between items-center gap-2">
                     <Button variant={"ghost"} size={"icon"} onClick={() => setTaskStatus("active")} ><RefreshCwIcon/></Button>
-                    <Button variant={"destructive"} size={"icon"} className="p-2" onClick={deleteTask}><Trash2Icon/></Button>          
+                    <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>          
                 </div>
             }
         </div>
         
     )
 }
+
