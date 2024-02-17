@@ -1,4 +1,4 @@
-import { ProjectData } from "@/data/flatFakeData";
+import { ProjectData } from "@/lib/schema";
 import { supabase } from "@/supabaseClient";
 
 const updatedProjectInDB = async (updatedProject: ProjectData) => {

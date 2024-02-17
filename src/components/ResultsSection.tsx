@@ -49,10 +49,10 @@ function PriorityCard({ project, goalDataState }: PriortityCardProps) {
         const businessDays = daysDifference - weekends
         return businessDays
     }
-    
-    const daysRemaining = daysUntil(project.projectTimeframe)
-    const businessDaysRemaining = businessDaysUntil(project.projectTimeframe)
-    const targetDate = format(project.projectTimeframe, "PPP") 
+    const projectTargetDate = new Date(project.projectTimeframe)
+    const daysRemaining = daysUntil(projectTargetDate)
+    const businessDaysRemaining = businessDaysUntil(projectTargetDate)
+    const targetDate = format(projectTargetDate, "PPP") 
 
     return (
         

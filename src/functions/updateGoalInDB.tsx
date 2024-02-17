@@ -1,4 +1,4 @@
-import { GoalData } from "@/data/flatFakeData"
+import { GoalData } from "@/lib/schema"
 import { supabase } from "@/supabaseClient"
 
 const updateGoalInDB = async (updatedGoal: GoalData) => {

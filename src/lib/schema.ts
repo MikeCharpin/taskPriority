@@ -76,7 +76,7 @@ export interface Database {
           projectRank: number
           projectScore: number
           projectStatus: string
-          projectTimeframe: string | null
+          projectTimeframe: string
           user_id: string
         }
         Insert: {
@@ -91,7 +91,7 @@ export interface Database {
           projectRank?: number
           projectScore?: number
           projectStatus?: string
-          projectTimeframe?: string | null
+          projectTimeframe?: string
           user_id: string
         }
         Update: {
@@ -106,7 +106,7 @@ export interface Database {
           projectRank?: number
           projectScore?: number
           projectStatus?: string
-          projectTimeframe?: string | null
+          projectTimeframe?: string
           user_id?: string
         }
         Relationships: [

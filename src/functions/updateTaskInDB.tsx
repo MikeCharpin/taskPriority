@@ -1,4 +1,4 @@
-import { TaskData } from "@/data/flatFakeData"
+import { TaskData } from "@/lib/schema"
 import { supabase } from "@/supabaseClient"
 
 const updateTaskInDB = async (updatedTask: TaskData) => {
