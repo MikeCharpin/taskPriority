@@ -6,13 +6,9 @@ import { supabase } from "@/supabaseClient"
 import { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 
-
-
-
 interface ProjectPrioritizerProps {
     session: Session | null
 }
-
 
 const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
     const [loading, setLoading] = useState(false)
@@ -105,14 +101,6 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         localStorage.setItem('tasks', JSON.stringify(taskDataState))
 
     }, [goalDataState, projectDataState, taskDataState])
-
-
-
-
-            
-
-    
-
 
     const processValue = (value: string) => {
     if(value === "low"){
