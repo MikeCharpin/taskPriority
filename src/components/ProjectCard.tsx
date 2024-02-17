@@ -12,7 +12,7 @@ import ProjectForm from "./ProjectForm";
 import { Session } from "@supabase/supabase-js";
 import updatedProjectInDB from "@/functions/updateProjectInDB";
 import deleteProjectFromDB from "@/functions/deleteProjectFromDB";
-import { GoalData, ProjectData, TaskData } from "./ProjectPrioritizer";
+import { GoalData, ProjectData, TaskData } from "@/lib/schema";
 
 interface ProjectCardProps {
     project: ProjectData,

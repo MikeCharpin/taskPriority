@@ -1,4 +1,4 @@
-import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "@/lib/schema";
 import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
 import { Session } from "@supabase/supabase-js";
@@ -70,7 +70,7 @@ export default function ProjectSection({
 
             <section className="flex flex-col gap-4">
                 {activeProjects > 0 ?
-                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project, index) => (
+                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project) => (
                         <ProjectCard
                             key={project.projectId}
                             project={project}
@@ -92,7 +92,7 @@ export default function ProjectSection({
              <section className="flex flex-col gap-4">
                 {completedProjects > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
                 {completedProjects > 0 ?
-                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project, index) => (
+                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project) => (
                         <ProjectCard
                             key={project.projectId}
                             project={project}

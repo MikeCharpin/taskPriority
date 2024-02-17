@@ -1,4 +1,4 @@
-import { GoalData, ProjectData } from "@/data/flatFakeData"
+import { GoalData, ProjectData } from "@/lib/schema"
 import { format } from "date-fns"
 
 interface ResultsSectionProps {

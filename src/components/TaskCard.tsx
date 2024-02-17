@@ -1,4 +1,4 @@
-import { ProjectData, TaskData } from "./ProjectPrioritizer";
+import { ProjectData, TaskData } from "@/lib/schema";
 import { Button } from "./ui/button";
 import TaskForm from "./TaskForm";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";

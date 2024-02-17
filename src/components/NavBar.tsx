@@ -26,18 +26,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/components/theme-provider"
-import { Session, SupabaseClient } from "@supabase/supabase-js"
+import { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
+import { supabase } from "@/supabaseClient"
 
 
 interface NavBarProps {
     setOpenLogin: React.Dispatch<React.SetStateAction<boolean>>
     setOpenAccount: React.Dispatch<React.SetStateAction<boolean>>
-    supabase: SupabaseClient<any, "public", any>
     session: Session | null
 }
 
-const NavBar = ({ setOpenLogin, supabase, session }: NavBarProps) => {
+const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
     const [workingOffline, setWorkingOffline] = useState(false)
     const { setTheme } = useTheme()
 
