@@ -1,7 +1,10 @@
-import { GoalData, ProjectData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "@/lib/schema";
 import { Button } from "./ui/button";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import GoalForm from "./GoalForm";
+import { Session } from "@supabase/supabase-js";
+import updateGoalInDB from "@/functions/updateGoalInDB";
+import deleteGoalFromDB from "@/functions/deleteGoalFromDB";
 
 interface GoalCardProps {
     goal: GoalData,
@@ -14,9 +17,28 @@ interface GoalCardProps {
     setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>,
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
+    taskDataState: TaskData[],
+    setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>,
+    workingOffline: boolean
+    session: Session | null
 }
 
-const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState, projectDataState, setProjectDataState }) => {
+const GoalCard: React.FC<GoalCardProps> = ({ 
+    goal, 
+    background, 
+    index, 
+    onMoveUp, 
+    onMoveDown, 
+    calcGoalScore, 
+    goalDataState, 
+    setGoalDataState, 
+    projectDataState, 
+    setProjectDataState, 
+    taskDataState,
+    setTaskDataState,
+    workingOffline, 
+    session 
+}) => {
     const goalIndex = goalDataState.findIndex((stateGoal) => stateGoal.goalId === goal.goalId)
 
     const setGoalStatus = (status: string) => {
@@ -28,6 +50,7 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
             console.error("Goal not found:", editedGoal)
         }
         updatedGoalData[goalIndex] = editedGoal
+        updateGoalInDB(editedGoal)
         setGoalDataState(updatedGoalData)
         
         const updatedProjectData = [...projectDataState].map((stateProject) => {
@@ -40,16 +63,28 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
             return stateProject
         })
         setProjectDataState(updatedProjectData)
+        
     }
 
-    const deleteGoal = () => {
-        const updatedGoalData = [...goalDataState]
-        updatedGoalData.splice(goalIndex, 1)
-        setGoalDataState(updatedGoalData)
-        const updatedProjectData = [...projectDataState]
-        const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
-        setProjectDataState(remainingProjects)
+    const deleteGoal = async (goalId: string) => {
+        deleteGoalFromDB(goalId)
+        setGoalDataState(goalDataState.filter((goal) => goal.goalId !== goalId))
+        setProjectDataState(projectDataState.filter((project) => project.projectGoal !== goalId))
+        setTaskDataState(taskDataState.filter((task) => task.taskGoal !== goalId))
     }
+
+    // const deleteGoal = (goalId: string) => {
+    //     if (workingOffline) {
+    //         const updatedGoalData = [...goalDataState]
+    //         updatedGoalData.splice(goalIndex, 1)
+    //         setGoalDataState(updatedGoalData)
+    //         const updatedProjectData = [...projectDataState]
+    //         const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
+    //         setProjectDataState(remainingProjects)
+    //     } else {
+    //         deleteGoal(goalId)
+    //     }
+    // }
     
 
     return (
@@ -68,8 +103,10 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
                                     calcGoalScore={calcGoalScore}
                                     goalDataState={goalDataState}
                                     setGoalDataState={setGoalDataState}
+                                    workingOffline={workingOffline}
+                                    session={session}
                                 />
-                                <Button variant={"destructive"} onClick={deleteGoal}><Trash2Icon/></Button>
+                                <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
                             </div>
                             </div>
                             <nav className="flex flex-col justify-between items-center gap-2">
@@ -84,7 +121,7 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
                     <div className="flex bg-primary/20 p-2 rounded-xl ">
                         <div className="flex flex-col w-full justify-between">
                             <Button onClick={() => setGoalStatus("active")}><RefreshCwIcon/></Button>
-                            <Button variant={"destructive"} onClick={deleteGoal}><Trash2Icon/></Button>
+                            <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
                         </div>
                    </div>
                 </div>  

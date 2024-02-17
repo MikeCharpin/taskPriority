@@ -1,9 +1,10 @@
+    import { GoalData } from "@/lib/schema";    
     import React, { useState } from "react";
     import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form";
     import { zodResolver } from "@hookform/resolvers/zod";
     import * as z from "zod";
     import { v4 as uuidv4 } from 'uuid';
-
+    import { supabase } from '@/supabaseClient.ts'
     import { Button } from "@/components/ui/button";
     import {
         Form,
@@ -27,9 +28,11 @@
     import { Textarea } from "@/components/ui/textarea";
     import { GradientPicker } from "./ui/GradientPicker";
     import { PlusIcon, PencilIcon } from "lucide-react";
-    import { GoalData } from "@/data/flatFakeData";
+    import { Session } from "@supabase/supabase-js";
+import updateGoalInDB from "@/functions/updateGoalInDB";
 
     const formSchema = z.object({
+        user_id: z.string(),
         goalId: z.string(),
         goalScore: z.number(),
         goalDesc: z.string().min(10, {
@@ -41,6 +44,7 @@
         goalMotivation: z.string(),
         goalComplexity: z.string(),
         goalExcitement: z.string(),
+        goalRank: z.number(),
         goalColor: z.string(),
     });
 
@@ -49,23 +53,36 @@
         goalDataState: GoalData[];
         setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>;
         calcGoalScore: (goal: GoalData) => number;
-        goal?: GoalData; 
-        index?: number; 
+        goal: GoalData | undefined; 
+        index: number | undefined; 
+        workingOffline: boolean,
+        session: Session | null,
     }
 
-    const GoalForm: React.FC<GoalFormProps> = ({ mode, goalDataState, setGoalDataState, calcGoalScore, goal, index, }) => {
+    const GoalForm: React.FC<GoalFormProps> = ({ 
+        mode, 
+        goalDataState, 
+        setGoalDataState, 
+        calcGoalScore, 
+        goal, 
+        index, 
+        workingOffline, 
+        session,
+     }) => {
     const [background, setBackground] = useState(goal?.goalColor || '#075985');
 
     const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        goalId: goal?.goalId || "",
+        user_id: session?.user.id,
+        goalId: goal?.goalId || uuidv4(),
         goalScore: goal?.goalScore || 0,
         goalMotivation: goal?.goalMotivation || "",
         goalStatus: goal?.goalStatus || "active",
         goalDesc: goal?.goalDesc || "",
         goalComplexity: goal?.goalComplexity || "",
         goalExcitement: goal?.goalExcitement || "",
+        goalRank: goal?.goalRank || 0,
         goalColor: goal?.goalColor || "bg-[#115E59]" ,
     },
     });
@@ -73,22 +90,67 @@
     const { reset, formState } = form;
     const { isValid } = formState;
 
-    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (goalData: GoalData) => {
-    goalData.goalId = goalData.goalId || uuidv4();
-    goalData.goalColor = background;
-    calcGoalScore(goalData);
-
-    if (mode === "edit") {
-        const updatedGoalState = [...goalDataState];
-        updatedGoalState[index as number] = goalData;
-        setGoalDataState(updatedGoalState);
-    } else if (mode === "add") {
-        const updatedGoalState = [...goalDataState];
-        updatedGoalState.push(goalData);
-        setGoalDataState(updatedGoalState);
+    const addGoalToDB = async (newGoal: GoalData) => {
+        try {
+            const { data, error } = await supabase
+                .from("goals")
+                .insert<GoalData>([newGoal])
+                .single()
+            if (error) throw error
+            console.log("New goal added to database", data)
+        } catch(error: unknown) {
+            console.error("Error adding goal to database.", error)
+        }
     }
 
-    reset();
+    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
+        if (!session) {
+            console.error("No user signed in.")
+        } else {
+            const goalData = {
+            inserted_at: new Date().toString(),
+            user_id: session.user.id,
+            goalId: data.goalId,
+            goalScore: data.goalScore,
+            goalMotivation: data.goalMotivation.trim(),
+            goalStatus: data.goalStatus,
+            goalDesc: data.goalDesc.trim(),
+            goalComplexity: data.goalComplexity,
+            goalExcitement: data.goalExcitement,
+            goalRank: 0,
+            goalColor: background,
+        }
+        calcGoalScore(goalData);
+
+        if (mode === "edit") {
+            if (workingOffline) {
+                const updatedGoalState = [...goalDataState];
+                updatedGoalState[index as number] = goalData;
+                setGoalDataState(updatedGoalState);
+            } else {
+                updateGoalInDB(goalData)
+                const updatedGoalState = [...goalDataState];
+                updatedGoalState[index as number] = goalData;
+                setGoalDataState(updatedGoalState);
+            }
+           
+        } else if (mode === "add") {
+            goalData.goalId = uuidv4()
+            if(workingOffline) {
+                const updatedGoalState = [...goalDataState];
+                updatedGoalState.push(goalData);
+                setGoalDataState(updatedGoalState);
+            } else {
+                addGoalToDB(goalData)
+                const updatedGoalState = [...goalDataState];
+                updatedGoalState.push(goalData);
+                setGoalDataState(updatedGoalState);
+            }
+            
+        }
+        reset();
+        }
+        
     };
 
     return (

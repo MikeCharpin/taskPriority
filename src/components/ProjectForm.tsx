@@ -1,3 +1,4 @@
+import { GoalData, ProjectData } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
@@ -27,33 +28,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { GoalData, ProjectData } from "@/data/flatFakeData";
 import React, { useState } from "react";
 import { PlusIcon, PencilIcon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import DatePickerWithPresets from "./ui/datePickerWithPresets";
+import { Session } from "@supabase/supabase-js";
+import { supabase } from "@/supabaseClient";
+import updatedProjectInDB from "@/functions/updateProjectInDB";
 
 interface ProjectFormProps {
-  mode: "add" | "edit";
-  projectDataState: ProjectData[];
-  setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>;
-  goalDataState: GoalData[];
-  calcProjectScore: (project: ProjectData) => number;
-  project?: ProjectData;
-  index?: number; 
+  mode: "add" | "edit"
+  projectDataState: ProjectData[]
+  setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>
+  goalDataState: GoalData[]
+  calcProjectScore: (project: ProjectData) => number
+  project?: ProjectData
+  session: Session | null
 }
 
-const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setProjectDataState, goalDataState, calcProjectScore, project, index,}) => {
+const ProjectForm: React.FC<ProjectFormProps> = ({
+    mode, 
+    projectDataState, 
+    setProjectDataState, 
+    goalDataState, 
+    calcProjectScore, 
+    project, 
+    session,
+}) => {
     const [selectedGoalId, setSelectedGoalId] = useState<string | null>(project ? project.projectGoal : null);
-
     const handleGoalChange = (value: string) => setSelectedGoalId(value);
-
     const background = selectedGoalId?goalDataState.find((goal) => goal.goalId === selectedGoalId)?.goalColor: undefined;
 
+
     const formSchema = z.object({
+        inserted_at: z.string(),
+        user_id: z.string(),
         projectId: z.string(),
         projectScore: z.number(),
         projectPriorityScore: z.number(),
@@ -67,29 +78,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setPro
         projectMotivation: z.string(),
         projectComplexity: z.string(),
         projectExcitement: z.string(),
-        projectTimeframe: z.date(),
-        projectTasks: z.array(z.object({
-            taskId: z.string(),
-        taskScore: z.number(),
-        taskDesc: z.string().min(10, {
-            message: "Goal must be at least 10 characters.",
-        }).max(120, {
-            message: "120 character limit."
-        }),
-        taskStatus: z.string(),
-        taskDuration: z.number().default(1),
-        taskComplexity: z.string(),
-        taskExcitement: z.string(),
-        taskProject:z.string(),
-        }))
+        projectTimeframe: z.string(),
+        projectRank: z.number(),
     })
 
-    const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<
-    z.infer<typeof formSchema>
-    >({
+    const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        projectId: project?.projectId || "",
+        user_id: session?.user.id,
+        projectId: project?.projectId || uuidv4(),
         projectScore: project?.projectScore || 0,
         projectPriorityScore: project?.projectPriorityScore || 0,
         projectGoal: project?. projectGoal || "",
@@ -98,33 +95,68 @@ const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setPro
         projectDesc: project?.projectDesc || "",
         projectComplexity: project?. projectComplexity || "medium",
         projectExcitement: project?.projectExcitement || "medium",
-        projectTimeframe: project?.projectTimeframe || undefined,
-        projectTasks: project?.projectTasks || [],
+        projectTimeframe: project?.projectTimeframe || new Date().toString(),
+        projectRank: project?.projectRank || 0,
     },
     });
 
     const { reset, formState } = form;
     const { isValid } = formState;
 
-    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (projectData) => {
-        const updatedProjectState = [...projectDataState];
-        if (mode === "add") {
-            const newProject = { ...projectData, projectId: uuidv4() };
-            calcProjectScore(newProject);
-            updatedProjectState.push(newProject);
-        } else if (mode === "edit" && index !== undefined) {
-            calcProjectScore(projectData);
-            updatedProjectState[index] = projectData;
+    const addProjectToDB = async (newProject: ProjectData) => {
+        try {
+            const { data, error } = await supabase
+                .from('projects')
+                .insert<ProjectData>([newProject as ProjectData])
+                .single()
+            if (error) throw error
+            console.log("New project added to database.", data)
+        } catch (error) {
+            console.error("Error adding project to database.", error)
         }
-        console.log(updatedProjectState)
-        setProjectDataState(updatedProjectState);
-        reset();
+    }
+
+    
+    const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
+        const projectIndex = projectDataState.findIndex(stateProject => stateProject.projectId === project?.projectId)
+        if(!session) {
+            console.error("No user signed in.")
+        } else {
+            const projectData = {
+            inserted_at: new Date().toString(),
+            user_id: session.user.id,
+            projectId: data.projectId,
+            projectScore: data.projectScore,
+            projectPriorityScore: data.projectPriorityScore,
+            projectGoal: data. projectGoal,
+            projectMotivation: data.projectMotivation.trim(),
+            projectStatus: data.projectStatus,
+            projectDesc: data.projectDesc.trim(),
+            projectComplexity: data. projectComplexity,
+            projectExcitement: data.projectExcitement,
+            projectTimeframe: data.projectTimeframe,
+            projectRank: 0,
+            }
+            calcProjectScore(projectData)
+            const updatedProjectState = [...projectDataState];
+            if (mode === "add") {
+                projectData.projectId = uuidv4()
+                addProjectToDB(projectData)
+                updatedProjectState.push(projectData);
+            } else if (mode === "edit" && projectIndex !== undefined) {
+                updatedProjectInDB(projectData)
+                updatedProjectState[projectIndex] = projectData;
+            }
+            setProjectDataState(updatedProjectState);
+            reset();
+        }
+        
     };
 
     return (
         <Dialog>
         <DialogTrigger asChild>
-            <Button variant="ghost">
+            <Button variant="ghost" >
             {mode === "add" ? <PlusIcon /> : <PencilIcon />}
             </Button>
         </DialogTrigger>
@@ -194,7 +226,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({mode, projectDataState, setPro
                                     <FormControl>
                                         <DatePickerWithPresets 
                                             {...field} 
-                                            initialValue={project?.projectTimeframe || undefined}
+                                            initialValue={project !== undefined && project.projectTimeframe !== null ? new Date(project.projectTimeframe) : undefined}
                                             onChange={(date) => field.onChange(date)}
                                         />
                                     </FormControl>

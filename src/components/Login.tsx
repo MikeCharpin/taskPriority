@@ -73,10 +73,7 @@ function LoginForm({ className }: React.ComponentProps<"form">) {
     const [email, setEmail] = useState("")
 
     const getURL = () => {
-      let url =
-        process.env.NEXT_PUBLIC_SITE_URL ??
-        process.env.NEXT_PUBLIC_VERCEL_URL ??
-        'http://localhost:5173/'
+      let url = 'http://localhost:5173/'
 
       // Make sure to include `https://` when not localhost.
       url = url.includes('http') ? url : `https://${url}`

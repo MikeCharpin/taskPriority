@@ -1,27 +1,57 @@
-import { GoalData, ProjectData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "@/lib/schema";
 import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
+import { Session } from "@supabase/supabase-js";
+import updatedProjectInDB from "@/functions/updateProjectInDB";
 
 
 interface ProjectSectionProps {
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
+    taskDataState: TaskData[],
+    setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>,
     goalDataState: GoalData[],
     calcProjectScore: (project: ProjectData) => number,
+    workingOffline: boolean,
+    session: Session | null
 }
 
-export default function ProjectSection({ projectDataState, setProjectDataState, goalDataState, calcProjectScore }: ProjectSectionProps) {
+export default function ProjectSection({ 
+    projectDataState, 
+    setProjectDataState, 
+    goalDataState, 
+    taskDataState,
+    setTaskDataState,
+    calcProjectScore,
+    session, 
+}: ProjectSectionProps) {
     
     const activeProjects = projectDataState.filter((projects) => projects.projectStatus === "active").length
     const completedProjects = projectDataState.filter((projects) => projects.projectStatus === "completed").length
 
-    const moveProject = (currentIndex: number, direction: number) => {
-        const newIndex = Math.max(0, Math.min(projectDataState.length - 1, currentIndex + direction))
-        const updatedData: ProjectData[] = [...projectDataState]
-        const tempProject = updatedData[currentIndex]
-        updatedData[currentIndex] = updatedData[newIndex]
-        updatedData[newIndex] = tempProject
-        setProjectDataState(updatedData)
+    const changeProjectRank = (projectId: string, direction: number) => {
+        const projectIndex = projectDataState.findIndex((project) => project.projectId === projectId)
+        if (projectIndex === -1) {
+            console.error("Couldn't find project.")
+            return
+        }
+        const newIndex = Math.max(0, Math.min(projectDataState.length - 1, projectIndex + direction))
+        const updatedProjectData = [...projectDataState]
+        const [project] = updatedProjectData.splice(projectIndex, 1)
+        updatedProjectData.splice(newIndex, 0, project)
+        updatedProjectData.forEach((project, projectIndex) => {
+            project.projectRank = projectIndex + 1
+        })
+
+        try {
+            Promise.all(updatedProjectData.map(async (updatedProjectData) => {
+                await updatedProjectInDB(updatedProjectData)
+            }))
+            setProjectDataState(updatedProjectData)
+            console.log("Projects reodered and updated in the database.")
+        } catch (error) {
+            console.error("Error updating projects in database.", error)
+        }
     }
 
     return (
@@ -34,22 +64,25 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
                     setProjectDataState={setProjectDataState}
                     goalDataState={goalDataState}
                     calcProjectScore={calcProjectScore}
+                    session={session}
                 />
             </div>
 
             <section className="flex flex-col gap-4">
                 {activeProjects > 0 ?
-                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project, index) => (
+                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project) => (
                         <ProjectCard
                             key={project.projectId}
-                            index={index}
                             project={project}
                             goalDataState={goalDataState}
                             projectDataState={projectDataState}
                             setProjectDataState={setProjectDataState}
+                            taskDataState={taskDataState}
+                            setTaskDataState={setTaskDataState}
                             calcProjectScore={calcProjectScore}
-                            onMoveUp={() => moveProject(index, -1)}
-                            onMoveDown={() => moveProject(index, 1)}
+                            onMoveUp={() => changeProjectRank(project.projectId, -1)}
+                            onMoveDown={() => changeProjectRank(project.projectId, 1)}
+                            session={session}
                         />
                     ))
                 : 
@@ -57,19 +90,21 @@ export default function ProjectSection({ projectDataState, setProjectDataState, 
                 }
             </section>
              <section className="flex flex-col gap-4">
-                {completedProjects> 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
+                {completedProjects > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
                 {completedProjects > 0 ?
-                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project, index) => (
+                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project) => (
                         <ProjectCard
                             key={project.projectId}
-                            index={index}
                             project={project}
                             goalDataState={goalDataState}
                             projectDataState={projectDataState}
                             setProjectDataState={setProjectDataState}
+                            taskDataState={taskDataState}
+                            setTaskDataState={setTaskDataState}
                             calcProjectScore={calcProjectScore}
-                            onMoveUp={() => moveProject(index, -1)}
-                            onMoveDown={() => moveProject(index, 1)}
+                            onMoveUp={() => changeProjectRank(project.projectId, -1)}
+                            onMoveDown={() => changeProjectRank(project.projectId, 1)}
+                            session={session}
                         />
                     ))
                 : 

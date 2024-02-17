@@ -1,4 +1,4 @@
-import { GoalData, ProjectData } from "@/data/flatFakeData"
+import { GoalData, ProjectData } from "@/lib/schema"
 import { format } from "date-fns"
 
 interface ResultsSectionProps {
@@ -19,8 +19,6 @@ export default function ResultsSection({ sortedProjectState, goalDataState }: Re
                     goalDataState={goalDataState}
                 />
             )}
-            
-
         </div>
     )
 }
@@ -28,7 +26,6 @@ export default function ResultsSection({ sortedProjectState, goalDataState }: Re
 interface PriortityCardProps {
     project: ProjectData
     goalDataState: GoalData[]
-    key: string
 }
 
 function PriorityCard({ project, goalDataState }: PriortityCardProps) {
@@ -52,10 +49,10 @@ function PriorityCard({ project, goalDataState }: PriortityCardProps) {
         const businessDays = daysDifference - weekends
         return businessDays
     }
-    
-    const daysRemaining = daysUntil(project.projectTimeframe)
-    const businessDaysRemaining = businessDaysUntil(project.projectTimeframe)
-    const targetDate = format(project.projectTimeframe, "PPP") 
+    const projectTargetDate = new Date(project.projectTimeframe)
+    const daysRemaining = daysUntil(projectTargetDate)
+    const businessDaysRemaining = businessDaysUntil(projectTargetDate)
+    const targetDate = format(projectTargetDate, "PPP") 
 
     return (
         
