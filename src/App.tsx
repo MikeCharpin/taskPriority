@@ -75,7 +75,6 @@ function App() {
           {session ? 
           <div>
             <NavBar
-              supabase={supabase}
               setOpenLogin={setOpenLogin}
               setOpenAccount={setOpenAccount}
               session={session}
@@ -87,7 +86,6 @@ function App() {
           :
           <div>
             <NavBar
-              supabase={supabase}
               setOpenLogin={setOpenLogin}
               setOpenAccount={setOpenAccount}
               session={offlineSession}
