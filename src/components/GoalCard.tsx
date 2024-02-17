@@ -1,10 +1,10 @@
-import { GoalData, ProjectData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData";
 import { Button } from "./ui/button";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
-import { supabase } from "@/supabaseClient";
 import updateGoalInDB from "@/functions/updateGoalInDB";
+import deleteGoalFromDB from "@/functions/deleteGoalFromDB";
 
 interface GoalCardProps {
     goal: GoalData,
@@ -17,11 +17,28 @@ interface GoalCardProps {
     setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>,
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
+    taskDataState: TaskData[],
+    setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>,
     workingOffline: boolean
     session: Session | null
 }
 
-const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, onMoveDown, calcGoalScore, goalDataState, setGoalDataState, projectDataState, setProjectDataState, workingOffline, session }) => {
+const GoalCard: React.FC<GoalCardProps> = ({ 
+    goal, 
+    background, 
+    index, 
+    onMoveUp, 
+    onMoveDown, 
+    calcGoalScore, 
+    goalDataState, 
+    setGoalDataState, 
+    projectDataState, 
+    setProjectDataState, 
+    taskDataState,
+    setTaskDataState,
+    workingOffline, 
+    session 
+}) => {
     const goalIndex = goalDataState.findIndex((stateGoal) => stateGoal.goalId === goal.goalId)
 
     const setGoalStatus = (status: string) => {
@@ -49,24 +66,25 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, background, index, onMoveUp, 
         
     }
 
-    const deleteGoalFromDB = async (goalId: string) => {
-        await supabase.from('goals').delete().eq("goalId", goalId).throwOnError()
-        setGoalDataState(goalDataState.filter((goal) => goal.goalId != goalId))
+    const deleteGoal = async (goalId: string) => {
+        deleteGoalFromDB(goalId)
+        setGoalDataState(goalDataState.filter((goal) => goal.goalId !== goalId))
+        setProjectDataState(projectDataState.filter((project) => project.projectGoal !== goalId))
+        setTaskDataState(taskDataState.filter((task) => task.taskGoal !== goalId))
     }
 
-    const deleteGoal = (goalId: string) => {
-        if (workingOffline) {
-            const updatedGoalData = [...goalDataState]
-            updatedGoalData.splice(goalIndex, 1)
-            setGoalDataState(updatedGoalData)
-            const updatedProjectData = [...projectDataState]
-            const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
-            setProjectDataState(remainingProjects)
-        } else {
-            deleteGoalFromDB(goalId)
-        }
-        
-    }
+    // const deleteGoal = (goalId: string) => {
+    //     if (workingOffline) {
+    //         const updatedGoalData = [...goalDataState]
+    //         updatedGoalData.splice(goalIndex, 1)
+    //         setGoalDataState(updatedGoalData)
+    //         const updatedProjectData = [...projectDataState]
+    //         const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
+    //         setProjectDataState(remainingProjects)
+    //     } else {
+    //         deleteGoal(goalId)
+    //     }
+    // }
     
 
     return (

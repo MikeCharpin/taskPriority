@@ -38,6 +38,7 @@ export interface TaskData {
     taskExcitement: string,
     taskStatus: string,
     taskRank: number,
+    taskGoal: string,
 }
 
 export interface FlatFakeDataType {

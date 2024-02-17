@@ -149,6 +149,8 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
                   setGoalDataState={setGoalDataState}
                   projectDataState={projectDataState}
                   setProjectDataState={setProjectDataState}
+                  taskDataState={taskDataState}
+                  setTaskDataState={setTaskDataState}
                   calcGoalScore={calcGoalScore}
                   workingOffline={workingOffline}
                   session={session}

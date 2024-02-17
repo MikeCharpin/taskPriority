@@ -1,4 +1,4 @@
-import { GoalData, ProjectData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData";
 import GoalCard from "./GoalCard";
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
@@ -9,6 +9,8 @@ interface GoalSectionProps  {
     setGoalDataState: React.Dispatch<React.SetStateAction<GoalData[]>>,
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>
+    taskDataState: TaskData[]
+    setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>
     calcGoalScore: (goal: GoalData) => number;
     workingOffline: boolean,
     session: Session | null
@@ -20,6 +22,8 @@ export function GoalSection({
     setGoalDataState, 
     projectDataState, 
     setProjectDataState, 
+    taskDataState,
+    setTaskDataState,
     calcGoalScore, 
     workingOffline, 
     session 
@@ -84,6 +88,8 @@ export function GoalSection({
                         setGoalDataState={setGoalDataState}
                         projectDataState={projectDataState}
                         setProjectDataState={setProjectDataState}
+                        setTaskDataState={setTaskDataState}
+                        taskDataState={taskDataState}
                         workingOffline={workingOffline}
                         session={session}
                         />
@@ -106,6 +112,8 @@ export function GoalSection({
                         setGoalDataState={setGoalDataState}
                         projectDataState={projectDataState}
                         setProjectDataState={setProjectDataState}
+                        setTaskDataState={setTaskDataState}
+                        taskDataState={taskDataState}
                         workingOffline={workingOffline}
                         session={session}
                     />

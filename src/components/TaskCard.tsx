@@ -7,11 +7,12 @@ import React from "react";
 import { Session } from "@supabase/supabase-js";
 import updateTaskInDB from "@/functions/updateTaskInDB";
 import { supabase } from "@/supabaseClient";
+import deleteTaskFromDB from "@/functions/deleteTasksFromDB";
 
 interface TaskCardProps {
     key: string,
     task: TaskData,
-    taskProjectId: string,
+    project: ProjectData,
     projectDataState: ProjectData[],
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     background: string | undefined,
@@ -22,6 +23,7 @@ interface TaskCardProps {
 
 export default function TaskCard({ 
     task, 
+    project,
     background, 
     taskDataState,
     setTaskDataState,
@@ -92,7 +94,7 @@ export default function TaskCard({
 
 
     const deleteTask =  async (taskId: string) => {
-        await supabase.from('tasks').delete().eq('taskId', taskId).throwOnError()
+        deleteTaskFromDB(taskId)
         setTaskDataState(taskDataState.filter((task) => task.taskId != taskId))
     }
 
@@ -109,7 +111,7 @@ export default function TaskCard({
                             <TaskForm
                                 mode={"edit"}
                                 task={task}
-                                taskProjectId={task.taskId}
+                                project={project}
                                 background={background}
                                 taskDataState={taskDataState}
                                 setTaskDataState={setTaskDataState}

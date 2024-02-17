@@ -51,13 +51,14 @@ const formSchema = z.object({
     taskExcitement: z.string(),
     taskProject: z.string(),
     taskRank: z.number(),
+    taskGoal: z.string(),
 });
 
 interface TaskFormProps {
     mode: "add" | "edit"
     taskDataState: TaskData[]
     setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>
-    taskProjectId: string
+    project: ProjectData
     task?: TaskData
     background?: string | undefined   
     session: Session | null
@@ -67,7 +68,7 @@ export default function TaskForm({
     mode,
     taskDataState,
     setTaskDataState,
-    taskProjectId,
+    project,
     task,
     background,
     session,
@@ -85,8 +86,9 @@ export default function TaskForm({
         taskDuration: task?.taskDuration || 15,
         taskComplexity: task?.taskComplexity || "medium",
         taskExcitement: task?.taskExcitement || "medium",
-        taskProject: taskProjectId,
+        taskProject: project.projectId,
         taskRank: task?.taskRank || 0,
+        taskGoal: project.projectGoal,
     },
   });
 
@@ -118,6 +120,7 @@ export default function TaskForm({
             taskExcitement: task.taskExcitement,
             taskProject: task.taskProject,
             taskRank: task.taskRank,
+            taskGoal: task.taskGoal,
         }
         const updatedTaskState = [...taskDataState]
         if (mode === "add") {

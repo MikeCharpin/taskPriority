@@ -14,6 +14,7 @@ import { Session } from "@supabase/supabase-js";
 import updateTaskInDB from "@/functions/updateTaskInDB";
 import updatedProjectInDB from "@/functions/updateProjectInDB";
 import { supabase } from "@/supabaseClient";
+import deleteProjectFromDB from "@/functions/deleteProjectFromDB";
 
 interface ProjectCardProps {
     project: ProjectData,
@@ -61,8 +62,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         setProjectDataState(updatedProjectData) 
     }
 
+
+
     const deleteProject = async (projectId: string) => {
-        await supabase.from('projects').delete().eq('projectId', projectId).throwOnError()
+        deleteProjectFromDB(projectId)
         setProjectDataState(projectDataState.filter(project => project.projectId != projectId))
     }
 
@@ -101,7 +104,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                     <TaskForm
                                         mode={"add"}
                                         task={undefined}
-                                        taskProjectId={project.projectId}
+                                        project={project}
                                         background={projectGoalColor}
                                         taskDataState={taskDataState}
                                         setTaskDataState={setTaskDataState}
@@ -114,7 +117,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                         <TaskCard
                                             key={task.taskId}
                                             task={task}
-                                            taskProjectId={project.projectId}
+                                            project={project}
                                             projectDataState={projectDataState}
                                             background={projectGoalColor}
                                             setProjectDataState={setProjectDataState}
@@ -137,7 +140,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                             <TaskCard
                                                 key={task.taskId}
                                                 task={task}
-                                                taskProjectId={project.projectId}
+                                                project={project}
                                                 projectDataState={projectDataState}
                                                 background={projectGoalColor}
                                                 setProjectDataState={setProjectDataState}
