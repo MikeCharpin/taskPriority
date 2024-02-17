@@ -1,12 +1,10 @@
-import { ProjectData, TaskData } from "@/data/flatFakeData";
+import { ProjectData, TaskData } from "./ProjectPrioritizer";
 import { Button } from "./ui/button";
-
 import TaskForm from "./TaskForm";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import React from "react";
 import { Session } from "@supabase/supabase-js";
 import updateTaskInDB from "@/functions/updateTaskInDB";
-import { supabase } from "@/supabaseClient";
 import deleteTaskFromDB from "@/functions/deleteTasksFromDB";
 
 interface TaskCardProps {

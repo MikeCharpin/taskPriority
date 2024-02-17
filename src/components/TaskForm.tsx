@@ -1,3 +1,4 @@
+import { ProjectData, TaskData } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -27,7 +28,6 @@ import {
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { v4 as uuidv4 } from "uuid";
-import { ProjectData, TaskData } from "@/data/flatFakeData";
 import { PencilIcon, PlusIcon } from "lucide-react";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/supabaseClient";
@@ -109,30 +109,35 @@ export default function TaskForm({
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (task) => {
         const taskIndex = taskDataState.findIndex(stateTask => stateTask.taskId === task?.taskId)
-        const taskData = {
-            user_id: session?.user.id,
-            taskId: task.taskId,
-            taskScore: task.taskScore,
-            taskStatus: task.taskStatus,
-            taskDesc: task.taskDesc.trim(),
-            taskDuration: task.taskDuration,
-            taskComplexity: task.taskComplexity,
-            taskExcitement: task.taskExcitement,
-            taskProject: task.taskProject,
-            taskRank: task.taskRank,
-            taskGoal: task.taskGoal,
+        if (!session) {
+            console.error("No user signed in.")
+        } else {
+            const taskData = {
+                inserted_at: new Date().toString(),
+                user_id: session.user.id,
+                taskId: task.taskId,
+                taskScore: task.taskScore,
+                taskStatus: task.taskStatus,
+                taskDesc: task.taskDesc.trim(),
+                taskDuration: task.taskDuration,
+                taskComplexity: task.taskComplexity,
+                taskExcitement: task.taskExcitement,
+                taskProject: task.taskProject,
+                taskRank: task.taskRank,
+                taskGoal: task.taskGoal,
+            }
+            const updatedTaskState = [...taskDataState]
+            if (mode === "add") {
+                taskData.taskId = uuidv4()
+                addTaskToDB(taskData)
+                updatedTaskState.push(taskData)
+            } else if (mode === "edit" && taskIndex !== undefined) {
+                updateTaskInDB(taskData)
+                updatedTaskState[taskIndex] = taskData
+            }
+            setTaskDataState(updatedTaskState)
+            reset()
         }
-        const updatedTaskState = [...taskDataState]
-        if (mode === "add") {
-            taskData.taskId = uuidv4()
-            addTaskToDB(taskData)
-            updatedTaskState.push(taskData)
-        } else if (mode === "edit" && taskIndex !== undefined) {
-            updateTaskInDB(taskData)
-            updatedTaskState[taskIndex] = taskData
-        }
-        setTaskDataState(updatedTaskState)
-        reset()
     }
 
     return (

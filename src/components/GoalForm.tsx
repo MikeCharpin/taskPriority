@@ -1,10 +1,10 @@
+    import { GoalData } from "@/lib/schema";    
     import React, { useState } from "react";
     import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form";
     import { zodResolver } from "@hookform/resolvers/zod";
     import * as z from "zod";
     import { v4 as uuidv4 } from 'uuid';
     import { supabase } from '@/supabaseClient.ts'
-
     import { Button } from "@/components/ui/button";
     import {
         Form,
@@ -28,7 +28,6 @@
     import { Textarea } from "@/components/ui/textarea";
     import { GradientPicker } from "./ui/GradientPicker";
     import { PlusIcon, PencilIcon } from "lucide-react";
-    import { GoalData } from "@/data/flatFakeData";
     import { Session } from "@supabase/supabase-js";
 import updateGoalInDB from "@/functions/updateGoalInDB";
 
@@ -105,8 +104,12 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
     }
 
     const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-        const goalData = {
-            user_id: session?.user.id,
+        if (!session) {
+            console.error("No user signed in.")
+        } else {
+            const goalData = {
+            inserted_at: new Date().toString(),
+            user_id: session.user.id,
             goalId: data.goalId,
             goalScore: data.goalScore,
             goalMotivation: data.goalMotivation.trim(),
@@ -145,8 +148,9 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
             }
             
         }
-
         reset();
+        }
+        
     };
 
     return (

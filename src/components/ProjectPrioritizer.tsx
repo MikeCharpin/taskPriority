@@ -1,10 +1,13 @@
 import { GoalSection } from "@/components/GoalSection"
 import ProjectSection from "@/components/ProjectSection"
 import ResultsSection from "@/components/ResultsSection"
-import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData"
+import { GoalData, ProjectData, TaskData } from "@/lib/schema"
 import { supabase } from "@/supabaseClient"
 import { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
+
+
+
 
 interface ProjectPrioritizerProps {
     session: Session | null
@@ -32,18 +35,49 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         setTaskDataState(storedTaskData ? JSON.parse(storedTaskData) : [])
     } 
 
-    const fetchData = async (tableName: string, setDataState: React.Dispatch<any>, columnName: string) => {
-        const { data, error } = await supabase
-            .from(tableName)
-            .select('*')
-            .order(`${columnName}`, {ascending: true})
-        if (error){
-            console.error(`Error fetching ${tableName} data:`, error)
-        } else {
-            setDataState(data)
-        } 
-        
+    const fetchGoals = async () => {
+        try {
+            const { data: goalData } = await supabase
+            .from('goals')
+            .select("*")
+            .order('goalRank', {ascending: true})
+            .throwOnError()
+            if (goalData !== null) setGoalDataState(goalData)
+            
+        } catch (error){
+            console.error("Error fetching Goals.", error)
+        }
     }
+
+     const fetchProjects = async () => {
+        try {
+            const { data: projectData } = await supabase
+            .from('projects')
+            .select("*")
+            .order('projectRank', {ascending: true})
+            .throwOnError()
+            if (projectData !== null) setProjectDataState(projectData)
+            
+        } catch (error){
+            console.error("Error fetching Projects.", error)
+        }
+    }
+
+     const fetchTasks = async () => {
+        try {
+            const { data: taskData } = await supabase
+            .from('tasks')
+            .select("*")
+            .order('taskRank', {ascending: true})
+            .throwOnError()
+            if (taskData !== null) setTaskDataState(taskData)
+            
+        } catch (error){
+            console.error("Error fetching Tasks.", error)
+        }
+    }
+
+
 
     useEffect(() => {
         if(workingOffline) {
@@ -54,9 +88,9 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
             setLoading(true)
             const fetchAllData = async () => {
                 await Promise.all([
-                    fetchData('goals', setGoalDataState, "goalRank"),
-                    fetchData("projects", setProjectDataState, "projectRank"),
-                    fetchData('tasks', setTaskDataState, "taskRank"),
+                    fetchGoals(),
+                    fetchProjects(),
+                    fetchTasks(),
                 ])
             }
             fetchAllData()

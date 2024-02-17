@@ -1,4 +1,3 @@
-import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData";
 import { Button } from "./ui/button";
 import {
   Accordion,
@@ -11,10 +10,9 @@ import TaskCard from "./TaskCard";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import ProjectForm from "./ProjectForm";
 import { Session } from "@supabase/supabase-js";
-import updateTaskInDB from "@/functions/updateTaskInDB";
 import updatedProjectInDB from "@/functions/updateProjectInDB";
-import { supabase } from "@/supabaseClient";
 import deleteProjectFromDB from "@/functions/deleteProjectFromDB";
+import { GoalData, ProjectData, TaskData } from "./ProjectPrioritizer";
 
 interface ProjectCardProps {
     project: ProjectData,

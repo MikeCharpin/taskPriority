@@ -1,5 +1,5 @@
 
-export interface GoalData {
+ interface GoalData {
     user_id: string | undefined,
     goalId: string, 
     goalDesc: string,
@@ -12,7 +12,7 @@ export interface GoalData {
     goalColor: string,
 }
 
-export interface ProjectData {
+ interface ProjectData {
     user_id: string | undefined,
     projectId: string,
     projectDesc: string,
@@ -27,7 +27,7 @@ export interface ProjectData {
     projectRank: number,
 }
 
-export interface TaskData {
+ interface TaskData {
     user_id: string | undefined,
     taskId: string,
     taskScore: number,

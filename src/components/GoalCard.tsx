@@ -1,4 +1,4 @@
-import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "./ProjectPrioritizer";
 import { Button } from "./ui/button";
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import GoalForm from "./GoalForm";

@@ -1,4 +1,4 @@
-import { GoalData, ProjectData, TaskData } from "@/data/flatFakeData";
+import { GoalData, ProjectData, TaskData } from "./ProjectPrioritizer";
 import GoalCard from "./GoalCard";
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
