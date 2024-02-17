@@ -108,7 +108,7 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
             console.error("No user signed in.")
         } else {
             const goalData = {
-            inserted_at: new Date().toString(),
+            inserted_at: new Date().toISOString(),
             user_id: session.user.id,
             goalId: data.goalId,
             goalScore: data.goalScore,

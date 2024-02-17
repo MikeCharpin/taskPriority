@@ -113,7 +113,7 @@ export default function TaskForm({
             console.error("No user signed in.")
         } else {
             const taskData = {
-                inserted_at: new Date().toString(),
+                inserted_at: new Date().toISOString(),
                 user_id: session.user.id,
                 taskId: task.taskId,
                 taskScore: task.taskScore,
