@@ -1,5 +1,6 @@
 import { GoalData, ProjectData } from "@/lib/schema"
 import { format } from "date-fns"
+import { Separator } from "./ui/separator"
 
 interface ResultsSectionProps {
     sortedProjectState: ProjectData[],
@@ -10,8 +11,8 @@ export default function ResultsSection({ sortedProjectState, goalDataState }: Re
 
 
     return (
-        <div className="flex flex-col justify-start items-center border-2 rounded-md border-green-300 gap-4 p-4">
-            <h1 className="text-xl text-primary font-bold">Priority List</h1>
+        <div className="flex flex-col center items-center border-2 rounded-2xl bg-primary/20 gap-2 p-2">
+            <h1 className="text-xl text-primary font-semibold">how about list</h1>
             {sortedProjectState.map((project) => 
                 <PriorityCard
                     key={project.projectId}
@@ -56,10 +57,11 @@ function PriorityCard({ project, goalDataState }: PriortityCardProps) {
 
     return (
         
-            <div className="flex flex-col max-w-[40dvh] min-w-[24rem] rounded-2xl px-8 py-4" style={{ background }}>
-                <span> { project.projectDesc }</span>
+            <div className="flex flex-col rounded-2xl p-4" style={{ background }}>
+                <h2 className="text-wrap whitespace-normal font-bold pb-4">{ `${project.projectDesc}` }</h2>
+                <Separator className="bg-white " />
                 {daysRemaining > -7 ?
-                    <div className="flex flex-col">
+                    <div className="flex flex-col pt-2 gap-2">
                         <span>{`${daysRemaining} days until ${targetDate}`}</span>
                         <span>{`${businessDaysRemaining} business days until ${targetDate}`}</span>
                     </div>

@@ -158,14 +158,14 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
     }
 
     return (
-       <main className="flex w-full flex-grow justify-center items-start p-8 gap-4">  
+       <main className=" flex flex-wrap w-full justify-center items-start pt-6 gap-4 p-2">  
             <ResultsSection
               sortedProjectState={calcAllScores(projectDataState, goalDataState)}
               goalDataState={goalDataState}
             />
-            <div className="flex flex-col justify-center items-center border-2 border-grey-100 px-4">
-              <h1 className="py-2 text-2xl font-semibold">Control Panel</h1>
-              <div className="flex w-2/3 justify-center items-start  gap-2 ">
+            <div>
+              {/* <h1 className="py-2 text-2xl font-semibold">inputs</h1> */}
+              <div className="flex flex-wrap justify-center items-start  gap-4 ">
                 <GoalSection
                   goalDataState={goalDataState}
                   setGoalDataState={setGoalDataState}

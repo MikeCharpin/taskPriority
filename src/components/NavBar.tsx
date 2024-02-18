@@ -48,8 +48,8 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
     
 
     return (
-       <nav className=" w-full flex items-center justify-between bg-secondary p-8">
-            <h1 className="text-2xl font-semibold">Project Prioritizer</h1>
+       <nav className="flex w-screen items-center justify-between bg-secondary p-6">
+            <h1 className="text-2xl font-light">🌷 tulip tasks 🌷</h1>
             {workingOffline ? 
                 <div className="flex flex-col text-xl font-semibold bg-primary/20 p-4 rounded-xl">
                     <span> 🏡 you are working locally </span>

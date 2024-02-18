@@ -71,7 +71,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-between items-center h-dvh min-w-screen">
           {session ? 
           <div>
             <NavBar
@@ -106,7 +106,7 @@ function App() {
             setOpen={setOpenAccount}
             session={session}
           />
-          <footer className="w-full h-16 flex flex-none justify-center items-center bg-black">
+          <footer className="flex w-full h-16 justify-center items-center bg-black">
             <div>by Mike Charpin</div>
           </footer>
         </div>

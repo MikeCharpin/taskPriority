@@ -73,7 +73,7 @@ function LoginForm({ className }: React.ComponentProps<"form">) {
     const [email, setEmail] = useState("")
 
     const getURL = () => {
-      let url = 'http://localhost:5173/'
+      let url = 'https://task-priority.vercel.app/'
 
       // Make sure to include `https://` when not localhost.
       url = url.includes('http') ? url : `https://${url}`

@@ -55,9 +55,9 @@ export default function ProjectSection({
     }
 
     return (
-        <div className="flex flex-col gap-4 justify-center items-center p-4 border-2 border-blue-300 rounded-md">
-            <div className="flex justify-between">
-                <h1 className="text-xl font-bold">Project Section</h1>
+        <div className="flex flex-col justify-center items-center p-2 border-2 bg-primary/20 rounded-2xl">
+            <div className="flex justify-between items-start">
+                <h1 className="text-xl font-bold">projects</h1>
                 <ProjectForm
                     mode={"add"}
                     projectDataState={projectDataState}
@@ -90,7 +90,7 @@ export default function ProjectSection({
                 }
             </section>
              <section className="flex flex-col gap-4">
-                {completedProjects > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
+                {completedProjects > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed projects 🎉</span> : ""}
                 {completedProjects > 0 ?
                     projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project) => (
                         <ProjectCard

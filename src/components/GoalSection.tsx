@@ -60,9 +60,9 @@ export function GoalSection({
 
 
     return (
-        <div className="flex flex-col justify-center items-center p-4 border-2 border-blue-300 rounded-md gap-2">
-            <div className="flex justify-between items-center pb-4">
-                <h1 className="text-xl font-bold">Goal Section</h1>
+        <div className="flex flex-col justify-center items-center w-full bg-primary/20 rounded-2xl gap-2 p-2">
+            <div className="flex justify-between items-start gap-4">
+                <h1 className="text-xl font-bold">goals</h1>
                 <GoalForm
                     mode={"add"}
                     goalDataState={goalDataState}
@@ -97,7 +97,7 @@ export function GoalSection({
             : 
                 <span className="border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active goals</span>
             }
-            {completedGoals > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed 🎉</span> : ""}
+            {completedGoals > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed goals 🎉</span> : ""}
             {completedGoals > 0 ?
                 goalDataState && goalDataState.filter(goals => goals.goalStatus === "completed").map((goal, index) => (
                     <GoalCard
