@@ -95,7 +95,7 @@ export function GoalSection({
                         />
              ))
             : 
-                <span className="border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active goals</span>
+                <span className=" w-full border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active goals</span>
             }
             {completedGoals > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed goals 🎉</span> : ""}
             {completedGoals > 0 ?

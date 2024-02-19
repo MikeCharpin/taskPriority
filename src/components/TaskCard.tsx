@@ -127,9 +127,12 @@ export default function TaskCard({
                     </div>
                 </div>
             :
-                <div className="flex justify-between items-center gap-2">
-                    <Button variant={"ghost"} size={"icon"} onClick={() => setTaskStatus("active")} ><RefreshCwIcon/></Button>
-                    <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>          
+                <div className="border-2 border-primary/30 p-2 rounded-xl">
+                    <div className="py-2 text-lg whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
+                    <div className="flex justify-between items-center gap-2">
+                        <Button variant={"ghost"} size={"icon"} onClick={() => setTaskStatus("active")} ><RefreshCwIcon/></Button>
+                        <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>
+                    </div>
                 </div>
             }
         </div>

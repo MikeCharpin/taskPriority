@@ -68,7 +68,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }
 
     return (
-        <div className=" rounded-2xl p-2" style={{ background }}>
+        <div className=" flex flex-col w-full rounded-2xl p-2" style={{ background }}>
             
             {project.projectStatus === "active" ?
                 <div>
@@ -155,11 +155,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
-            </div>
+                </div>
             :
-                <div>
+                <div className="flex flex-col w-full">
                     <div className="py-2 text-lg font-normal whitespace-normal text-wrap ">{ project.projectDesc }</div>
-                    <div className="flex bg-primary/20 p-2 rounded-xl ">
+                    <div className=" bg-primary/20 p-2 rounded-xl ">
                         <div className="flex flex-col w-full justify-between gap-2">
                             <Button className="border-2 border-primary/20 bg-primary/40 hover:bg-green-300/80" onClick={() => setProjectStatus("active")}><RefreshCwIcon/></Button>
                             <Button variant={"destructive"} onClick={() => deleteProject(project.projectId)}><Trash2Icon/></Button>
