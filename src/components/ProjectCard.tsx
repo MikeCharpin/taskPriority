@@ -68,37 +68,37 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }
 
     return (
-        <div className="flex flex-col rounded-2xl p-2" style={{ background }}>
+        <div className=" rounded-2xl p-2" style={{ background }}>
             
             {project.projectStatus === "active" ?
                 <div>
-                    <div className="py-2 text-lg font-semibold whitespace-normal text-wrap ">{ project.projectDesc }</div>
+                    <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{ project.projectDesc }</div>
                     <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
-                    <div className="flex flex-col w-full justify-between">
-                        <Button className="border-2 border-primary bg-primary/40 hover:bg-green-300/80" onClick={() => setProjectStatus("completed")}><CheckCircleIcon/></Button>
-                        <div className="flex justify-between">
-                            <ProjectForm
-                                mode={"edit"}
-                                project={project}
-                                goalDataState={goalDataState}
-                                calcProjectScore={calcProjectScore}
-                                projectDataState={projectDataState}
-                                setProjectDataState={setProjectDataState}
-                                session={session}
-                            />
-                            <Button variant={"destructive"} onClick={() => deleteProject(project.projectId)}><Trash2Icon/></Button>
+                        <div className="flex flex-col w-full justify-between">
+                            <Button className="border-2 border-primary bg-primary/30 hover:bg-green-300/80" onClick={() => setProjectStatus("completed")}><CheckCircleIcon/></Button>
+                            <div className="flex justify-between">
+                                <ProjectForm
+                                    mode={"edit"}
+                                    project={project}
+                                    goalDataState={goalDataState}
+                                    calcProjectScore={calcProjectScore}
+                                    projectDataState={projectDataState}
+                                    setProjectDataState={setProjectDataState}
+                                    session={session}
+                                />
+                                <Button variant={"destructive"} size={"icon"} onClick={() => deleteProject(project.projectId)}><Trash2Icon/></Button>
+                            </div>
                         </div>
+                        <nav className="flex flex-col justify-between items-center gap-2">
+                            <Button variant={"ghost"} className="px-6 border-2 border-primary/30 hover:bg-primary/20"  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
+                            <Button variant={"ghost"} className="px-6 border-2 border-primary/30 hover:bg-primary/20"  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
+                        </nav>
                     </div>
-                     <nav className="flex flex-col justify-between items-center gap-2">
-                        <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20"  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
-                        <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20"  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
-                    </nav>
-                    </div>
-                        <Accordion type="single" collapsible>
+                    <Accordion type="single" collapsible>
                         <AccordionItem value="item-1">
                             <AccordionTrigger className="text-lg">view tasks</AccordionTrigger>
                             <AccordionContent>
-                                <section className="flex flex-col gap-4">
+                                <div className="flex flex-col gap-4">
                                     <div className="flex justify-end items-center relative">
                                         <TaskForm
                                             mode={"add"}
@@ -129,8 +129,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                         <span className="border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active tasks</span>
                                     }
                         
-                                </section>
-                                <section className="flex flex-col gap-4 py-4">
+                                </div>
+                                <div className="flex flex-col gap-4 py-4">
                                     {completedTasks > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed tasks 🎉</span> : ""}
                                     {completedTasks > 0 ?
                                         projectTasks && projectTasks
@@ -151,11 +151,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                     :
                                         ""
                                     }
-                                </section>
+                                </div>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
-                </div>
+            </div>
             :
                 <div>
                     <div className="py-2 text-lg font-normal whitespace-normal text-wrap ">{ project.projectDesc }</div>

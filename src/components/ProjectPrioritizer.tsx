@@ -163,32 +163,31 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
               sortedProjectState={calcAllScores(projectDataState, goalDataState)}
               goalDataState={goalDataState}
             />
-            <div>
-              {/* <h1 className="py-2 text-2xl font-semibold">inputs</h1> */}
-              <div className="flex flex-wrap justify-center items-start  gap-4 ">
+            
+            <div className="flex flex-wrap w-full justify-center items-start gap-4 ">
                 <GoalSection
-                  goalDataState={goalDataState}
-                  setGoalDataState={setGoalDataState}
-                  projectDataState={projectDataState}
-                  setProjectDataState={setProjectDataState}
-                  taskDataState={taskDataState}
-                  setTaskDataState={setTaskDataState}
-                  calcGoalScore={calcGoalScore}
-                  workingOffline={workingOffline}
-                  session={session}
+                    goalDataState={goalDataState}
+                    setGoalDataState={setGoalDataState}
+                    projectDataState={projectDataState}
+                    setProjectDataState={setProjectDataState}
+                    taskDataState={taskDataState}
+                    setTaskDataState={setTaskDataState}
+                    calcGoalScore={calcGoalScore}
+                    workingOffline={workingOffline}
+                    session={session}
                 />
                 <ProjectSection
-                  projectDataState={projectDataState}
-                  setProjectDataState={setProjectDataState}
-                  taskDataState={taskDataState}
-                  setTaskDataState={setTaskDataState}
-                  goalDataState={goalDataState}
-                  calcProjectScore={calcProjectScore}
-                  workingOffline={workingOffline}
-                  session={session}
+                    projectDataState={projectDataState}
+                    setProjectDataState={setProjectDataState}
+                    taskDataState={taskDataState}
+                    setTaskDataState={setTaskDataState}
+                    goalDataState={goalDataState}
+                    calcProjectScore={calcProjectScore}
+                    workingOffline={workingOffline}
+                    session={session}
                 /> 
-                </div>
             </div>
+            
             {loading ? <div>Loading...</div> : ""}
           </main>
     )

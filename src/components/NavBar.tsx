@@ -48,7 +48,7 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
     
 
     return (
-       <nav className="flex w-screen items-center justify-between bg-secondary p-6">
+       <nav className="flex flex-wrap w-screen items-center justify-between bg-secondary p-6">
             <h1 className="text-2xl font-light">🌷 tulip tasks 🌷</h1>
             {workingOffline ? 
                 <div className="flex flex-col text-xl font-semibold bg-primary/20 p-4 rounded-xl">
@@ -66,7 +66,7 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
                                 <Button variant="ghost" className="p-0 rounded-full">
                                     <Avatar>
                                         <AvatarImage src="src\assets\circle-user-round.png" />
-                                        <AvatarFallback>MC</AvatarFallback>
+                                        <AvatarFallback>tt</AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>

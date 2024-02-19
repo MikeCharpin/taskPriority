@@ -55,7 +55,7 @@ export default function ProjectSection({
     }
 
     return (
-        <div className="flex flex-col justify-center items-center p-2 border-2 bg-primary/20 rounded-2xl">
+        <div className="flex flex-col min-w-72 w-full max-w-md justify-center items-center p-2 border-2 bg-primary/20 rounded-2xl">
             <div className="flex justify-between items-start">
                 <h1 className="text-xl font-bold">projects</h1>
                 <ProjectForm
@@ -68,7 +68,7 @@ export default function ProjectSection({
                 />
             </div>
 
-            <section className="flex flex-col gap-4">
+            <section className="flex flex-col gap-4 w-full">
                 {activeProjects > 0 ?
                     projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project) => (
                         <ProjectCard

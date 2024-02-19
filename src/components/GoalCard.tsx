@@ -92,7 +92,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
             
             {goal.goalStatus === "active" ? 
                 <div>
-                    <h1 className="py-2 text-lg font-semibold text-wrap whitespace-normal min-h-16">{goal.goalDesc}</h1>
+                    <h1 className="py-2 text-lg font-semibold text-wrap whitespace-normal min-h-12">{goal.goalDesc}</h1>
                     <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
                         <div className="flex flex-col w-full justify-between">
                             <Button className="border-2 border-primary bg-primary/40 hover:bg-green-300/80 shadow-md" onClick={() => setGoalStatus("completed")}><CheckCircleIcon/></Button>
