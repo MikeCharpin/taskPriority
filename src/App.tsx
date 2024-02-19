@@ -88,11 +88,11 @@ function App() {
             <NavBar
               setOpenLogin={setOpenLogin}
               setOpenAccount={setOpenAccount}
-              session={offlineSession}
+              session={null}
             />
             
             <ProjectPrioritizer
-              session={offlineSession}
+              session={null}
             />
           </div>
           }
