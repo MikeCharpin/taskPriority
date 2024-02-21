@@ -16,7 +16,7 @@ const NavBar = ({ setOpenLogin, setOpenModeToggle, session }: NavBarProps) => {
     return (
         <div>
             {isDesktop ?
-            <nav className="flex flex-wrap w-screen items-center justify-between bg-secondary p-6">
+            <nav className="flex flex-wrap w-screen items-center justify-between bg-secondary py-6 px-12">
                 <h1 className="text-2xl font-light">🌷 tulip tasks 🌷</h1>
                 {session === null ?
                     <div className="flex flex-col  font-semibold bg-primary/20 p-4 rounded-xl">

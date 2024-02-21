@@ -12,8 +12,8 @@ export default function ResultsSection({ sortedProjectState, goalDataState}: Res
 
 
     return (
-        <div className="flex flex-col min-w-72 w-full max-w-sm items-center border-2 rounded-2xl bg-primary/20 gap-2 p-2">
-            <h1 className="text-xl text-primary font-semibold">how about list</h1>
+        <div className="flex flex-col min-w-72 w-full max-w-sm items-center border-2 border-primary/90 rounded-2xl bg-primary/20 gap-2 p-2">
+            <h1 className="text-xl text-primary font-semibold py-4">how about list</h1>
             {sortedProjectState.length == 0 ?
             <div className="bg-primary/10 rounded-xl p-4 border-2 border-green-300/50">
                 <span className="text-wrap">create a goal and a project to get started.</span>
