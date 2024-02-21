@@ -57,7 +57,7 @@ export function GoalSection({
 
 
     return (
-        <div className="flex flex-col justify-center items-center min-w-72 w-full max-w-md bg-primary/20 rounded-2xl gap-2 p-2">
+        <div className="flex flex-col justify-center items-center min-w-72 w-full max-w-sm bg-primary/20 rounded-2xl gap-2 p-2">
             <div className="flex justify-between items-start gap-4">
                 <h1 className="text-xl font-bold">goals</h1>
                 <GoalForm

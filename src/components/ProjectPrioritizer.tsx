@@ -139,13 +139,13 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
     }
 
     return (
-       <main className=" flex flex-wrap w-full justify-center items-start pt-6 gap-4 p-2">  
+       <main className=" flex flex-wrap justify-center items-start pt-6 gap-6">  
             <ResultsSection
               sortedProjectState={calcAllScores(projectDataState, goalDataState)}
               goalDataState={goalDataState}
             />
             
-            <div className="flex flex-wrap w-full justify-center items-start gap-4 ">
+            <div className="flex flex-col md:flex-row w-full md:w-auto justify-center items-start gap-6 ">
                 <GoalSection
                     goalDataState={goalDataState}
                     setGoalDataState={setGoalDataState}

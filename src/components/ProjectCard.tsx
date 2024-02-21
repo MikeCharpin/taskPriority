@@ -69,7 +69,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }
 
     return (
-        <div className=" flex flex-col w-full rounded-2xl p-2" style={{ background }}>
+        <div className=" flex flex-col w-full rounded-2xl p-2 border-2 border-primary/5" style={{ background }}>
             
             {project.projectStatus === "active" ?
                 <div>
@@ -99,7 +99,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                         <AccordionItem value="item-1">
                             <AccordionTrigger className="text-lg">view tasks</AccordionTrigger>
                             <AccordionContent>
-                                <div className="flex flex-col gap-4">
+                                <div className="flex flex-col gap-6 bg-primary/30 p-2 rounded-xl">
                                     <div className="flex justify-end items-center relative">
                                         <TaskForm
                                             mode={"add"}

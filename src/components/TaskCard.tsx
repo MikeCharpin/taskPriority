@@ -101,7 +101,7 @@ export default function TaskCard({
         <div>
             
            {task.taskStatus === "active" ? 
-                <div className="border-2 border-primary/30 p-2 rounded-xl">
+                <div className="border-2 border-secondary/20 p-2 rounded-xl bg-secondary/80">
                     <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
                     <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
                         <div className="flex flex-col w-full justify-between">
