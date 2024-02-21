@@ -7,11 +7,13 @@ import { supabase } from '@/supabaseClient.ts'
 import { Session } from '@supabase/supabase-js'
 import Account from "./components/Account"
 import ProjectPrioritizer from "./components/ProjectPrioritizer"
+import ModeToggleDialog from "./components/NavMenuDialog"
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [openAccount, setOpenAccount] = useState(false)
   const [openLogin, setOpenLogin] = useState(false)
+  const [openToggleMode, setOpenToggleMode] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -31,6 +33,7 @@ function App() {
             <NavBar
               setOpenLogin={setOpenLogin}
               setOpenAccount={setOpenAccount}
+              setOpenModeToggle={setOpenToggleMode}
               session={session}
             />
             <ProjectPrioritizer
@@ -42,6 +45,7 @@ function App() {
             <NavBar
               setOpenLogin={setOpenLogin}
               setOpenAccount={setOpenAccount}
+              setOpenModeToggle={setOpenToggleMode}
               session={null}
             />
             
@@ -59,6 +63,10 @@ function App() {
             open={openAccount}
             setOpen={setOpenAccount}
             session={session}
+          />
+          <ModeToggleDialog
+            open={openToggleMode}
+            setOpen={setOpenToggleMode}
           />
           <footer className="flex w-full h-16 justify-center items-center bg-black">
             <div>by Mike Charpin</div>
