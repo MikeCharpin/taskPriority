@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,6 +38,7 @@ import DatePickerWithPresets from "./ui/datePickerWithPresets";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/supabaseClient";
 import updatedProjectInDB from "@/functions/updateProjectInDB";
+import { Separator } from "@/components/ui/separator";
 
 interface ProjectFormProps {
   mode: "add" | "edit"
@@ -192,7 +194,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                         render={({ field }) => (
                             <FormItem>
                             <FormLabel>what are you trying to accomplish in a month timeframe?</FormLabel>
-                            
                             <FormControl>
                                 <Input placeholder="Get hired in the tech industry ASAP." {...field} />
                             </FormControl>
@@ -206,6 +207,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                         render={({ field }) => (
                             <FormItem>
                             <FormLabel>why this project?</FormLabel>
+                            <FormDescription>optional</FormDescription>
                             <FormControl>
                                 <Textarea placeholder="I enjoy the challange of the problem selving and building products that people will use. I also need to pay rent." {...field} />
                             </FormControl>
@@ -229,12 +231,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                                 </FormItem>
                             )}
                         />
-                        <div className="flex justify-center gap-16">
+                        <div className="flex flex-wrap md:justify-between justify-start gap-6">
                             <FormField
                                 control={form.control}
                                 name="projectComplexity"
                                 render={({ field }) => (
                                     <FormItem className="space-y-3">
+                                        <Separator className="bg-primary" />
                                     <FormLabel>complexity</FormLabel>
                                     <FormControl>
                                         <RadioGroup
@@ -277,6 +280,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                                 name="projectExcitement"
                                 render={({ field }) => (
                                     <FormItem className="space-y-3">
+                                        <Separator className="bg-primary"/>
                                     <FormLabel>excitement</FormLabel>
                                     <FormControl>
                                         <RadioGroup

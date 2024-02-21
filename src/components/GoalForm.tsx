@@ -30,6 +30,7 @@
     import { PlusIcon, PencilIcon } from "lucide-react";
     import { Session } from "@supabase/supabase-js";
 import updateGoalInDB from "@/functions/updateGoalInDB";
+import { Separator } from "./ui/separator";
 
     const formSchema = z.object({
         goalDesc: z.string().min(10, {
@@ -128,7 +129,7 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
         <DialogTrigger asChild>
             <Button variant="ghost" className="w-8 h-8 p-0">{mode === "add" ? <PlusIcon /> : <PencilIcon />}</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]" style={{ background }}>
+        <DialogContent className="" style={{ background }}>
             <DialogHeader>
             <DialogTitle>edit a goal</DialogTitle>
             <GradientPicker
@@ -167,13 +168,14 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
                     )}
                     />
                     
-                    <div className="flex justify-center gap-16">
+                    <div className="flex flex-wrap justify-start md:justify-between gap-6 ">
                         <FormField
                             control={form.control}
                             name="goalComplexity"
                             render={({ field }) => (
                                 <FormItem className="space-y-3">
-                                <FormLabel>complexity</FormLabel>
+                                    <Separator className="bg-primary"/>
+                                <FormLabel className="text-2xl">complexity</FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                     onValueChange={field.onChange}
@@ -215,7 +217,8 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
                             name="goalExcitement"
                             render={({ field }) => (
                                 <FormItem className="space-y-3">
-                                <FormLabel>excitement</FormLabel>
+                                <Separator className="bg-primary"/>
+                                <FormLabel className="text-2xl">excitement</FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                     onValueChange={field.onChange}

@@ -24,7 +24,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-
+import { Separator } from "@/components/ui/separator";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { v4 as uuidv4 } from "uuid";
@@ -198,13 +198,14 @@ export default function TaskForm({
                     )}
                     />
                     
-                    <div className="flex justify-center gap-16">
+                    <div className="flex flex-wrap justify-between  gap-6">
                         <FormField
                             control={form.control}
                             name="taskComplexity"
                             render={({ field }) => (
                                 <FormItem className="space-y-3">
-                                <FormLabel>complexity</FormLabel>
+                                    <Separator className="bg-primary" />
+                                <FormLabel className="text-xl">complexity</FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                     onValueChange={field.onChange}
@@ -246,7 +247,8 @@ export default function TaskForm({
                             name="taskExcitement"
                             render={({ field }) => (
                                 <FormItem className="space-y-3">
-                                <FormLabel>excitement</FormLabel>
+                                <Separator className="bg-primary" />
+                                <FormLabel className="text-xl">excitement</FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                     onValueChange={field.onChange}
