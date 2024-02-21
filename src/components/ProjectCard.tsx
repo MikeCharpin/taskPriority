@@ -65,6 +65,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     const deleteProject = async (projectId: string) => {
         deleteProjectFromDB(projectId)
         setProjectDataState(projectDataState.filter(project => project.projectId != projectId))
+        setTaskDataState(taskDataState.filter(task => task.taskProject !== projectId))
     }
 
     return (

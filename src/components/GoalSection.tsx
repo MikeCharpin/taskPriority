@@ -12,7 +12,6 @@ interface GoalSectionProps  {
     taskDataState: TaskData[]
     setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>
     calcGoalScore: (goal: GoalData) => number;
-    workingOffline: boolean,
     session: Session | null
 }
 
@@ -25,11 +24,10 @@ export function GoalSection({
     taskDataState,
     setTaskDataState,
     calcGoalScore, 
-    workingOffline, 
     session 
 }: GoalSectionProps ) {
-    const activeGoals = goalDataState.filter((goal) => goal.goalStatus === "active").length
-    const completedGoals = goalDataState.filter((goal) => goal.goalStatus === "completed").length
+    const activeGoalsCount = goalDataState.filter((goal) => goal.goalStatus === "active").length
+    const completedGoalsCount = goalDataState.filter((goal) => goal.goalStatus === "completed").length
 
     const changeGoalRank = (goalId: string, direction: number) => {
         const goalIndex = goalDataState.findIndex((goal) => goal.goalId === goalId)
@@ -58,7 +56,6 @@ export function GoalSection({
     }
 
 
-
     return (
         <div className="flex flex-col justify-center items-center min-w-72 w-full max-w-md bg-primary/20 rounded-2xl gap-2 p-2">
             <div className="flex justify-between items-start gap-4">
@@ -70,11 +67,10 @@ export function GoalSection({
                     calcGoalScore={calcGoalScore}
                     goal={undefined}
                     index={undefined}
-                    workingOffline={workingOffline}
                     session={session}
                 />
             </div>
-            {activeGoals > 0 ? 
+            {activeGoalsCount > 0 ? 
              goalDataState && goalDataState.filter(goals => goals.goalStatus === "active").map((goal, index) => (
                 <GoalCard
                         key={goal.goalId}
@@ -90,15 +86,14 @@ export function GoalSection({
                         setProjectDataState={setProjectDataState}
                         setTaskDataState={setTaskDataState}
                         taskDataState={taskDataState}
-                        workingOffline={workingOffline}
                         session={session}
                         />
              ))
             : 
                 <span className=" w-full border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active goals</span>
             }
-            {completedGoals > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed goals 🎉</span> : ""}
-            {completedGoals > 0 ?
+            {completedGoalsCount > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed goals 🎉</span> : ""}
+            {completedGoalsCount > 0 ?
                 goalDataState && goalDataState.filter(goals => goals.goalStatus === "completed").map((goal, index) => (
                     <GoalCard
                         key={goal.goalId}
@@ -114,7 +109,6 @@ export function GoalSection({
                         setProjectDataState={setProjectDataState}
                         setTaskDataState={setTaskDataState}
                         taskDataState={taskDataState}
-                        workingOffline={workingOffline}
                         session={session}
                     />
                 ))

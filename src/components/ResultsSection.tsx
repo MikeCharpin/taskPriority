@@ -1,13 +1,14 @@
 import { GoalData, ProjectData } from "@/lib/schema"
-import { format } from "date-fns"
+// import { format } from "date-fns"
 import { Separator } from "./ui/separator"
+import { CalendarHeartIcon } from "lucide-react"
 
 interface ResultsSectionProps {
     sortedProjectState: ProjectData[],
-    goalDataState: GoalData[]
+    goalDataState: GoalData[],
 }
 
-export default function ResultsSection({ sortedProjectState, goalDataState }: ResultsSectionProps) {
+export default function ResultsSection({ sortedProjectState, goalDataState}: ResultsSectionProps) {
 
 
     return (
@@ -59,17 +60,17 @@ function PriorityCard({ project, goalDataState }: PriortityCardProps) {
     const projectTargetDate = new Date(project.projectTimeframe)
     const daysRemaining = daysUntil(projectTargetDate)
     const businessDaysRemaining = businessDaysUntil(projectTargetDate)
-    const targetDate = format(projectTargetDate, "PPP") 
+    // const targetDate = format(projectTargetDate, "PPP") 
+
 
     return (
         
-            <div className="flex flex-col w-full rounded-2xl p-4" style={{ background }}>
+            <div className="flex flex-col w-full rounded-2xl p-4 border-2 border-primary/10" style={{ background }}>
                 <h2 className="text-wrap whitespace-normal font-bold pb-4">{ `${project.projectDesc}` }</h2>
                 <Separator className="bg-white " />
                 {daysRemaining > -7 ?
-                    <div className="flex flex-col pt-2 gap-2">
-                        <span>{`${daysRemaining} days until ${targetDate}`}</span>
-                        <span>{`${businessDaysRemaining} business days until ${targetDate}`}</span>
+                    <div className="pt-2">
+                        <span className="flex justify-center font-light gap-2"><CalendarHeartIcon />{`${daysRemaining} days or ${businessDaysRemaining} business days`}</span>
                     </div>
                 :
                     ""

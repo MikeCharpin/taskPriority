@@ -30,7 +30,6 @@ import { Session } from "@supabase/supabase-js"
 import { supabase } from "@/supabaseClient"
 import { useState } from "react"
 
-
 interface NavBarProps {
     setOpenLogin: React.Dispatch<React.SetStateAction<boolean>>
     setOpenAccount: React.Dispatch<React.SetStateAction<boolean>>
@@ -180,6 +179,7 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
                                     const { error } = await supabase.auth.signOut()
                                     if (error) console.log('Error logging out:', error.message)
                                     localStorage.clear()
+                                    console.log("Clearing local storage.")
                                     }}
                                     className="bg-red-700"
                                 >

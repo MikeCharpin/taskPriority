@@ -12,24 +12,9 @@ interface ProjectPrioritizerProps {
 
 const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
     const [loading, setLoading] = useState(false)
-    const [goalDataState, setGoalDataState] = useState<GoalData[]>([])
-    const [projectDataState, setProjectDataState] = useState<ProjectData[]>([])
-    const [taskDataState, setTaskDataState] = useState<TaskData[]>([])
-    const [workingOffline, setWorkingOffline] = useState(true)
-
-    useEffect(() => {
-        setWorkingOffline(session?.user.id === "offlineId")
-    }, [session])
-
-    const loadFromLocalStorage = () => {
-        console.log("Loading from local storage")
-        const storedGoalData = localStorage.getItem('goals')
-        const storedProjectData = localStorage.getItem('projects')
-        const storedTaskData = localStorage.getItem('tasks')
-        setGoalDataState(storedGoalData ? JSON.parse(storedGoalData) : [])
-        setProjectDataState(storedProjectData ? JSON.parse(storedProjectData) : [])
-        setTaskDataState(storedTaskData ? JSON.parse(storedTaskData) : [])
-    } 
+    const [goalDataState, setGoalDataState] = useState<GoalData[]>(JSON.parse(localStorage.getItem("goals") ?? ''))
+    const [projectDataState, setProjectDataState] = useState<ProjectData[]>(JSON.parse(localStorage.getItem("projects") ?? ""))
+    const [taskDataState, setTaskDataState] = useState<TaskData[]>(JSON.parse(localStorage.getItem("tasks") ?? ""))
 
     const fetchGoals = async () => {
         try {
@@ -73,12 +58,9 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         }
     }
 
-
-
     useEffect(() => {
-        if(workingOffline) {
-            console.log("Working offline, loading from local storage.")
-            loadFromLocalStorage()
+        if(session === null) {
+            console.log("Working offline")
         } else {
             console.log("Working online, fetching data.")
             setLoading(true)
@@ -88,18 +70,17 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
                     fetchProjects(),
                     fetchTasks(),
                 ])
+            setLoading(false)
             }
             fetchAllData()
-            setLoading(false)
         }
-    }, [workingOffline])
+    }, [session])
         
     useEffect(() => {
         console.log("Saving to local storage.")
         localStorage.setItem('goals', JSON.stringify(goalDataState))
         localStorage.setItem('projects', JSON.stringify(projectDataState))
         localStorage.setItem('tasks', JSON.stringify(taskDataState))
-
     }, [goalDataState, projectDataState, taskDataState])
 
     const processValue = (value: string) => {
@@ -121,9 +102,9 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         let score = 0
         const goalComplexityScore = processValue(goal.goalComplexity)
         const goalExcitementScore = processValue(goal.goalExcitement)
-        const goalImportanceScore = goalDataState.length - goalDataState.indexOf(goal)
+        const goalImportanceScore = goal.goalRank
 
-        score += goalComplexityScore + goalExcitementScore + goalImportanceScore
+        score += goalComplexityScore + goalExcitementScore - (goalImportanceScore * 2)
 
         return goal.goalScore = score
     }
@@ -132,9 +113,9 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         let score = 0
         const projectComplexityScore = processValue(project.projectComplexity)
         const projectExcitementScore = processValue(project.projectExcitement)
-        const projectImportanceScore = projectDataState.length - projectDataState.indexOf(project)
+        const projectImportanceScore = project.projectRank
 
-        score += projectComplexityScore + projectExcitementScore + projectImportanceScore
+        score += projectComplexityScore + projectExcitementScore - (projectImportanceScore * 2)
 
         return project.projectScore = score
     }
@@ -173,7 +154,6 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
                     taskDataState={taskDataState}
                     setTaskDataState={setTaskDataState}
                     calcGoalScore={calcGoalScore}
-                    workingOffline={workingOffline}
                     session={session}
                 />
                 <ProjectSection
@@ -183,7 +163,6 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
                     setTaskDataState={setTaskDataState}
                     goalDataState={goalDataState}
                     calcProjectScore={calcProjectScore}
-                    workingOffline={workingOffline}
                     session={session}
                 /> 
             </div>

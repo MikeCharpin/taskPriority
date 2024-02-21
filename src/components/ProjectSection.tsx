@@ -12,7 +12,6 @@ interface ProjectSectionProps {
     setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>,
     goalDataState: GoalData[],
     calcProjectScore: (project: ProjectData) => number,
-    workingOffline: boolean,
     session: Session | null
 }
 

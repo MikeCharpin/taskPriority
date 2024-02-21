@@ -32,20 +32,15 @@
 import updateGoalInDB from "@/functions/updateGoalInDB";
 
     const formSchema = z.object({
-        user_id: z.string(),
-        goalId: z.string(),
-        goalScore: z.number(),
         goalDesc: z.string().min(10, {
         message: "Goal must be at least 10 characters.",
-        }).max(120, {
-        message: "120 character limit."
+        }).max(255, {
+        message: "255 character limit."
         }),
-        goalStatus: z.string(),
         goalMotivation: z.string(),
-        goalComplexity: z.string(),
-        goalExcitement: z.string(),
-        goalRank: z.number(),
-        goalColor: z.string(),
+        goalComplexity: z.string().min(2,{ message: "how complex is the task?"}),
+        goalExcitement: z.string().min(2,{ message: "how excited are you?"}),
+        goalColor: z.string().min(2,{message: "what color would you like to asign to this goal?"}),
     });
 
     interface GoalFormProps {
@@ -55,7 +50,6 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
         calcGoalScore: (goal: GoalData) => number;
         goal: GoalData | undefined; 
         index: number | undefined; 
-        workingOffline: boolean,
         session: Session | null,
     }
 
@@ -66,7 +60,6 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
         calcGoalScore, 
         goal, 
         index, 
-        workingOffline, 
         session,
      }) => {
     const [background, setBackground] = useState(goal?.goalColor || '#075985');
@@ -74,15 +67,10 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
     const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        user_id: session?.user.id,
-        goalId: goal?.goalId || uuidv4(),
-        goalScore: goal?.goalScore || 0,
         goalMotivation: goal?.goalMotivation || "",
-        goalStatus: goal?.goalStatus || "active",
         goalDesc: goal?.goalDesc || "",
-        goalComplexity: goal?.goalComplexity || "",
-        goalExcitement: goal?.goalExcitement || "",
-        goalRank: goal?.goalRank || 0,
+        goalComplexity: goal?.goalComplexity || "medium",
+        goalExcitement: goal?.goalExcitement || "medium",
         goalColor: goal?.goalColor || "bg-[#115E59]" ,
     },
     });
@@ -104,52 +92,34 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
     }
 
     const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-        if (!session) {
-            console.error("No user signed in.")
-        } else {
-            const goalData = {
+        
+        const goalData = {
             inserted_at: new Date().toISOString(),
-            user_id: session.user.id,
-            goalId: data.goalId,
-            goalScore: data.goalScore,
+            user_id: !session ? "offlineUser" : session.user.id,
+            goalId: goal ? goal.goalId : uuidv4(),
+            goalScore: goal ? goal.goalScore : 0,
             goalMotivation: data.goalMotivation.trim(),
-            goalStatus: data.goalStatus,
+            goalStatus: goal ? goal.goalStatus : "active",
             goalDesc: data.goalDesc.trim(),
             goalComplexity: data.goalComplexity,
             goalExcitement: data.goalExcitement,
-            goalRank: 0,
+            goalRank: goal ? goal.goalRank : goalDataState.length + 1,
             goalColor: background,
         }
+            
         calcGoalScore(goalData);
+        const updatedGoalState = [...goalDataState];
 
         if (mode === "edit") {
-            if (workingOffline) {
-                const updatedGoalState = [...goalDataState];
-                updatedGoalState[index as number] = goalData;
-                setGoalDataState(updatedGoalState);
-            } else {
-                updateGoalInDB(goalData)
-                const updatedGoalState = [...goalDataState];
-                updatedGoalState[index as number] = goalData;
-                setGoalDataState(updatedGoalState);
-            }
-           
+            updatedGoalState[index as number] = goalData;
+            updateGoalInDB(goalData)
         } else if (mode === "add") {
             goalData.goalId = uuidv4()
-            if(workingOffline) {
-                const updatedGoalState = [...goalDataState];
-                updatedGoalState.push(goalData);
-                setGoalDataState(updatedGoalState);
-            } else {
-                addGoalToDB(goalData)
-                const updatedGoalState = [...goalDataState];
-                updatedGoalState.push(goalData);
-                setGoalDataState(updatedGoalState);
-            }
-            
+            updatedGoalState.push(goalData);
+            addGoalToDB(goalData)
         }
+        setGoalDataState(updatedGoalState);
         reset();
-        }
         
     };
 

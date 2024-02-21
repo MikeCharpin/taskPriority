@@ -117,37 +117,35 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
         const projectIndex = projectDataState.findIndex(stateProject => stateProject.projectId === project?.projectId)
         const targetDateToString = new Date(data.projectTimeframe)
-        if(!session) {
-            console.error("No user signed in.")
-        } else {
-            const projectData = {
-            inserted_at: new Date().toISOString(),
-            user_id: session.user.id,
-            projectId: data.projectId,
-            projectScore: data.projectScore,
-            projectPriorityScore: data.projectPriorityScore,
-            projectGoal: data. projectGoal,
-            projectMotivation: data.projectMotivation.trim(),
-            projectStatus: data.projectStatus,
-            projectDesc: data.projectDesc.trim(),
-            projectComplexity: data. projectComplexity,
-            projectExcitement: data.projectExcitement,
-            projectTimeframe: targetDateToString,
-            projectRank: 0,
-            }
-            calcProjectScore(projectData)
-            const updatedProjectState = [...projectDataState];
-            if (mode === "add") {
-                projectData.projectId = uuidv4()
-                addProjectToDB(projectData)
-                updatedProjectState.push(projectData);
-            } else if (mode === "edit" && projectIndex !== undefined) {
-                updatedProjectInDB(projectData)
-                updatedProjectState[projectIndex] = projectData;
-            }
-            setProjectDataState(updatedProjectState);
-            reset();
+   
+        const projectData = {
+        inserted_at: new Date().toISOString(),
+        user_id: !session ? "offlineUser" : session.user.id,
+        projectId: data.projectId,
+        projectScore: data.projectScore,
+        projectPriorityScore: data.projectPriorityScore,
+        projectGoal: data. projectGoal,
+        projectMotivation: data.projectMotivation.trim(),
+        projectStatus: data.projectStatus,
+        projectDesc: data.projectDesc.trim(),
+        projectComplexity: data. projectComplexity,
+        projectExcitement: data.projectExcitement,
+        projectTimeframe: targetDateToString,
+        projectRank: 0,
         }
+        calcProjectScore(projectData)
+        const updatedProjectState = [...projectDataState];
+        if (mode === "add") {
+            projectData.projectId = uuidv4()
+            updatedProjectState.push(projectData);
+            addProjectToDB(projectData)
+        } else if (mode === "edit" && projectIndex !== undefined) {
+            updatedProjectState[projectIndex] = projectData;
+            updatedProjectInDB(projectData)
+        }
+        setProjectDataState(updatedProjectState);
+        reset();
+        
         
     };
 
@@ -180,7 +178,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                                     </FormControl>
                                     <SelectContent>
                                         {goalDataState && goalDataState.map((goal) => (
-                                            <SelectItem value={goal.goalId} key={goal.goalId}>{goal.goalDesc}</SelectItem>
+                                            <SelectItem value={goal.goalId} key={goal.goalId} >{goal.goalDesc}</SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>

@@ -19,7 +19,6 @@ interface GoalCardProps {
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     taskDataState: TaskData[],
     setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>,
-    workingOffline: boolean
     session: Session | null
 }
 
@@ -36,7 +35,6 @@ const GoalCard: React.FC<GoalCardProps> = ({
     setProjectDataState, 
     taskDataState,
     setTaskDataState,
-    workingOffline, 
     session 
 }) => {
     const goalIndex = goalDataState.findIndex((stateGoal) => stateGoal.goalId === goal.goalId)
@@ -72,19 +70,6 @@ const GoalCard: React.FC<GoalCardProps> = ({
         setProjectDataState(projectDataState.filter((project) => project.projectGoal !== goalId))
         setTaskDataState(taskDataState.filter((task) => task.taskGoal !== goalId))
     }
-
-    // const deleteGoal = (goalId: string) => {
-    //     if (workingOffline) {
-    //         const updatedGoalData = [...goalDataState]
-    //         updatedGoalData.splice(goalIndex, 1)
-    //         setGoalDataState(updatedGoalData)
-    //         const updatedProjectData = [...projectDataState]
-    //         const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
-    //         setProjectDataState(remainingProjects)
-    //     } else {
-    //         deleteGoal(goalId)
-    //     }
-    // }
     
 
     return (
@@ -104,7 +89,6 @@ const GoalCard: React.FC<GoalCardProps> = ({
                                     calcGoalScore={calcGoalScore}
                                     goalDataState={goalDataState}
                                     setGoalDataState={setGoalDataState}
-                                    workingOffline={workingOffline}
                                     session={session}
                                 />
                                 <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>

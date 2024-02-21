@@ -34,7 +34,6 @@ import { supabase } from "@/supabaseClient";
 import updateTaskInDB from "@/functions/updateTaskInDB";
 
 const formSchema = z.object({
-    user_id: z.string(),
     taskId: z.string(),
     taskScore: z.number(),
     taskDesc: z
@@ -78,7 +77,6 @@ export default function TaskForm({
     const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        user_id: session?.user.id,
         taskId: task?.taskId || uuidv4(),
         taskScore: task?.taskScore || 0,
         taskStatus: task?.taskStatus || "active",
@@ -109,35 +107,32 @@ export default function TaskForm({
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (task) => {
         const taskIndex = taskDataState.findIndex(stateTask => stateTask.taskId === task?.taskId)
-        if (!session) {
-            console.error("No user signed in.")
-        } else {
-            const taskData = {
-                inserted_at: new Date().toISOString(),
-                user_id: session.user.id,
-                taskId: task.taskId,
-                taskScore: task.taskScore,
-                taskStatus: task.taskStatus,
-                taskDesc: task.taskDesc.trim(),
-                taskDuration: task.taskDuration,
-                taskComplexity: task.taskComplexity,
-                taskExcitement: task.taskExcitement,
-                taskProject: task.taskProject,
-                taskRank: task.taskRank,
-                taskGoal: task.taskGoal,
-            }
-            const updatedTaskState = [...taskDataState]
-            if (mode === "add") {
-                taskData.taskId = uuidv4()
-                addTaskToDB(taskData)
-                updatedTaskState.push(taskData)
-            } else if (mode === "edit" && taskIndex !== undefined) {
-                updateTaskInDB(taskData)
-                updatedTaskState[taskIndex] = taskData
-            }
-            setTaskDataState(updatedTaskState)
-            reset()
+        const taskData = {
+            inserted_at: new Date().toISOString(),
+            user_id: !session ? "offlineUser" : session.user.id,
+            taskId: task.taskId,
+            taskScore: task.taskScore,
+            taskStatus: task.taskStatus,
+            taskDesc: task.taskDesc.trim(),
+            taskDuration: task.taskDuration,
+            taskComplexity: task.taskComplexity,
+            taskExcitement: task.taskExcitement,
+            taskProject: task.taskProject,
+            taskRank: task.taskRank,
+            taskGoal: task.taskGoal,
         }
+        const updatedTaskState = [...taskDataState]
+        if (mode === "add") {
+            taskData.taskId = uuidv4()
+            updatedTaskState.push(taskData)
+            addTaskToDB(taskData)
+        } else if (mode === "edit" && taskIndex !== undefined) {
+            updatedTaskState[taskIndex] = taskData
+            updateTaskInDB(taskData)
+        }
+        setTaskDataState(updatedTaskState)
+        reset()
+        
     }
 
     return (
