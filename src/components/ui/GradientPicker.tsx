@@ -71,7 +71,7 @@ export function GradientPicker({
     '#854d0e',
     '#d97706',
     '#9a3412',
-    '#f97316',
+    '#f97616',
     '#b91c1c',
     '#E11D48',
     '#737373',
