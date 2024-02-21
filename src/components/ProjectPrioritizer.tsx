@@ -104,7 +104,7 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         const goalExcitementScore = processValue(goal.goalExcitement)
         const goalImportanceScore = goal.goalRank
 
-        score += goalComplexityScore + goalExcitementScore + (goalImportanceScore * 2)
+        score += goalComplexityScore + goalExcitementScore - (goalImportanceScore * 2)
 
         return goal.goalScore = score
     }
@@ -115,7 +115,7 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
         const projectExcitementScore = processValue(project.projectExcitement)
         const projectImportanceScore = project.projectRank
 
-        score += projectComplexityScore + projectExcitementScore + (projectImportanceScore * 2)
+        score += projectComplexityScore + projectExcitementScore - (projectImportanceScore * 2)
 
         return project.projectScore = score
     }
