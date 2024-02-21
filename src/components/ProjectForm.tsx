@@ -60,11 +60,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     const [selectedGoalId, setSelectedGoalId] = useState<string | null>(project ? project.projectGoal : null);
     const handleGoalChange = (value: string) => setSelectedGoalId(value);
     const background = selectedGoalId?goalDataState.find((goal) => goal.goalId === selectedGoalId)?.goalColor: undefined;
-
+    
 
     const formSchema = z.object({
-        inserted_at: z.string(),
-        user_id: z.string(),
         projectId: z.string(),
         projectScore: z.number(),
         projectPriorityScore: z.number(),
@@ -78,14 +76,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         projectMotivation: z.string(),
         projectComplexity: z.string(),
         projectExcitement: z.string(),
-        projectTimeframe: z.string(),
+        projectTimeframe: z.date(),
         projectRank: z.number(),
     })
 
     const form: UseFormReturn<z.infer<typeof formSchema>> = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        user_id: session?.user.id,
         projectId: project?.projectId || uuidv4(),
         projectScore: project?.projectScore || 0,
         projectPriorityScore: project?.projectPriorityScore || 0,
@@ -95,7 +92,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         projectDesc: project?.projectDesc || "",
         projectComplexity: project?. projectComplexity || "medium",
         projectExcitement: project?.projectExcitement || "medium",
-        projectTimeframe: project?.projectTimeframe || new Date().toString(),
+        projectTimeframe: project?.projectTimeframe || new Date(),
         projectRank: project?.projectRank || 0,
     },
     });
@@ -107,7 +104,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         try {
             const { data, error } = await supabase
                 .from('projects')
-                .insert<ProjectData>([newProject as ProjectData])
+                .insert<ProjectData>([newProject])
                 .single()
             if (error) throw error
             console.log("New project added to database.", data)
@@ -119,37 +116,36 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     
     const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
         const projectIndex = projectDataState.findIndex(stateProject => stateProject.projectId === project?.projectId)
-        if(!session) {
-            console.error("No user signed in.")
-        } else {
-            const projectData = {
-            inserted_at: new Date().toString(),
-            user_id: session.user.id,
-            projectId: data.projectId,
-            projectScore: data.projectScore,
-            projectPriorityScore: data.projectPriorityScore,
-            projectGoal: data. projectGoal,
-            projectMotivation: data.projectMotivation.trim(),
-            projectStatus: data.projectStatus,
-            projectDesc: data.projectDesc.trim(),
-            projectComplexity: data. projectComplexity,
-            projectExcitement: data.projectExcitement,
-            projectTimeframe: data.projectTimeframe,
-            projectRank: 0,
-            }
-            calcProjectScore(projectData)
-            const updatedProjectState = [...projectDataState];
-            if (mode === "add") {
-                projectData.projectId = uuidv4()
-                addProjectToDB(projectData)
-                updatedProjectState.push(projectData);
-            } else if (mode === "edit" && projectIndex !== undefined) {
-                updatedProjectInDB(projectData)
-                updatedProjectState[projectIndex] = projectData;
-            }
-            setProjectDataState(updatedProjectState);
-            reset();
+        const targetDateToString = new Date(data.projectTimeframe)
+   
+        const projectData = {
+        inserted_at: new Date().toISOString(),
+        user_id: !session ? "offlineUser" : session.user.id,
+        projectId: data.projectId,
+        projectScore: data.projectScore,
+        projectPriorityScore: data.projectPriorityScore,
+        projectGoal: data. projectGoal,
+        projectMotivation: data.projectMotivation.trim(),
+        projectStatus: data.projectStatus,
+        projectDesc: data.projectDesc.trim(),
+        projectComplexity: data. projectComplexity,
+        projectExcitement: data.projectExcitement,
+        projectTimeframe: targetDateToString,
+        projectRank: 0,
         }
+        calcProjectScore(projectData)
+        const updatedProjectState = [...projectDataState];
+        if (mode === "add") {
+            projectData.projectId = uuidv4()
+            updatedProjectState.push(projectData);
+            addProjectToDB(projectData)
+        } else if (mode === "edit" && projectIndex !== undefined) {
+            updatedProjectState[projectIndex] = projectData;
+            updatedProjectInDB(projectData)
+        }
+        setProjectDataState(updatedProjectState);
+        reset();
+        
         
     };
 
@@ -182,7 +178,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                                     </FormControl>
                                     <SelectContent>
                                         {goalDataState && goalDataState.map((goal) => (
-                                            <SelectItem value={goal.goalId} key={goal.goalId}>{goal.goalDesc}</SelectItem>
+                                            <SelectItem value={goal.goalId} key={goal.goalId} >{goal.goalDesc}</SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
@@ -226,7 +222,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                                     <FormControl>
                                         <DatePickerWithPresets 
                                             {...field} 
-                                            initialValue={project !== undefined && project.projectTimeframe !== null ? new Date(project.projectTimeframe) : undefined}
+                                            initialValue={project === undefined ? undefined : new Date(project.projectTimeframe)}
                                             onChange={(date) => field.onChange(date)}
                                         />
                                     </FormControl>

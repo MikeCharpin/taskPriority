@@ -98,35 +98,41 @@ export default function TaskCard({
 
 
     return (
-        <div className="flex flex-col gap-2 border-2 border-gray-400 rounded-2xl px-4 py-2" style={{ background }}>
-            <span className="py-2 text-lg">{task.taskDesc}</span>
+        <div>
+            
            {task.taskStatus === "active" ? 
-                <div className="flex justify-between">
-                    <div className="flex flex-col gap-2 w-full">
-                        <Button onClick={() => setTaskStatus("completed")}><CheckCircleIcon/></Button>
+                <div className="border-2 border-primary/30 p-2 rounded-xl">
+                    <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
+                    <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
+                        <div className="flex flex-col w-full justify-between">
+                            <Button className="border-2 border-primary bg-primary/30 hover:bg-green-300/80" onClick={() => setTaskStatus("completed")}><CheckCircleIcon/></Button>
                         
-                        <div className="flex justify-between items-center gap-2">
-                            <TaskForm
-                                mode={"edit"}
-                                task={task}
-                                project={project}
-                                background={background}
-                                taskDataState={taskDataState}
-                                setTaskDataState={setTaskDataState}
-                                session={session}
-                            />
-                            <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>    
+                            <div className="flex justify-between">
+                                <TaskForm
+                                    mode={"edit"}
+                                    task={task}
+                                    project={project}
+                                    background={background}
+                                    taskDataState={taskDataState}
+                                    setTaskDataState={setTaskDataState}
+                                    session={session}
+                                />
+                                <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex flex-col justify-between items-end p-0">
-                        <Button variant={"ghost"} size={"icon"} className="p-0" onClick={() => changeTaskRank(task.taskId, -1)}> <ArrowUpIcon/> </Button>
-                        <Button variant={"ghost"} size={"icon"} className="p-0" onClick={() => changeTaskRank(task.taskId, 1)}> <ArrowDownIcon/> </Button>
+                        <div className="flex flex-col justify-between items-center gap-2">
+                            <Button variant={"ghost"} size={"icon"} className="border-2 border-primary/30 hover:bg-primary/20" onClick={() => changeTaskRank(task.taskId, -1)}> <ArrowUpIcon/> </Button>
+                            <Button variant={"ghost"} size={"icon"} className="border-2 border-primary/30 hover:bg-primary/20" onClick={() => changeTaskRank(task.taskId, 1)}> <ArrowDownIcon/> </Button>
+                        </div>
                     </div>
                 </div>
             :
-                <div className="flex justify-between items-center gap-2">
-                    <Button variant={"ghost"} size={"icon"} onClick={() => setTaskStatus("active")} ><RefreshCwIcon/></Button>
-                    <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>          
+                <div className="border-2 border-primary/30 p-2 rounded-xl">
+                    <div className="py-2 text-lg whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
+                    <div className="flex justify-between items-center gap-2">
+                        <Button variant={"ghost"} size={"icon"} onClick={() => setTaskStatus("active")} ><RefreshCwIcon/></Button>
+                        <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>
+                    </div>
                 </div>
             }
         </div>

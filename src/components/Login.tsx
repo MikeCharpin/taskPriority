@@ -35,10 +35,10 @@ const Login = ({ open, setOpen }: LoginProps) => {
      if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-cyan-700 border-2 border-primary/10 shadow-2xl">
           <DialogHeader>
             <DialogTitle>log in</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-primary">
               enter your email to receive a magic link.
             </DialogDescription>
           </DialogHeader>
@@ -50,10 +50,10 @@ const Login = ({ open, setOpen }: LoginProps) => {
  
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerContent>
+      <DrawerContent className="bg-cyan-700 border-2 border-primary/10">
         <DrawerHeader className="text-left">
           <DrawerTitle>log in</DrawerTitle>
-          <DrawerDescription>
+          <DrawerDescription className="text-primary">
             enter your email to receive a magic link.
           </DrawerDescription>
         </DrawerHeader>
@@ -73,7 +73,7 @@ function LoginForm({ className }: React.ComponentProps<"form">) {
     const [email, setEmail] = useState("")
 
     const getURL = () => {
-      let url = 'http://localhost:5173/'
+      let url = 'https://task-priority.vercel.app/'
 
       // Make sure to include `https://` when not localhost.
       url = url.includes('http') ? url : `https://${url}`
@@ -106,7 +106,7 @@ function LoginForm({ className }: React.ComponentProps<"form">) {
     <form className={cn("grid items-start gap-4", className)} onSubmit={handleLogin}>
       <div className="grid gap-2">
         <Label htmlFor="email">email</Label>
-        <Input type="email" id="email" defaultValue="shadcn@example.com" onChange={(e) => setEmail(e.target.value)} />
+        <Input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
       </div>
       {loading ? <span className="text-center font-semibold">check your email for a sign in link 🥳</span> : ""}
       <Button type="submit" disabled={loading}>{loading ? <span className="flex items-center">sending &nbsp; <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /></span> : <span>send magic link</span>}</Button>

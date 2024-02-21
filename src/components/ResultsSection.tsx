@@ -1,24 +1,32 @@
 import { GoalData, ProjectData } from "@/lib/schema"
-import { format } from "date-fns"
+// import { format } from "date-fns"
+import { Separator } from "./ui/separator"
+import { CalendarHeartIcon } from "lucide-react"
 
 interface ResultsSectionProps {
     sortedProjectState: ProjectData[],
-    goalDataState: GoalData[]
+    goalDataState: GoalData[],
 }
 
-export default function ResultsSection({ sortedProjectState, goalDataState }: ResultsSectionProps) {
+export default function ResultsSection({ sortedProjectState, goalDataState}: ResultsSectionProps) {
 
 
     return (
-        <div className="flex flex-col justify-start items-center border-2 rounded-md border-green-300 gap-4 p-4">
-            <h1 className="text-xl text-primary font-bold">Priority List</h1>
-            {sortedProjectState.map((project) => 
-                <PriorityCard
-                    key={project.projectId}
-                    project={project}
-                    goalDataState={goalDataState}
-                />
-            )}
+        <div className="flex flex-col min-w-72 w-full max-w-md items-center border-2 rounded-2xl bg-primary/20 gap-2 p-2">
+            <h1 className="text-xl text-primary font-semibold">how about list</h1>
+            {sortedProjectState.length == 0 ?
+            <div className="bg-primary/10 rounded-xl p-4 border-2 border-green-300/50">
+                <span className="text-wrap">create a goal and a project to get started.</span>
+            </div>
+            :
+                sortedProjectState.map((project) => 
+                    <PriorityCard
+                        key={project.projectId}
+                        project={project}
+                        goalDataState={goalDataState}
+                    />
+                )
+            }
         </div>
     )
 }
@@ -52,16 +60,17 @@ function PriorityCard({ project, goalDataState }: PriortityCardProps) {
     const projectTargetDate = new Date(project.projectTimeframe)
     const daysRemaining = daysUntil(projectTargetDate)
     const businessDaysRemaining = businessDaysUntil(projectTargetDate)
-    const targetDate = format(projectTargetDate, "PPP") 
+    // const targetDate = format(projectTargetDate, "PPP") 
+
 
     return (
         
-            <div className="flex flex-col max-w-[40dvh] min-w-[24rem] rounded-2xl px-8 py-4" style={{ background }}>
-                <span> { project.projectDesc }</span>
+            <div className="flex flex-col w-full rounded-2xl p-4 border-2 border-primary/10" style={{ background }}>
+                <h2 className="text-wrap whitespace-normal font-bold pb-4">{ `${project.projectDesc}` }</h2>
+                <Separator className="bg-white " />
                 {daysRemaining > -7 ?
-                    <div className="flex flex-col">
-                        <span>{`${daysRemaining} days until ${targetDate}`}</span>
-                        <span>{`${businessDaysRemaining} business days until ${targetDate}`}</span>
+                    <div className="pt-2">
+                        <span className="flex justify-center font-light gap-2"><CalendarHeartIcon />{`${daysRemaining} days or ${businessDaysRemaining} business days`}</span>
                     </div>
                 :
                     ""

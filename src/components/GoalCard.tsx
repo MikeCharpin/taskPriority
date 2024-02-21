@@ -19,7 +19,6 @@ interface GoalCardProps {
     setProjectDataState: React.Dispatch<React.SetStateAction<ProjectData[]>>,
     taskDataState: TaskData[],
     setTaskDataState: React.Dispatch<React.SetStateAction<TaskData[]>>,
-    workingOffline: boolean
     session: Session | null
 }
 
@@ -36,7 +35,6 @@ const GoalCard: React.FC<GoalCardProps> = ({
     setProjectDataState, 
     taskDataState,
     setTaskDataState,
-    workingOffline, 
     session 
 }) => {
     const goalIndex = goalDataState.findIndex((stateGoal) => stateGoal.goalId === goal.goalId)
@@ -72,29 +70,17 @@ const GoalCard: React.FC<GoalCardProps> = ({
         setProjectDataState(projectDataState.filter((project) => project.projectGoal !== goalId))
         setTaskDataState(taskDataState.filter((task) => task.taskGoal !== goalId))
     }
-
-    // const deleteGoal = (goalId: string) => {
-    //     if (workingOffline) {
-    //         const updatedGoalData = [...goalDataState]
-    //         updatedGoalData.splice(goalIndex, 1)
-    //         setGoalDataState(updatedGoalData)
-    //         const updatedProjectData = [...projectDataState]
-    //         const remainingProjects = updatedProjectData.filter((stateProjects) => stateProjects.projectGoal !== goal.goalId)
-    //         setProjectDataState(remainingProjects)
-    //     } else {
-    //         deleteGoal(goalId)
-    //     }
-    // }
     
 
     return (
-        <div className="w-64 rounded-2xl px-4 py-4" style={{ background }}>
-            <h1 className="pb-6 text-lg font-semibold">{ goal.goalDesc }</h1>
+        <div className="w-full rounded-2xl p-2 shadow-2xl border-2 border-primary/10" style={{ background }}>
+            
             {goal.goalStatus === "active" ? 
                 <div>
-                    <div className="flex bg-primary/20 p-2 rounded-xl">
+                    <h1 className="py-2 text-lg font-semibold text-wrap whitespace-normal min-h-12">{goal.goalDesc}</h1>
+                    <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
                         <div className="flex flex-col w-full justify-between">
-                            <Button onClick={() => setGoalStatus("completed")}><CheckCircleIcon/></Button>
+                            <Button className="border-2 border-primary bg-primary/40 hover:bg-green-300/80 shadow-md" onClick={() => setGoalStatus("completed")}><CheckCircleIcon/></Button>
                             <div className="flex justify-between">
                                 <GoalForm
                                     mode={"edit"}
@@ -103,24 +89,24 @@ const GoalCard: React.FC<GoalCardProps> = ({
                                     calcGoalScore={calcGoalScore}
                                     goalDataState={goalDataState}
                                     setGoalDataState={setGoalDataState}
-                                    workingOffline={workingOffline}
                                     session={session}
                                 />
                                 <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
                             </div>
                             </div>
                             <nav className="flex flex-col justify-between items-center gap-2">
-                                <Button variant={"ghost"} className="p-2" onClick={onMoveUp}><ArrowUpIcon/></Button>
-                                <Button variant={"ghost"} className="p-2" onClick={onMoveDown}><ArrowDownIcon/></Button>
+                                <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20 shadow-md" onClick={onMoveUp}><ArrowUpIcon/></Button>
+                                <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20 shadow-md" onClick={onMoveDown}><ArrowDownIcon/></Button>
                             </nav>
                         
                     </div>
                 </div>
             : 
                 <div>
+                    <h1 className="py-2 text-lg font-normal text-wrap whitespace-normal">{goal.goalDesc}</h1>
                     <div className="flex bg-primary/20 p-2 rounded-xl ">
-                        <div className="flex flex-col w-full justify-between">
-                            <Button onClick={() => setGoalStatus("active")}><RefreshCwIcon/></Button>
+                        <div className="flex flex-col w-full justify-between gap-2">
+                            <Button className="border-2 border-primary/20 bg-primary/40 hover:bg-green-300/80" onClick={() => setGoalStatus("active")}><RefreshCwIcon/></Button>
                             <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
                         </div>
                    </div>

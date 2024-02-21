@@ -7,57 +7,13 @@ import { supabase } from '@/supabaseClient.ts'
 import { Session } from '@supabase/supabase-js'
 import Account from "./components/Account"
 import ProjectPrioritizer from "./components/ProjectPrioritizer"
+import ModeToggleDialog from "./components/NavMenuDialog"
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [openAccount, setOpenAccount] = useState(false)
   const [openLogin, setOpenLogin] = useState(false)
-
-    const offlineSession = {
-    "access_token": "offlineAccessToken",
-    "token_type": "bearer",
-    "expires_in": 3600,
-    "expires_at": 2707523441,
-    "refresh_token": "offlineRefreshToken",
-    "user": {
-        "id": "offlineId",
-        "aud": "authenticated",
-        "role": "authenticated",
-        "email": "test@test.com",
-        "email_confirmed_at": "2024-02-09T19:07:41.05978Z",
-        "phone": "",
-        "confirmation_sent_at": "2024-02-09T19:07:29.423365Z",
-        "confirmed_at": "2024-02-09T19:07:41.05978Z",
-        "last_sign_in_at": "2024-02-09T23:04:01.777962377Z",
-        "app_metadata": {
-            "provider": "email",
-            "providers": [
-                "email"
-            ]
-        },
-        "user_metadata": {},
-        "identities": [
-            {
-                "identity_id": "offlineIdentityId",
-                "id": "offlineId",
-                "user_id": "offlineId",
-                "identity_data": {
-                    "email": "test@test.com",
-                    "email_verified": false,
-                    "phone_verified": false,
-                    "sub": "offlineId"
-                },
-                "provider": "email",
-                "last_sign_in_at": "2024-02-09T19:07:29.421289Z",
-                "created_at": "2024-02-09T19:07:29.421353Z",
-                "updated_at": "2024-02-09T19:07:29.421353Z",
-                "email": "test@test.com"
-            }
-        ],
-        "created_at": "2024-02-09T19:07:29.415157Z",
-        "updated_at": "2024-02-09T23:04:01.779675Z"
-    }
-  }
+  const [openToggleMode, setOpenToggleMode] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -70,13 +26,14 @@ function App() {
   }, [])
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="flex flex-col">
-          {session ? 
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <div className="flex flex-col justify-between items-center h-dvh min-w-screen">
+          {session !== null ? 
           <div>
             <NavBar
               setOpenLogin={setOpenLogin}
               setOpenAccount={setOpenAccount}
+              setOpenModeToggle={setOpenToggleMode}
               session={session}
             />
             <ProjectPrioritizer
@@ -88,11 +45,12 @@ function App() {
             <NavBar
               setOpenLogin={setOpenLogin}
               setOpenAccount={setOpenAccount}
-              session={offlineSession}
+              setOpenModeToggle={setOpenToggleMode}
+              session={null}
             />
             
             <ProjectPrioritizer
-              session={offlineSession}
+              session={null}
             />
           </div>
           }
@@ -106,7 +64,11 @@ function App() {
             setOpen={setOpenAccount}
             session={session}
           />
-          <footer className="w-full h-16 flex flex-none justify-center items-center bg-black">
+          <ModeToggleDialog
+            open={openToggleMode}
+            setOpen={setOpenToggleMode}
+          />
+          <footer className="flex w-full h-16 justify-center items-center bg-black">
             <div>by Mike Charpin</div>
           </footer>
         </div>

@@ -30,7 +30,6 @@ const DatePickerWithPresets = React.forwardRef<HTMLDivElement,
 
     const handleDateChange = (newDate: Date | undefined) => {
         setDate(newDate)
-        console.log(newDate)
         if(onChange) {
             onChange(newDate)
         }
