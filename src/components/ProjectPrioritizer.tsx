@@ -11,10 +11,11 @@ interface ProjectPrioritizerProps {
 }
 
 const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
+
     const [loading, setLoading] = useState(false)
-    const [goalDataState, setGoalDataState] = useState<GoalData[]>(JSON.parse(localStorage.getItem("goals") ?? ''))
-    const [projectDataState, setProjectDataState] = useState<ProjectData[]>(JSON.parse(localStorage.getItem("projects") ?? ""))
-    const [taskDataState, setTaskDataState] = useState<TaskData[]>(JSON.parse(localStorage.getItem("tasks") ?? ""))
+    const [goalDataState, setGoalDataState] = useState<GoalData[]>(JSON.parse(localStorage.getItem("goals") ?? '[]'))
+    const [projectDataState, setProjectDataState] = useState<ProjectData[]>(JSON.parse(localStorage.getItem("projects") ?? "[]"))
+    const [taskDataState, setTaskDataState] = useState<TaskData[]>(JSON.parse(localStorage.getItem("tasks") ?? "[]"))
 
     const fetchGoals = async () => {
         try {
