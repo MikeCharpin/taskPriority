@@ -24,7 +24,7 @@ function App() {
   }, [])
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <div className="flex flex-col justify-between items-center h-dvh min-w-screen">
           {session !== null ? 
           <div>

@@ -9,6 +9,7 @@ import {
   SquareUserRoundIcon,
   MessageCircleHeartIcon,
   UserCircle2Icon,
+  SunMoonIcon,
 } from "lucide-react"
  
 import { Button } from "@/components/ui/button"
@@ -28,7 +29,6 @@ import {
 import { useTheme } from "@/components/theme-provider"
 import { Session } from "@supabase/supabase-js"
 import { supabase } from "@/supabaseClient"
-import { useState } from "react"
 
 interface NavBarProps {
     setOpenLogin: React.Dispatch<React.SetStateAction<boolean>>
@@ -37,18 +37,9 @@ interface NavBarProps {
 }
 
 const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
-    const [darkMode, setDarkMode] = useState(true)
-    const { setTheme } = useTheme()
+    const { setTheme } = useTheme() 
 
-    const toggleMode = () => {
-        if (!darkMode) {
-            setTheme("light")
-        } else {
-            setTheme("dark")
-        }
-        setDarkMode(!darkMode)
-    }    
-
+    
     return (
        <nav className="flex flex-wrap w-screen items-center justify-between bg-secondary p-6">
             <h1 className="text-2xl font-light">🌷 tulip tasks 🌷</h1>
@@ -77,15 +68,27 @@ const NavBar = ({ setOpenLogin, session }: NavBarProps) => {
                                     <MessageCircleHeartIcon className="mr-2 h-4 w-4" />
                                     <span><a href="https://forms.gle/dxb7BCeih1A6ZdaCA" target="_blank">send feedback 💌</a></span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    {!darkMode ? 
-                                        <MoonIcon className="h-[1.2rem] w-[1.2rem]" />
-                                    :
-                                        <SunIcon className="h-[1.2rem] w-[1.2rem]" />
-                                    }
-                                    <span onClick={() => toggleMode()}>&nbsp;toggle mode</span>
-                                    <span className="sr-only">Toggle theme</span>
-                                </DropdownMenuItem>
+                                 <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                        <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                        <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                        <span>&nbsp;toggle mode</span>
+                                        <span className="sr-only">Toggle theme</span>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuPortal>
+                                        <DropdownMenuSubContent>
+                                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                                                <SunIcon/>&nbsp;light
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                                <MoonIcon/>&nbsp;dark
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => setTheme("system")}>
+                                                <SunMoonIcon/>&nbsp;system
+                                            </DropdownMenuItem>
+                                        </DropdownMenuSubContent>
+                                    </DropdownMenuPortal>
+                                </DropdownMenuSub>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>
                                     <Github className="mr-2 h-4 w-4" />
