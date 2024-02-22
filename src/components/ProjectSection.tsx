@@ -67,7 +67,7 @@ export default function ProjectSection({
                 />
             </div>
 
-            <section className="flex flex-col gap-4 w-full">
+            <section className="flex flex-col gap-4 w-full pt-2">
                 {activeProjects > 0 ?
                     projectDataState && projectDataState.filter(projects => projects.projectStatus === "active").map((project) => (
                         <ProjectCard

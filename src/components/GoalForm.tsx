@@ -25,7 +25,7 @@
         DialogClose,
     } from "@/components/ui/dialog";
     import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-    import { Textarea } from "@/components/ui/textarea";
+    // import { Textarea } from "@/components/ui/textarea";
     import { GradientPicker } from "./ui/GradientPicker";
     import { PlusIcon, PencilIcon } from "lucide-react";
     import { Session } from "@supabase/supabase-js";
@@ -129,7 +129,7 @@ import { Separator } from "./ui/separator";
         <DialogTrigger asChild>
             <Button variant="ghost" className="w-8 h-8 p-0">{mode === "add" ? <PlusIcon /> : <PencilIcon />}</Button>
         </DialogTrigger>
-        <DialogContent className="" style={{ background }}>
+        <DialogContent className="rounded-xl" style={{ background }}>
             <DialogHeader>
             <DialogTitle>edit a goal</DialogTitle>
             <GradientPicker
@@ -138,13 +138,13 @@ import { Separator } from "./ui/separator";
             />
             </DialogHeader>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 rounded-xl">
                     <FormField
                     control={form.control}
                     name="goalDesc"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>What are you trying to accomplish in a 6 month window?</FormLabel>
+                        <FormLabel>What are you trying to accomplish?</FormLabel>
                         
                         <FormControl>
                             <Input placeholder="Get hired in the tech industry ASAP." {...field} />
@@ -153,20 +153,19 @@ import { Separator } from "./ui/separator";
                         </FormItem>
                     )}
                     />
-                    <FormField
+                    {/* <FormField
                     control={form.control}
                     name="goalMotivation"
                     render={({ field }) => (
                         <FormItem>
                         <FormLabel>Why? What is your motivation?</FormLabel>
-                        
                         <FormControl>
                             <Textarea placeholder="I enjoy the challange of the problem selving and building products that people will use. I also need to pay rent." {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
                     )}
-                    />
+                    /> */}
                     
                     <div className="flex flex-wrap justify-start md:justify-between gap-6 ">
                         <FormField

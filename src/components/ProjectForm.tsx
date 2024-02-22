@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+//   FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
 import { PlusIcon, PencilIcon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
@@ -158,14 +158,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             {mode === "add" ? <PlusIcon /> : <PencilIcon />}
             </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]" style={{ background }}>
+        <DialogContent className="sm:max-w-[425px] rounded-xl" style={{ background }}>
             <DialogHeader>
             <DialogTitle>
                 {mode === "add" ? "add a project" : "edit a project"}
             </DialogTitle>
             </DialogHeader>
             <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
                             control={form.control}
                             name="projectGoal"
@@ -193,7 +193,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                         name="projectDesc"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>what are you trying to accomplish in a month timeframe?</FormLabel>
+                            <FormLabel>what are you trying to accomplish?</FormLabel>
                             <FormControl>
                                 <Input placeholder="Get hired in the tech industry ASAP." {...field} />
                             </FormControl>
@@ -201,7 +201,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                             </FormItem>
                         )}
                         />
-                        <FormField
+                        {/* <FormField
                         control={form.control}
                         name="projectMotivation"
                         render={({ field }) => (
@@ -214,7 +214,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                             <FormMessage />
                             </FormItem>
                         )}
-                        />
+                        /> */}
                         <FormField
                             control={form.control}
                             name="projectTimeframe"
@@ -238,7 +238,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                                 render={({ field }) => (
                                     <FormItem className="space-y-3">
                                         <Separator className="bg-primary" />
-                                    <FormLabel>complexity</FormLabel>
+                                    <FormLabel className="text-xl">complexity</FormLabel>
                                     <FormControl>
                                         <RadioGroup
                                         onValueChange={field.onChange}
@@ -281,7 +281,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                                 render={({ field }) => (
                                     <FormItem className="space-y-3">
                                         <Separator className="bg-primary"/>
-                                    <FormLabel>excitement</FormLabel>
+                                    <FormLabel className="text-xl">excitement</FormLabel>
                                     <FormControl>
                                         <RadioGroup
                                         onValueChange={field.onChange}

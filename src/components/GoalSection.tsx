@@ -70,7 +70,7 @@ export function GoalSection({
                     session={session}
                 />
             </div>
-            <section className="flex flex-col gap-4 w-full">
+            <section className="flex flex-col gap-4 w-full pt-4">
                 {activeGoalsCount > 0 ?
                  goalDataState && goalDataState.filter(goals => goals.goalStatus === "active").map((goal, index) => (
                     <GoalCard
@@ -91,7 +91,7 @@ export function GoalSection({
                             />
                  ))
                 :
-                    <span className=" w-full border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active goals</span>
+                    <span className=" w-full border-2 rounded-xl border-primary/50 p-2 text-center font-semibold">no active goals</span>
                 }
             </section>
             <section className="w-full flex flex-col items-center gap-4">

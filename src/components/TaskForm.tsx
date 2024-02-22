@@ -140,7 +140,7 @@ export default function TaskForm({
         <DialogTrigger asChild>
             <Button variant="ghost" size={"icon"} className="z-20">{mode === "add" ? <PlusIcon/> : <PencilIcon />}</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]" style={{ background }}>
+        <DialogContent className="sm:max-w-[425px] rounded-xl" style={{ background }}>
             <DialogHeader>
             <DialogTitle>{mode === "add" ? "add a task" : "edit this task"}</DialogTitle>
             <DialogDescription>
