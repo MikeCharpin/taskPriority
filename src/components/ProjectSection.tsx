@@ -85,10 +85,10 @@ export default function ProjectSection({
                         />
                     ))
                 : 
-                    <span className="border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active projects</span>
+                    <span className=" w-full border-2 rounded-xl border-primary/50 p-2 text-center font-semibold">no active projects</span>
                 }
             </section>
-             <section className="flex flex-col gap-4">
+             <section className="flex flex-col gap-4 w-full">
                 {completedProjects > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed projects 🎉</span> : ""}
                 {completedProjects > 0 ?
                     projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project) => (

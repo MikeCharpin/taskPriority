@@ -1,10 +1,17 @@
 import { GoalData, ProjectData, TaskData } from "@/lib/schema";
 import { Button } from "./ui/button";
-import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, Trash2Icon } from "lucide-react";
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
 import updateGoalInDB from "@/functions/updateGoalInDB";
 import deleteGoalFromDB from "@/functions/deleteGoalFromDB";
+import CompletedCard from "./ui/completed-card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
 
 interface GoalCardProps {
     goal: GoalData,
@@ -73,10 +80,10 @@ const GoalCard: React.FC<GoalCardProps> = ({
     
 
     return (
-        <div className="w-full rounded-2xl p-2 shadow-2xl border-2 border-primary/10" style={{ background }}>
-            
+        <div className="w-full">
             {goal.goalStatus === "active" ? 
                 <div>
+                <div className="w-full rounded-2xl px-4 py-2 shadow-2xl border-2 border-primary/10" style={{ background }}>
                     <h1 className="py-2 text-lg font-semibold text-wrap whitespace-normal min-h-12">{goal.goalDesc}</h1>
                     <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
                         <div className="flex flex-col w-full justify-between">
@@ -91,7 +98,19 @@ const GoalCard: React.FC<GoalCardProps> = ({
                                     setGoalDataState={setGoalDataState}
                                     session={session}
                                 />
-                                <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
+                                <Popover>
+                                    <PopoverTrigger><Trash2Icon/></PopoverTrigger>
+                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-xl">
+                                        <span className="font-semibold">delete forever?</span>
+                                        <Button 
+                                        variant={"destructive"} 
+                                        size={"icon"} 
+                                        className="bg-red-900/70 hover:bg-red-900" 
+                                        onClick={() => deleteGoal(goal.goalId)}>
+                                            <Trash2Icon/>
+                                        </Button>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                             </div>
                             <nav className="flex flex-col justify-between items-center gap-2">
@@ -100,16 +119,16 @@ const GoalCard: React.FC<GoalCardProps> = ({
                             </nav>
                         
                     </div>
+                    </div>
                 </div>
             : 
-                <div>
-                    <h1 className="py-2 text-lg font-normal text-wrap whitespace-normal">{goal.goalDesc}</h1>
-                    <div className="flex bg-primary/20 p-2 rounded-xl ">
-                        <div className="flex flex-col w-full justify-between gap-2">
-                            <Button className="border-2 border-primary/20 bg-primary/40 hover:bg-green-300/80" onClick={() => setGoalStatus("active")}><RefreshCwIcon/></Button>
-                            <Button variant={"destructive"} onClick={() => deleteGoal(goal.goalId)}><Trash2Icon/></Button>
-                        </div>
-                   </div>
+                <div className="rounded-xl border-2 border-primary/5" style={{ background }}>
+                   <CompletedCard
+                        desc= {goal.goalDesc}
+                        id= {goal.goalId}
+                        reset= {setGoalStatus}
+                        deleteitem={deleteGoal}
+                    />
                 </div>  
             }
             

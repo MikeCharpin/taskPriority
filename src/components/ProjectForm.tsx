@@ -69,10 +69,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         projectScore: z.number(),
         projectPriorityScore: z.number(),
         projectGoal: z.string(),
-        projectDesc: z.string().min(10, {
-            message: "Goal must be at least 10 characters.",
-        }).max(120, {
-            message: "120 character limit."
+        projectDesc: z.string().min(1, {
+            message: "Goal must be at least 1 character.",
+        }).max(255, {
+            message: "255 character limit."
         }),
         projectStatus: z.string(),
         projectMotivation: z.string(),

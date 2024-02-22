@@ -38,8 +38,8 @@ const formSchema = z.object({
     taskScore: z.number(),
     taskDesc: z
     .string()
-    .min(10, {
-        message: "Goal must be at least 10 characters.",
+    .min(1, {
+        message: "Goal must be at least 1 character.",
     })
     .max(120, {
         message: "120 character limit.",

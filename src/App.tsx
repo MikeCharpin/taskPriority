@@ -8,6 +8,7 @@ import { Session } from '@supabase/supabase-js'
 import Account from "./components/Account"
 import ProjectPrioritizer from "./components/ProjectPrioritizer"
 import ModeToggleDialog from "./components/NavMenuDialog"
+import Footer from "./components/Footer"
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -68,9 +69,7 @@ function App() {
             open={openToggleMode}
             setOpen={setOpenToggleMode}
           />
-          <footer className="flex w-full h-16 justify-center items-center bg-black">
-            <div>by Mike Charpin</div>
-          </footer>
+          <Footer />
         </div>
     </ThemeProvider>
   )

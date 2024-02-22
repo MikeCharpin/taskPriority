@@ -1,11 +1,17 @@
 import { ProjectData, TaskData } from "@/lib/schema";
 import { Button } from "./ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import TaskForm from "./TaskForm";
-import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, Trash2Icon } from "lucide-react";
 import React from "react";
 import { Session } from "@supabase/supabase-js";
 import updateTaskInDB from "@/functions/updateTaskInDB";
 import deleteTaskFromDB from "@/functions/deleteTasksFromDB";
+import CompletedCard from "./ui/completed-card";
 
 interface TaskCardProps {
     key: string,
@@ -101,11 +107,11 @@ export default function TaskCard({
         <div>
             
            {task.taskStatus === "active" ? 
-                <div className="border-2 border-secondary/20 p-2 rounded-xl bg-secondary/80">
+                <div className="border-2 border-secondary/20 px-4 py-2 rounded-xl bg-primary/20">
                     <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
                     <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
                         <div className="flex flex-col w-full justify-between">
-                            <Button className="border-2 border-primary bg-primary/30 hover:bg-green-300/80" onClick={() => setTaskStatus("completed")}><CheckCircleIcon/></Button>
+                            <Button className="border-2 border-primary/40 bg-primary/30 hover:bg-green-300/80" onClick={() => setTaskStatus("completed")}><CheckCircleIcon/></Button>
                         
                             <div className="flex justify-between">
                                 <TaskForm
@@ -117,7 +123,19 @@ export default function TaskCard({
                                     setTaskDataState={setTaskDataState}
                                     session={session}
                                 />
-                                <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>
+                                <Popover>
+                                    <PopoverTrigger><Trash2Icon/></PopoverTrigger>
+                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-xl">
+                                        <span className="font-semibold">delete forever?</span>
+                                        <Button 
+                                        variant={"destructive"} 
+                                        size={"icon"} 
+                                        className="bg-red-900/70 hover:bg-red-900" 
+                                        onClick={() => deleteTask(task.taskId)}>
+                                            <Trash2Icon/>
+                                        </Button>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                         </div>
                         <div className="flex flex-col justify-between items-center gap-2">
@@ -127,12 +145,13 @@ export default function TaskCard({
                     </div>
                 </div>
             :
-                <div className="border-2 border-primary/30 p-2 rounded-xl">
-                    <div className="py-2 text-lg whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
-                    <div className="flex justify-between items-center gap-2">
-                        <Button variant={"ghost"} size={"icon"} onClick={() => setTaskStatus("active")} ><RefreshCwIcon/></Button>
-                        <Button variant={"destructive"} size={"icon"} className="p-2" onClick={() => deleteTask(task.taskId)}><Trash2Icon/></Button>
-                    </div>
+                <div>
+                    <CompletedCard
+                        desc= {task.taskDesc}
+                        id= {task.taskId}
+                        reset= {setTaskStatus}
+                        deleteitem={deleteTask}
+                    />
                 </div>
             }
         </div>

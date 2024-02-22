@@ -5,14 +5,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
 import TaskForm from "./TaskForm";
 import TaskCard from "./TaskCard";
-import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, Trash2Icon } from "lucide-react";
 import ProjectForm from "./ProjectForm";
 import { Session } from "@supabase/supabase-js";
 import updatedProjectInDB from "@/functions/updateProjectInDB";
 import deleteProjectFromDB from "@/functions/deleteProjectFromDB";
 import { GoalData, ProjectData, TaskData } from "@/lib/schema";
+import CompletedCard from "./ui/completed-card";
 
 interface ProjectCardProps {
     project: ProjectData,
@@ -69,10 +76,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }
 
     return (
-        <div className=" flex flex-col w-full rounded-2xl p-2 border-2 border-primary/5" style={{ background }}>
-            
+        <div>
             {project.projectStatus === "active" ?
-                <div>
+                <div className=" flex flex-col w-full rounded-2xl px-4 py-2 border-2 border-primary/5" style={{ background }}>
                     <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{ project.projectDesc }</div>
                     <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
                         <div className="flex flex-col w-full justify-between">
@@ -87,7 +93,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                     setProjectDataState={setProjectDataState}
                                     session={session}
                                 />
-                                <Button variant={"destructive"} size={"icon"} onClick={() => deleteProject(project.projectId)}><Trash2Icon/></Button>
+                                <Popover>
+                                    <PopoverTrigger><Trash2Icon/></PopoverTrigger>
+                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-xl">
+                                        <span className="font-semibold">delete forever?</span>
+                                        <Button 
+                                        variant={"destructive"} 
+                                        size={"icon"} 
+                                        className="bg-red-900/70 hover:bg-red-900" 
+                                        onClick={() => deleteProject(project.projectId)}>
+                                            <Trash2Icon/>
+                                        </Button>
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                         </div>
                         <nav className="flex flex-col justify-between items-center gap-2">
@@ -131,7 +149,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                     }
                         
                                 </div>
-                                <div className="flex flex-col gap-4 py-4">
+                                <div className="flex flex-col py-4">
                                     {completedTasks > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed tasks 🎉</span> : ""}
                                     {completedTasks > 0 ?
                                         projectTasks && projectTasks
@@ -158,15 +176,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     </Accordion>
                 </div>
             :
-                <div className="flex flex-col w-full">
-                    <div className="py-2 text-lg font-normal whitespace-normal text-wrap ">{ project.projectDesc }</div>
-                    <div className=" bg-primary/20 p-2 rounded-xl ">
-                        <div className="flex flex-col w-full justify-between gap-2">
-                            <Button className="border-2 border-primary/20 bg-primary/40 hover:bg-green-300/80" onClick={() => setProjectStatus("active")}><RefreshCwIcon/></Button>
-                            <Button variant={"destructive"} onClick={() => deleteProject(project.projectId)}><Trash2Icon/></Button>
-                        </div>
-                   </div>
-                </div>                
+                <div className=" rounded-xl border-2 border-primary/5" style={{ background }}>
+                    <CompletedCard
+                            desc= {project.projectDesc}
+                            id= {project.projectId}
+                            reset= {setProjectStatus}
+                            deleteitem={deleteProject}
+                        />
+                </div>            
             }
             
         </div>

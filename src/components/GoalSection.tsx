@@ -57,8 +57,8 @@ export function GoalSection({
 
 
     return (
-        <div className="flex flex-col justify-center items-center min-w-72 w-full max-w-sm bg-primary/20 rounded-2xl gap-2 p-2">
-            <div className="flex justify-between items-start gap-4">
+        <div className="flex flex-col min-w-72 w-full max-w-sm justify-center items-center p-2 border-2 bg-primary/20 rounded-2xl">
+            <div className="flex justify-between items-center">
                 <h1 className="text-xl font-bold">goals</h1>
                 <GoalForm
                     mode={"add"}
@@ -70,51 +70,55 @@ export function GoalSection({
                     session={session}
                 />
             </div>
-            {activeGoalsCount > 0 ? 
-             goalDataState && goalDataState.filter(goals => goals.goalStatus === "active").map((goal, index) => (
-                <GoalCard
-                        key={goal.goalId}
-                        goal={goal}
-                        background={goal.goalColor}
-                        index={index}
-                        onMoveUp={() => changeGoalRank(goal.goalId, -1)}
-                        onMoveDown={() => changeGoalRank(goal.goalId, 1)}
-                        goalDataState={goalDataState}
-                        calcGoalScore={calcGoalScore}
-                        setGoalDataState={setGoalDataState}
-                        projectDataState={projectDataState}
-                        setProjectDataState={setProjectDataState}
-                        setTaskDataState={setTaskDataState}
-                        taskDataState={taskDataState}
-                        session={session}
-                        />
-             ))
-            : 
-                <span className=" w-full border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active goals</span>
-            }
-            {completedGoalsCount > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed goals 🎉</span> : ""}
-            {completedGoalsCount > 0 ?
-                goalDataState && goalDataState.filter(goals => goals.goalStatus === "completed").map((goal, index) => (
+            <section className="flex flex-col gap-4 w-full">
+                {activeGoalsCount > 0 ?
+                 goalDataState && goalDataState.filter(goals => goals.goalStatus === "active").map((goal, index) => (
                     <GoalCard
-                        key={goal.goalId}
-                        goal={goal}
-                        background={goal.goalColor}
-                        index={index}
-                        onMoveUp={() => changeGoalRank(goal.goalId, -1)}
-                        onMoveDown={() => changeGoalRank(goal.goalId, 1)}
-                        goalDataState={goalDataState}
-                        calcGoalScore={calcGoalScore}
-                        setGoalDataState={setGoalDataState}
-                        projectDataState={projectDataState}
-                        setProjectDataState={setProjectDataState}
-                        setTaskDataState={setTaskDataState}
-                        taskDataState={taskDataState}
-                        session={session}
-                    />
-                ))
-            :
-                ""
-            }
+                            key={goal.goalId}
+                            goal={goal}
+                            background={goal.goalColor}
+                            index={index}
+                            onMoveUp={() => changeGoalRank(goal.goalId, -1)}
+                            onMoveDown={() => changeGoalRank(goal.goalId, 1)}
+                            goalDataState={goalDataState}
+                            calcGoalScore={calcGoalScore}
+                            setGoalDataState={setGoalDataState}
+                            projectDataState={projectDataState}
+                            setProjectDataState={setProjectDataState}
+                            setTaskDataState={setTaskDataState}
+                            taskDataState={taskDataState}
+                            session={session}
+                            />
+                 ))
+                :
+                    <span className=" w-full border-2 rounded-xl border-gray-300 p-2 text-center font-semibold">no active goals</span>
+                }
+            </section>
+            <section className="w-full flex flex-col items-center gap-4">
+                {completedGoalsCount > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed goals 🎉</span> : ""}
+                {completedGoalsCount > 0 ?
+                    goalDataState && goalDataState.filter(goals => goals.goalStatus === "completed").map((goal, index) => (
+                        <GoalCard
+                            key={goal.goalId}
+                            goal={goal}
+                            background={goal.goalColor}
+                            index={index}
+                            onMoveUp={() => changeGoalRank(goal.goalId, -1)}
+                            onMoveDown={() => changeGoalRank(goal.goalId, 1)}
+                            goalDataState={goalDataState}
+                            calcGoalScore={calcGoalScore}
+                            setGoalDataState={setGoalDataState}
+                            projectDataState={projectDataState}
+                            setProjectDataState={setProjectDataState}
+                            setTaskDataState={setTaskDataState}
+                            taskDataState={taskDataState}
+                            session={session}
+                        />
+                    ))
+                :
+                    ""
+                }
+            </section>
             
                 
             

@@ -33,8 +33,8 @@ import updateGoalInDB from "@/functions/updateGoalInDB";
 import { Separator } from "./ui/separator";
 
     const formSchema = z.object({
-        goalDesc: z.string().min(10, {
-        message: "Goal must be at least 10 characters.",
+        goalDesc: z.string().min(1, {
+        message: "Goal must be at least 1 character.",
         }).max(255, {
         message: "255 character limit."
         }),
