@@ -9,7 +9,7 @@ const updateTaskInDB = async (updatedTask: TaskData) => {
                 .update<TaskData>(updatedTask)
                 .eq("taskId", updatedTask.taskId)
             if (error) throw error
-            console.log("Task Updated", data)
+            console.log("Task updated in database.", data)
         } catch (error: unknown) {
             console.error("Error updating task.", error)
         }

@@ -9,7 +9,7 @@ const updatedProjectInDB = async (updatedProject: ProjectData) => {
                 .update<ProjectData>(updatedProject)
                 .eq("projectId", updatedProject.projectId)
             if (error) throw error
-            console.log("Project Updated", data)
+            console.log("Project updated in databsae.", data)
         } catch (error: unknown) {
             console.error("Error updating project.", error)
         }
