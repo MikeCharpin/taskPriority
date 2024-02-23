@@ -52,7 +52,7 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="p-0 rounded-full">
                                 <Avatar>
-                                    <AvatarFallback><UserCircle2 stroke-width="1.5"/></AvatarFallback>
+                                    <AvatarFallback><UserCircle2 strokeWidth="1.5"/></AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
@@ -98,7 +98,7 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="p-0 rounded-full">
                                 <Avatar>
-                                    <AvatarFallback><UserCircle2 stroke-width="1.5"/></AvatarFallback>
+                                    <AvatarFallback><UserCircle2 strokeWidth="1.5"/></AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
