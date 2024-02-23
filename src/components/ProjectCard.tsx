@@ -149,11 +149,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                     }
                         
                                 </div>
-                                <div className="flex flex-col py-4">
+                                <div className="flex flex-col py-4 gap-2">
                                     {completedTasks > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed tasks 🎉</span> : ""}
                                     {completedTasks > 0 ?
                                         projectTasks && projectTasks
-                                            .filter(task => task.taskStatus === "completed")
+                                            .filter((task) => task.taskStatus === "completed")
                                             .map((task) => (
                                                 <TaskCard
                                                     key={task.taskId}
