@@ -1,16 +1,16 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   Github,
-  LifeBuoy,
+//   LifeBuoy,
   LogInIcon,
-  PiggyBankIcon,
+//   PiggyBankIcon,
   SunIcon,
   MoonIcon,
   SquareUserRoundIcon,
   MessageCircleHeartIcon,
   UserCircle2,
   SunMoonIcon,
-  UserCircle2Icon,
+//   UserCircle2Icon,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -52,8 +52,7 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="p-0 rounded-full">
                                 <Avatar>
-                                    <AvatarImage src="@/assets/Scan173983.jpg" alt="User profile image of a cat." />
-                                    <AvatarFallback><UserCircle2/></AvatarFallback>
+                                    <AvatarFallback><UserCircle2 stroke-width="1.5"/></AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
@@ -71,19 +70,19 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                                 <Github className="mr-2 h-4 w-4" />
                                 <span> <a href="https://github.com/MikeCharpin/taskPriority" target="_blank">github</a></span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <LifeBuoy className="mr-2 h-4 w-4" />
                                 <span>support for you 😵</span>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                                 <SquareUserRoundIcon className="mr-2 h-4 w-4" />
                                 <span><a href="https://www.michaelcharpin.com/" target="_blank">about me 🧙</a></span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <PiggyBankIcon className="mr-2 h-4 w-4" />
                                 <span>support for me 😄</span>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => setOpenLogin(true)} className="bg-green-700">
                                     <LogInIcon className="mr-2 h-4 w-4" />
@@ -99,8 +98,7 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="p-0 rounded-full">
                                 <Avatar>
-                                    <AvatarImage src="@/assets/Scan173983.jpg" alt="User profile image of a cat." />
-                                    <AvatarFallback>TT</AvatarFallback>
+                                    <AvatarFallback><UserCircle2 stroke-width="1.5"/></AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
@@ -111,10 +109,10 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                                 <span><a href="https://forms.gle/dxb7BCeih1A6ZdaCA" target="_blank">send feedback 💌</a></span>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <UserCircle2Icon className="mr-2 h-4 w-4" />
                                 <span>Profile</span>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuGroup>
                                 <DropdownMenuSub>
                                     <DropdownMenuSubTrigger>
@@ -140,19 +138,19 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                                 <Github className="mr-2 h-4 w-4" />
                                 <span> <a href="https://github.com/MikeCharpin/taskPriority" target="_blank">github</a></span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <LifeBuoy className="mr-2 h-4 w-4" />
                                 <span>support for you</span>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                                 <SquareUserRoundIcon className="mr-2 h-4 w-4" />
                                 <span><a href="https://www.michaelcharpin.com/" target="_blank">about me 🧙</a></span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            {/* <DropdownMenuItem>
                                 <PiggyBankIcon className="mr-2 h-4 w-4" />
                                 <span>support for me 😄</span>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 onClick={async () => {
