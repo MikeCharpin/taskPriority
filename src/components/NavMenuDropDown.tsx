@@ -156,10 +156,10 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 onClick={async () => {
-                                const { error } = await supabase.auth.signOut()
-                                if (error) console.log('Error logging out:', error.message)
-                                localStorage.clear()
-                                console.log("Clearing local storage.")
+                                    localStorage.clear()
+                                    const { error } = await supabase.auth.signOut()
+                                    if (error) console.log('Error logging out:', error.message)
+                                    console.log("Clearing local storage.")
                                 }}
                                 className="bg-red-700"
                             >
