@@ -35,7 +35,7 @@ export default function TaskCard({
 }: TaskCardProps) {
 
     const projectTasks = taskDataState.filter(stateTask => stateTask.taskProject === task.taskProject).sort((a, b) => a.taskRank - b.taskRank)
-    const taskIndex = projectTasks.findIndex((stateTask) => stateTask.taskId === task.taskId)
+    const taskStateIndex = taskDataState.findIndex((stateTask) => stateTask.taskId === task.taskId)
 
 
     const changeTaskRank = (taskId: string, direction: number) => {
@@ -84,13 +84,14 @@ export default function TaskCard({
 
     const setTaskStatus = (status: string) => {
        const updatedTaskData = [...taskDataState]
-       const editedTask = updatedTaskData[taskIndex]
+       const editedTask = updatedTaskData[taskStateIndex]
        if (editedTask) {
         editedTask.taskStatus = status
+        console.log(editedTask)
        } else {
         console.error("Task not found.", editedTask)
        }
-       updatedTaskData[taskIndex] = editedTask
+       updatedTaskData[taskStateIndex] = editedTask
        updateTaskInDB(editedTask)
        setTaskDataState(updatedTaskData)
     }
@@ -105,13 +106,16 @@ export default function TaskCard({
 
     return (
         <div>
-            
            {task.taskStatus === "active" ? 
                 <div className="border-2 border-secondary/20 px-4 py-2 rounded-xl bg-primary/20">
                     <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
                     <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
                         <div className="flex flex-col w-full justify-between">
-                            <Button className="border-2 border-primary/40 bg-primary/30 hover:bg-green-300/80" onClick={() => setTaskStatus("completed")}><CheckCircleIcon/></Button>
+                            <Button 
+                            className="border-2 border-primary/40 bg-primary/30 hover:bg-green-300/80" 
+                            onClick={() => setTaskStatus("completed")}>
+                                <CheckCircleIcon/>
+                            </Button>
                         
                             <div className="flex justify-between">
                                 <TaskForm
@@ -139,8 +143,20 @@ export default function TaskCard({
                             </div>
                         </div>
                         <div className="flex flex-col justify-between items-center gap-2">
-                            <Button variant={"ghost"} size={"icon"} className="border-2 border-primary/30 hover:bg-primary/20" onClick={() => changeTaskRank(task.taskId, -1)}> <ArrowUpIcon/> </Button>
-                            <Button variant={"ghost"} size={"icon"} className="border-2 border-primary/30 hover:bg-primary/20" onClick={() => changeTaskRank(task.taskId, 1)}> <ArrowDownIcon/> </Button>
+                            <Button 
+                            variant={"ghost"} 
+                            size={"icon"} 
+                            className="border-2 border-primary/30 hover:bg-primary/20" 
+                            onClick={() => changeTaskRank(task.taskId, -1)}>
+                                <ArrowUpIcon/> 
+                            </Button>
+                            <Button 
+                            variant={"ghost"} 
+                            size={"icon"} 
+                            className="border-2 border-primary/30 hover:bg-primary/20" 
+                            onClick={() => changeTaskRank(task.taskId, 1)}> 
+                                <ArrowDownIcon/> 
+                            </Button>
                         </div>
                     </div>
                 </div>
