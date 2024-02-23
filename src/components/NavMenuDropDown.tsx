@@ -52,7 +52,7 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="p-0 rounded-full">
                                 <Avatar>
-                                    <AvatarImage><img src="public/Scan173983.jpg" alt="User profile image of a cat."></img></AvatarImage>
+                                    <AvatarImage src="public/Scan173983.jpg" alt="User profile image of a cat." />
                                     <AvatarFallback><UserCircle2/></AvatarFallback>
                                 </Avatar>
                             </Button>
@@ -99,7 +99,7 @@ const NavMenuDropdown = ({ session, setOpenLogin, setOpenModeToggle }: NavMenuPr
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="p-0 rounded-full">
                                 <Avatar>
-                                    <AvatarImage src="src\assets\Scan173983.jpg" />
+                                    <AvatarImage src="public/Scan173983.jpg" alt="User profile image of a cat." />
                                     <AvatarFallback>MC</AvatarFallback>
                                 </Avatar>
                             </Button>
