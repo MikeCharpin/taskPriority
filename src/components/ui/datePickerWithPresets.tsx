@@ -1,22 +1,18 @@
 import * as React from "react"
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
+
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+import { useMediaQuery } from "@react-hook/media-query"
 
 const DatePickerWithPresets = React.forwardRef<HTMLDivElement,
     { 
@@ -26,6 +22,8 @@ const DatePickerWithPresets = React.forwardRef<HTMLDivElement,
 
     }
 >(({ className, onChange, initialValue, }, ref) => {
+    const isDesktop = useMediaQuery("(min-width: 768px)")  
+
     const [date, setDate] = React.useState<Date | undefined>(initialValue)
 
     const handleDateChange = (newDate: Date | undefined) => {
@@ -37,8 +35,9 @@ const DatePickerWithPresets = React.forwardRef<HTMLDivElement,
 
     return (
         <div ref={ref}  className={cn("grid gap-2", className)}>
-            <Popover>
-            <PopoverTrigger asChild>
+            {isDesktop ? 
+            <Dialog>
+            <DialogTrigger asChild>
                 <Button
                 variant={"outline"}
                 className={cn(
@@ -49,24 +48,8 @@ const DatePickerWithPresets = React.forwardRef<HTMLDivElement,
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {date ? format(date, "PPP") : <span>Pick a date</span>}
                 </Button>
-            </PopoverTrigger>
-            <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
-                <Select
-                onValueChange={(value) =>
-                    handleDateChange(addDays(new Date(), parseInt(value)))
-                }
-                >
-                <SelectTrigger>
-                    <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                    <SelectItem value="0">Today</SelectItem>
-                    <SelectItem value="1">Tomorrow</SelectItem>
-                    <SelectItem value="3">In 3 days</SelectItem>
-                    <SelectItem value="7">In a week</SelectItem>
-                </SelectContent>
-                </Select>
-                <div  className="rounded-md border">
+            </DialogTrigger>
+            <DialogContent className="flex w-auto flex-col space-y-2 p-2 bg-cyan-900 rounded-2xl border-2 border-primary/20 shadow-xl">
                 <Calendar 
                     initialFocus
                     mode="single" 
@@ -74,9 +57,34 @@ const DatePickerWithPresets = React.forwardRef<HTMLDivElement,
                     onSelect={handleDateChange}
                     numberOfMonths={2} 
                 />
-                </div>
-            </PopoverContent>
-            </Popover>
+            </DialogContent>
+            </Dialog>
+        :    
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button
+                    variant={"outline"}
+                    className={cn(
+                        "w-[280px] justify-start text-left font-normal",
+                        !date && "text-muted-foreground"
+                    )}
+                    >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="flex w-auto flex-col space-y-2 p-2 bg-cyan-900 rounded-2xl border-2 border-primary/20 shadow-xl">
+                    <Calendar 
+                        initialFocus
+                        mode="single" 
+                        selected={date} 
+                        onSelect={handleDateChange}
+                        numberOfMonths={2} 
+                        className="max-h-[95dvh]"
+                    />
+                </DialogContent>
+            </Dialog>
+        }
         </div>
     )
 })
