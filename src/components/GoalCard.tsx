@@ -82,43 +82,43 @@ const GoalCard: React.FC<GoalCardProps> = ({
     return (
         <div className="w-full">
             {goal.goalStatus === "active" ? 
-                <div>
-                <div className="w-full rounded-2xl px-4 py-2 shadow-2xl border-2 border-primary/10" style={{ background }}>
-                    <h1 className="py-2 text-lg font-semibold text-wrap whitespace-normal min-h-12">{goal.goalDesc}</h1>
-                    <div className="flex bg-primary/20 p-2 rounded-2xl gap-2">
-                        <div className="flex flex-col w-full justify-between">
-                            <Button className="border-2 border-primary bg-primary/40 hover:bg-green-300/80 shadow-md" onClick={() => setGoalStatus("completed")}><CheckCircleIcon/></Button>
-                            <div className="flex justify-between">
-                                <GoalForm
-                                    mode={"edit"}
-                                    goal={goal}
-                                    index={index}
-                                    calcGoalScore={calcGoalScore}
-                                    goalDataState={goalDataState}
-                                    setGoalDataState={setGoalDataState}
-                                    session={session}
-                                />
-                                <Popover>
-                                    <PopoverTrigger><Trash2Icon/></PopoverTrigger>
-                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-2xl">
-                                        <span className="font-semibold">delete forever?</span>
-                                        <Button 
-                                        variant={"destructive"} 
-                                        size={"icon"} 
-                                        className="bg-red-900/70 hover:bg-red-900" 
-                                        onClick={() => deleteGoal(goal.goalId)}>
-                                            <Trash2Icon/>
-                                        </Button>
-                                    </PopoverContent>
-                                </Popover>
-                            </div>
-                            </div>
-                            <nav className="flex flex-col justify-between items-center gap-2">
-                                <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20 shadow-md" onClick={onMoveUp}><ArrowUpIcon/></Button>
-                                <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20 shadow-md" onClick={onMoveDown}><ArrowDownIcon/></Button>
-                            </nav>
-                        
-                    </div>
+                <div className="border-2 border-primary/5 rounded-2xl">
+                    <div className="w-full px-4 py-2 shadow-md rounded-2xl" style={{ background }}>
+                        <h1 className="py-2 text-lg font-semibold text-wrap whitespace-normal min-h-12">{goal.goalDesc}</h1>
+                        <div className="flex bg-primary/20 p-2 rounded-2xl gap-2">
+                            <div className="flex flex-col w-full justify-between">
+                                <Button className="border-2 border-primary bg-primary/40 hover:bg-green-300/80 shadow-md" onClick={() => setGoalStatus("completed")}><CheckCircleIcon/></Button>
+                                <div className="flex justify-between">
+                                    <GoalForm
+                                        mode={"edit"}
+                                        goal={goal}
+                                        index={index}
+                                        calcGoalScore={calcGoalScore}
+                                        goalDataState={goalDataState}
+                                        setGoalDataState={setGoalDataState}
+                                        session={session}
+                                    />
+                                    <Popover>
+                                        <PopoverTrigger><Trash2Icon/></PopoverTrigger>
+                                        <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-2xl">
+                                            <span className="font-semibold">delete forever?</span>
+                                            <Button
+                                            variant={"destructive"}
+                                            size={"icon"}
+                                            className="bg-red-900/70 hover:bg-red-900"
+                                            onClick={() => deleteGoal(goal.goalId)}>
+                                                <Trash2Icon/>
+                                            </Button>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                </div>
+                                <nav className="flex flex-col justify-between items-center gap-2">
+                                    <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20 shadow-md" onClick={onMoveUp}><ArrowUpIcon/></Button>
+                                    <Button variant={"ghost"} className="px-6 border-2 border-primary/70 hover:bg-primary/20 shadow-md" onClick={onMoveDown}><ArrowDownIcon/></Button>
+                                </nav>
+                    
+                        </div>
                     </div>
                 </div>
             : 

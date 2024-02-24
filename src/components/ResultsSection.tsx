@@ -65,17 +65,19 @@ function PriorityCard({ project, goalDataState }: PriortityCardProps) {
 
     return (
         
-            <div className="flex flex-col w-full rounded-2xl p-4 border-2 border-primary/10" style={{ background }}>
-                <h2 className="text-wrap whitespace-normal font-bold pb-4">{ `${project.projectDesc}` }</h2>
-                <Separator className="bg-white " />
-                {daysRemaining > -7 ?
-                    <div className="pt-2">
-                        <span className="flex justify-center font-light gap-2"><CalendarHeartIcon />{`${daysRemaining} days or ${businessDaysRemaining} business days`}</span>
-                    </div>
-                :
-                    ""
-                }
+            <div className="w-full border-2 border-primary/10 rounded-2xl">
+                <div className="flex flex-col w-full rounded-2xl p-4 shadow-md " style={{ background }}>
+                    <h2 className="text-wrap whitespace-normal font-bold pb-4">{ `${project.projectDesc}` }</h2>
+                    <Separator className="bg-white " />
+                    {daysRemaining > -7 ?
+                        <div className="pt-2">
+                            <span className="flex justify-center font-light gap-2"><CalendarHeartIcon />{`${daysRemaining} days or ${businessDaysRemaining} business days`}</span>
+                        </div>
+                    :
+                        ""
+                    }
                 
+                </div>
             </div>
         
     )

@@ -78,86 +78,61 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     return (
         <div>
             {project.projectStatus === "active" ?
-                <div className=" flex flex-col w-full rounded-2xl px-4 py-2 border-2 border-primary/5" style={{ background }}>
-                    <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{ project.projectDesc }</div>
-                    <div className="flex bg-primary/20 p-2 rounded-2xl gap-2">
-                        <div className="flex flex-col w-full justify-between">
-                            <Button className="border-2 border-primary bg-primary/30 hover:bg-green-300/80" onClick={() => setProjectStatus("completed")}><CheckCircleIcon/></Button>
-                            <div className="flex justify-between">
-                                <ProjectForm
-                                    mode={"edit"}
-                                    project={project}
-                                    goalDataState={goalDataState}
-                                    calcProjectScore={calcProjectScore}
-                                    projectDataState={projectDataState}
-                                    setProjectDataState={setProjectDataState}
-                                    session={session}
-                                />
-                                <Popover>
-                                    <PopoverTrigger><Trash2Icon/></PopoverTrigger>
-                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-2xl">
-                                        <span className="font-semibold">delete forever?</span>
-                                        <Button 
-                                        variant={"destructive"} 
-                                        size={"icon"} 
-                                        className="bg-red-900/70 hover:bg-red-900" 
-                                        onClick={() => deleteProject(project.projectId)}>
-                                            <Trash2Icon/>
-                                        </Button>
-                                    </PopoverContent>
-                                </Popover>
+                <div className="border-2 border-primary/5 rounded-2xl">
+                    <div className=" flex flex-col w-full rounded-2xl px-4 py-2 shadow-md" style={{ background }}>
+                        <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{ project.projectDesc }</div>
+                        <div className="flex bg-primary/20 p-2 rounded-2xl gap-2">
+                            <div className="flex flex-col w-full justify-between">
+                                <Button className="border-2 border-primary bg-primary/30 hover:bg-green-300/80" onClick={() => setProjectStatus("completed")}><CheckCircleIcon/></Button>
+                                <div className="flex justify-between">
+                                    <ProjectForm
+                                        mode={"edit"}
+                                        project={project}
+                                        goalDataState={goalDataState}
+                                        calcProjectScore={calcProjectScore}
+                                        projectDataState={projectDataState}
+                                        setProjectDataState={setProjectDataState}
+                                        session={session}
+                                    />
+                                    <Popover>
+                                        <PopoverTrigger><Trash2Icon/></PopoverTrigger>
+                                        <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-2xl">
+                                            <span className="font-semibold">delete forever?</span>
+                                            <Button
+                                            variant={"destructive"}
+                                            size={"icon"}
+                                            className="bg-red-900/70 hover:bg-red-900"
+                                            onClick={() => deleteProject(project.projectId)}>
+                                                <Trash2Icon/>
+                                            </Button>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             </div>
+                            <nav className="flex flex-col justify-between items-center gap-2">
+                                <Button variant={"ghost"} className="px-6 border-2 border-primary/30 hover:bg-primary/20"  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
+                                <Button variant={"ghost"} className="px-6 border-2 border-primary/30 hover:bg-primary/20"  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
+                            </nav>
                         </div>
-                        <nav className="flex flex-col justify-between items-center gap-2">
-                            <Button variant={"ghost"} className="px-6 border-2 border-primary/30 hover:bg-primary/20"  onClick={onMoveUp}> <ArrowUpIcon/> </Button>
-                            <Button variant={"ghost"} className="px-6 border-2 border-primary/30 hover:bg-primary/20"  onClick={onMoveDown}> <ArrowDownIcon/> </Button>
-                        </nav>
-                    </div>
-                    <Accordion type="single" collapsible>
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger className="text-lg">view tasks</AccordionTrigger>
-                            <AccordionContent>
-                                <div className="flex flex-col gap-6 border-2 border-primary/50 p-2 rounded-2xl">
-                                    <div className="flex justify-end items-center relative">
-                                        <TaskForm
-                                            mode={"add"}
-                                            task={undefined}
-                                            project={project}
-                                            background={projectGoalColor}
-                                            taskDataState={taskDataState}
-                                            setTaskDataState={setTaskDataState}
-                                            session={session}
-                                        />
-                                        <span className="text-xl font-bold text-center w-full z-10 absolute">⚡ active tasks ⚡</span>
-                                    </div>
-                                    {activeTasks > 0 ?
-                                        projectTasks && projectTasks.filter(task => task.taskStatus === "active").map((task) => (
-                                            <TaskCard
-                                                key={task.taskId}
-                                                task={task}
+                        <Accordion type="single" collapsible>
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger className="text-lg">view tasks</AccordionTrigger>
+                                <AccordionContent>
+                                    <div className="flex flex-col gap-6 border-2 border-primary/50 p-2 rounded-2xl">
+                                        <div className="flex justify-end items-center relative">
+                                            <TaskForm
+                                                mode={"add"}
+                                                task={undefined}
                                                 project={project}
-                                                projectDataState={projectDataState}
                                                 background={projectGoalColor}
-                                                setProjectDataState={setProjectDataState}
                                                 taskDataState={taskDataState}
                                                 setTaskDataState={setTaskDataState}
                                                 session={session}
                                             />
-                                        ))
-                                    :
-                                        <span className="border-2 rounded-2xl border-gray-300 p-2 text-center font-semibold">no active tasks</span>
-                                    }
-                        
-                                </div>
-                                <div className="flex flex-col py-4 gap-2">
-                                    {completedTasks > 0 ?
-                                        <Accordion type="single" collapsible>
-                                            <AccordionItem value="completed-tasks">
-                                                <AccordionTrigger className="text-xl font-bold w-full text-center p-2">🎉 completed tasks 🎉</AccordionTrigger>
-                                                <AccordionContent className="flex flex-col gap-2" >
-                                               {projectTasks && projectTasks
-                                            .filter((task) => task.taskStatus === "completed")
-                                            .map((task) => (
+                                            <span className="text-xl font-bold text-center w-full z-10 absolute">⚡ active tasks ⚡</span>
+                                        </div>
+                                        {activeTasks > 0 ?
+                                            projectTasks && projectTasks.filter(task => task.taskStatus === "active").map((task) => (
                                                 <TaskCard
                                                     key={task.taskId}
                                                     task={task}
@@ -169,17 +144,44 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                                     setTaskDataState={setTaskDataState}
                                                     session={session}
                                                 />
-                                            ))}
-                                                </AccordionContent>
-                                            </AccordionItem>
-                                        </Accordion>
-                                    :
-                                        ""
-                                    }
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
+                                            ))
+                                        :
+                                            <span className="border-2 rounded-2xl border-gray-300 p-2 text-center font-semibold">no active tasks</span>
+                                        }
+                    
+                                    </div>
+                                    <div className="flex flex-col py-4 gap-2">
+                                        {completedTasks > 0 ?
+                                            <Accordion type="single" collapsible>
+                                                <AccordionItem value="completed-tasks">
+                                                    <AccordionTrigger className="text-xl font-bold w-full text-center p-2">🎉 completed tasks 🎉</AccordionTrigger>
+                                                    <AccordionContent className="flex flex-col gap-2" >
+                                                   {projectTasks && projectTasks
+                                                .filter((task) => task.taskStatus === "completed")
+                                                .map((task) => (
+                                                    <TaskCard
+                                                        key={task.taskId}
+                                                        task={task}
+                                                        project={project}
+                                                        projectDataState={projectDataState}
+                                                        background={projectGoalColor}
+                                                        setProjectDataState={setProjectDataState}
+                                                        taskDataState={taskDataState}
+                                                        setTaskDataState={setTaskDataState}
+                                                        session={session}
+                                                    />
+                                                ))}
+                                                    </AccordionContent>
+                                                </AccordionItem>
+                                            </Accordion>
+                                        :
+                                            ""
+                                        }
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
                 </div>
             :
                 <div className=" rounded-2xl border-2 border-primary/5" style={{ background }}>
