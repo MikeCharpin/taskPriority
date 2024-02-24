@@ -78,8 +78,8 @@ export function GradientPicker({
   ]
 
   const gradients = [
-    'linear-gradient(to top left,#accbee,#e7f0fd)',
-    'linear-gradient(to top left,#d5d4d0,#d5d4d0,#eeeeec)',
+    'linear-gradient(to bottom right, #666600, #999900, #CCCC00, #FFFF00)',
+    'linear-gradient(to top left, #660066, #990099, #CC00CC, #FF00FF)',
     'linear-gradient(to top left,#000000,#434343)',
     'linear-gradient(to top left,#09203f,#537895)',
     'linear-gradient(to top left,#AC32E4,#7918F2,#4801FF)',
@@ -89,11 +89,30 @@ export function GradientPicker({
     'linear-gradient(to top left,#00c6ff,#0072ff)',
     'linear-gradient(to top left,#4facfe,#00f2fe)',
     'linear-gradient(to top left,#0ba360,#3cba92)',
-    'linear-gradient(to top left,#FDFC47,#24FE41)',
-    'linear-gradient(to top left,#8a2be2,#0000cd,#228b22,#ccff00)',
+    'linear-gradient(to bottom right, #006666, #009999, #00CCCC, #00FFFF)',
+    'linear-gradient(to top left, #800080, #993399, #A366CC, #B399FF, #CC99FF)',
     'linear-gradient(to top left,#40E0D0,#FF8C00,#FF0080)',
-    'linear-gradient(to top left,#fcc5e4,#fda34b,#ff7882,#c8699e,#7046aa,#0c1db8,#020f75)',
-    'linear-gradient(to top left,#ff75c3,#ffa647,#ffe83f,#9fff5b,#70e2ff,#cd93ff)',
+    'linear-gradient(to bottom right, #FF0000, #FF3333, #FF6666, #FF9999, #FFCCCC)',
+    'linear-gradient(to bottom right, #006600, #009900, #00CC00, #00FF00)',
+    'linear-gradient(to top left, #0000FF, #3333FF, #6666FF, #9999FF, #CCCCFF)',
+    'linear-gradient(to top left, #7FFFD4, #FF4500)',
+    'linear-gradient(to top left, #6495ED, #FF69B4) ',
+    'linear-gradient(to top left, #00CED1, #FFD700)',
+    'linear-gradient(to top left, #4682B4, #FF6347) ',
+    'linear-gradient(to top left, #20B2AA, #FF8C00)',
+    'linear-gradient(to top left, #8B008B, #FFD700) ',
+    'linear-gradient(to top left, #9932CC, #FF8C00) ',
+    'linear-gradient(to top left, #5A6473, #A06161)',
+    'linear-gradient(to top left, #227C83, #B84C25)',
+    'linear-gradient(to top left, #6C4F5A, #438792)',
+    'linear-gradient(to top left, #585F7A, #AA6B71)',
+    'linear-gradient(to top left, #346A59, #B84C25)',
+    'linear-gradient(to top left, #725F6B, #3F7396) ',
+    'linear-gradient(to top left, #944F50, #2C9E9B)',
+    'linear-gradient(to top left, #4F4A6E, #9F896E) ',
+
+
+
   ]
 
   const defaultTab = useMemo(() => {
