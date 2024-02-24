@@ -107,9 +107,9 @@ export default function TaskCard({
     return (
         <div>
            {task.taskStatus === "active" ? 
-                <div className="border-2 border-secondary/20 px-4 py-2 rounded-xl bg-primary/20">
+                <div className="border-2 border-secondary/20 px-4 py-2 rounded-2xl bg-primary/20">
                     <div className="py-2 text-lg font-semibold whitespace-normal text-wrap min-h-12">{task.taskDesc}</div>
-                    <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
+                    <div className="flex bg-primary/20 p-2 rounded-2xl gap-2">
                         <div className="flex flex-col w-full justify-between">
                             <Button 
                             className="border-2 border-primary/40 bg-primary/30 hover:bg-green-300/80" 
@@ -129,7 +129,7 @@ export default function TaskCard({
                                 />
                                 <Popover>
                                     <PopoverTrigger><Trash2Icon/></PopoverTrigger>
-                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-xl">
+                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-2xl">
                                         <span className="font-semibold">delete forever?</span>
                                         <Button 
                                         variant={"destructive"} 

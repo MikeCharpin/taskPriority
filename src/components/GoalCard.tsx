@@ -85,7 +85,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
                 <div>
                 <div className="w-full rounded-2xl px-4 py-2 shadow-2xl border-2 border-primary/10" style={{ background }}>
                     <h1 className="py-2 text-lg font-semibold text-wrap whitespace-normal min-h-12">{goal.goalDesc}</h1>
-                    <div className="flex bg-primary/20 p-2 rounded-xl gap-2">
+                    <div className="flex bg-primary/20 p-2 rounded-2xl gap-2">
                         <div className="flex flex-col w-full justify-between">
                             <Button className="border-2 border-primary bg-primary/40 hover:bg-green-300/80 shadow-md" onClick={() => setGoalStatus("completed")}><CheckCircleIcon/></Button>
                             <div className="flex justify-between">
@@ -100,7 +100,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
                                 />
                                 <Popover>
                                     <PopoverTrigger><Trash2Icon/></PopoverTrigger>
-                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-xl">
+                                    <PopoverContent className="flex gap-2 items-center w-50 bg-secondary shadow-lg border-2 border-red-600/70 rounded-2xl">
                                         <span className="font-semibold">delete forever?</span>
                                         <Button 
                                         variant={"destructive"} 
@@ -122,7 +122,7 @@ const GoalCard: React.FC<GoalCardProps> = ({
                     </div>
                 </div>
             : 
-                <div className="rounded-xl border-2 border-primary/5" style={{ background }}>
+                <div className="rounded-2xl border-2 border-primary/5" style={{ background }}>
                    <CompletedCard
                         desc= {goal.goalDesc}
                         id= {goal.goalId}

@@ -92,7 +92,7 @@ export default function ProjectSection({
                         />
                     ))
                 : 
-                    <span className=" w-full border-2 rounded-xl border-primary/50 p-2 text-center font-semibold">no active projects</span>
+                    <span className=" w-full border-2 rounded-2xl border-primary/50 p-2 text-center font-semibold">no active projects</span>
                 }
             </section>
              <section className="flex flex-col gap-4 w-full">

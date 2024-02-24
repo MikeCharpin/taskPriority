@@ -98,7 +98,7 @@ export function GoalSection({
                             />
                  ))
                 :
-                    <span className=" w-full border-2 rounded-xl border-primary/50 p-2 text-center font-semibold">no active goals</span>
+                    <span className=" w-full border-2 rounded-2xl border-primary/50 p-2 text-center font-semibold">no active goals</span>
                 }
             </section>
             <section className="w-full flex flex-col items-center gap-4">

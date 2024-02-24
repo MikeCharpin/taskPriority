@@ -158,7 +158,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
             {mode === "add" ? <PlusIcon /> : <PencilIcon />}
             </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] rounded-xl" style={{ background }}>
+        <DialogContent className="sm:max-w-[425px] rounded-2xl" style={{ background }}>
             <DialogHeader>
             <DialogTitle>
                 {mode === "add" ? "add a project" : "edit a project"}
