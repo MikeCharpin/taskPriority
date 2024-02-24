@@ -3,6 +3,13 @@ import GoalCard from "./GoalCard";
 import GoalForm from "./GoalForm";
 import { Session } from "@supabase/supabase-js";
 import updateGoalInDB from "@/functions/updateGoalInDB";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 
 interface GoalSectionProps  {
     goalDataState: GoalData[], 
@@ -57,9 +64,9 @@ export function GoalSection({
 
 
     return (
-        <div className="flex flex-col min-w-72 w-full max-w-sm justify-center items-center p-2 border-2 bg-primary/20 rounded-2xl">
+        <div className="flex flex-col min-w-72 w-full max-w-sm justify-center items-center p-2  bg-gradient-to-tr from-cyan-700 to-gray-400 rounded-2xl">
             <div className="flex justify-between items-center">
-                <h1 className="text-xl font-bold">goals</h1>
+                <h1 className="text-xl font-bold mr-4">goals</h1>
                 <GoalForm
                     mode={"add"}
                     goalDataState={goalDataState}
@@ -95,9 +102,12 @@ export function GoalSection({
                 }
             </section>
             <section className="w-full flex flex-col items-center gap-4">
-                {completedGoalsCount > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed goals 🎉</span> : ""}
                 {completedGoalsCount > 0 ?
-                    goalDataState && goalDataState.filter(goals => goals.goalStatus === "completed").map((goal, index) => (
+                    <Accordion type="single" collapsible>
+                        <AccordionItem value="completed-tasks">
+                            <AccordionTrigger className="text-xl font-bold w-full text-center p-2">🎉 completed goals 🎉</AccordionTrigger>
+                            <AccordionContent className="flex flex-col gap-2" >
+                            {goalDataState && goalDataState.filter(goals => goals.goalStatus === "completed").map((goal, index) => (
                         <GoalCard
                             key={goal.goalId}
                             goal={goal}
@@ -114,7 +124,11 @@ export function GoalSection({
                             taskDataState={taskDataState}
                             session={session}
                         />
-                    ))
+                    ))}
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                    
                 :
                     ""
                 }

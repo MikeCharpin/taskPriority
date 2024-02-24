@@ -127,7 +127,7 @@ import { Separator } from "./ui/separator";
     return (
         <Dialog>
         <DialogTrigger asChild>
-            <Button variant="ghost" className="w-8 h-8 p-0">{mode === "add" ? <PlusIcon /> : <PencilIcon />}</Button>
+            <Button variant="ghost" className="w-8 h-8 p-0 hover:bg-green-400/80">{mode === "add" ? <PlusIcon /> : <PencilIcon />}</Button>
         </DialogTrigger>
         <DialogContent className="rounded-xl" style={{ background }}>
             <DialogHeader>

@@ -146,7 +146,7 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
               goalDataState={goalDataState}
             />
             
-            <div className="flex flex-col w-full md:flex-row  md:w-auto justify-center items-center md:items-start gap-6 ">
+            <div className="flex flex-col w-full md:flex-row  md:w-auto justify-center items-center md:items-start gap-6 pb-4">
                 <GoalSection
                     goalDataState={goalDataState}
                     setGoalDataState={setGoalDataState}

@@ -117,7 +117,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                         <AccordionItem value="item-1">
                             <AccordionTrigger className="text-lg">view tasks</AccordionTrigger>
                             <AccordionContent>
-                                <div className="flex flex-col gap-6 bg-primary/30 p-2 rounded-xl">
+                                <div className="flex flex-col gap-6 border-2 border-primary/50 p-2 rounded-xl">
                                     <div className="flex justify-end items-center relative">
                                         <TaskForm
                                             mode={"add"}
@@ -150,9 +150,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                         
                                 </div>
                                 <div className="flex flex-col py-4 gap-2">
-                                    {completedTasks > 0 ? <span className="text-xl font-bold w-full text-center">🎉 completed tasks 🎉</span> : ""}
                                     {completedTasks > 0 ?
-                                        projectTasks && projectTasks
+                                        <Accordion type="single" collapsible>
+                                            <AccordionItem value="completed-tasks">
+                                                <AccordionTrigger className="text-xl font-bold w-full text-center p-2">🎉 completed tasks 🎉</AccordionTrigger>
+                                                <AccordionContent className="flex flex-col gap-2" >
+                                               {projectTasks && projectTasks
                                             .filter((task) => task.taskStatus === "completed")
                                             .map((task) => (
                                                 <TaskCard
@@ -166,7 +169,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                                                     setTaskDataState={setTaskDataState}
                                                     session={session}
                                                 />
-                                            ))
+                                            ))}
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        </Accordion>
                                     :
                                         ""
                                     }

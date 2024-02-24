@@ -3,6 +3,13 @@ import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
 import { Session } from "@supabase/supabase-js";
 import updatedProjectInDB from "@/functions/updateProjectInDB";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 
 
 interface ProjectSectionProps {
@@ -54,9 +61,9 @@ export default function ProjectSection({
     }
 
     return (
-        <div className="flex flex-col min-w-72 w-full max-w-sm justify-center items-center p-2 border-2 bg-primary/20 rounded-2xl">
+        <div className="flex flex-col min-w-72 w-full max-w-sm justify-center items-center p-2 bg-gradient-to-br from-amber-700 to-gray-400 rounded-2xl">
             <div className="flex justify-between items-center">
-                <h1 className="text-xl font-bold">projects</h1>
+                <h1 className="text-xl font-bold mr-6">projects</h1>
                 <ProjectForm
                     mode={"add"}
                     projectDataState={projectDataState}
@@ -89,9 +96,12 @@ export default function ProjectSection({
                 }
             </section>
              <section className="flex flex-col gap-4 w-full">
-                {completedProjects > 0 ? <span className="text-xl font-bold w-full text-center pt-4">🎉 completed projects 🎉</span> : ""}
                 {completedProjects > 0 ?
-                    projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project) => (
+                    <Accordion type="single" collapsible>
+                        <AccordionItem value="completed-tasks">
+                            <AccordionTrigger className="text-xl font-bold w-full text-center p-2">🎉 completed projects 🎉</AccordionTrigger>
+                            <AccordionContent className="flex flex-col gap-2" >
+                            {projectDataState && projectDataState.filter(projects => projects.projectStatus === "completed").map((project) => (
                         <ProjectCard
                             key={project.projectId}
                             project={project}
@@ -105,7 +115,10 @@ export default function ProjectSection({
                             onMoveDown={() => changeProjectRank(project.projectId, 1)}
                             session={session}
                         />
-                    ))
+                    ))}
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
                 : 
                     ""
                 }
