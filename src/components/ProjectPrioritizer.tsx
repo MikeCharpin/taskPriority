@@ -140,7 +140,7 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
     }
 
     return (
-       <main className=" flex flex-wrap justify-center items-start pt-6 gap-6">  
+       <main className=" flex flex-wrap justify-center items-start pt-6 gap-6 bg-gradient-to-tr from-zinc-700 to-zinc-900">  
             <ResultsSection
               sortedProjectState={calcAllScores(projectDataState, goalDataState)}
               goalDataState={goalDataState}
