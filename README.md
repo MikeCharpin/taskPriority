@@ -1,8 +1,6 @@
-# Tulip Tasks
+# 🌷 Tulip Tasks 🌷
 
 Welcome to Tulip Tasks! Below is a detailed guide to help you get started with our app.
-
----
 
 ## Introduction
 
@@ -37,5 +35,3 @@ Tulip Tasks is designed to assist you in managing your tasks, projects, and goal
 ## Conclusion
 
 Thank you for choosing Tulip Tasks to streamline your task management process. We're committed to providing you with a valuable and intuitive tool for staying organized and focused on your goals. If you have any questions or need assistance, don't hesitate to reach out. Enjoy using Tulip Tasks!
-
----
