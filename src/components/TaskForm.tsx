@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -143,9 +141,6 @@ export default function TaskForm({
         <DialogContent className="sm:max-w-[425px] rounded-2xl" style={{ background }}>
             <DialogHeader>
             <DialogTitle>{mode === "add" ? "add a task" : "edit this task"}</DialogTitle>
-            <DialogDescription>
-                Should be specific with metrics for success.
-            </DialogDescription>
             </DialogHeader>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -154,14 +149,11 @@ export default function TaskForm({
                     name="taskDesc"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>What are you trying to accomplish?</FormLabel>
+                        <FormLabel>What are you trying to accomplish today?</FormLabel>
                         
                         <FormControl>
-                            <Input placeholder="Get hired in the tech industry ASAP." {...field} />
+                            <Input placeholder="Collect screenshots of Tulip Tasks in action." {...field} />
                         </FormControl>
-                        <FormDescription>
-                            What are you working towards for the next 6 months?
-                        </FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}

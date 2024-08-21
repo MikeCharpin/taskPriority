@@ -146,10 +146,10 @@ import { Separator } from "./ui/separator";
                     name="goalDesc"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>What are you trying to accomplish?</FormLabel>
+                        <FormLabel>What are you trying to accomplish this month?</FormLabel>
                         
                         <FormControl>
-                            <Input placeholder="Get hired in the tech industry ASAP." {...field} />
+                            <Input placeholder="Improve my personal portfolio website." {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>

@@ -193,9 +193,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                         name="projectDesc"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>what are you trying to accomplish?</FormLabel>
+                            <FormLabel>what are you trying to accomplish this week?</FormLabel>
                             <FormControl>
-                                <Input placeholder="Get hired in the tech industry ASAP." {...field} />
+                                <Input placeholder="Build a web page for Tulip Tasks project portfolio." {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
