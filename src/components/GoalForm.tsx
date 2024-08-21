@@ -131,7 +131,9 @@ import { Separator } from "./ui/separator";
         </DialogTrigger>
         <DialogContent className="rounded-xl" style={{ background }}>
             <DialogHeader>
-            <DialogTitle>edit a goal</DialogTitle>
+            <DialogTitle>
+                {mode === "add" ? "add a goal" : "edit a goal"}
+            </DialogTitle>
             <GradientPicker
                 background={background}
                 setBackground={setBackground}
