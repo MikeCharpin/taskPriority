@@ -58,7 +58,7 @@ const tutorialProjects: ProjectData[] = [
         "projectGoal": "b3eaa102-8553-469d-871b-66db481df8c2",
         "projectMotivation": "",
         "projectStatus": "active",
-        "projectDesc": "Start by reading the \"how about list\"",
+        "projectDesc": "🧙 Start with the \"how about list\" 🦄",
         "projectComplexity": "high",
         "projectExcitement": "high",
         "projectTimeframe": new Date("2025-01-04T05:00:00.000Z"),
