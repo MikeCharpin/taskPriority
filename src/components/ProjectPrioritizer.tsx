@@ -313,7 +313,7 @@ const ProjectPrioritizer = ({ session }: ProjectPrioritizerProps) => {
             return JSON.parse(storedData)
         } else {
             localStorage.setItem(key, JSON.stringify(tutorialData))
-            return tutorialGoals
+            return tutorialData
         }
     }
 
